@@ -1,0 +1,25 @@
+﻿
+@model TermProjectUI.Models.TransportationTaskModel
+@using TermProjectUI.Models;
+<br />
+<br />
+<div>
+    <table>
+
+
+        @{
+            if (ViewData["itemsData"] != null)
+            {
+                if (ViewData.Values != null && ViewData.Values.Count() > 0)
+                {
+                    foreach (var item in ViewData["itemsData"] as List<TransportationTaskModel.Item>)
+                    {
+                        @Html.Raw("<p>"); @item.ItemName;
+                        @Html.Raw("</p>");
+
+                    }
+                }
+            }
+        }
+    </table>
+</div>

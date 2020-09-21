@@ -1,0 +1,430 @@
+﻿@model TermProjectUI.Models.TransportationTaskModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<style>
+    a {
+        color: black;
+    }
+</style>
+
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.taskID)
+        @Html.HiddenFor(model => model.taskName)
+        @Html.HiddenFor(model => model.taskID)
+        @Html.HiddenFor(model => model.assignees)
+        @Html.HiddenFor(model => model.items)
+        @Html.HiddenFor(model => model.state)
+        @Html.HiddenFor(model => model.creationDate)
+        <div class="form-row">
+            <div class="col-md-12">
+                <h2>
+                    Transportation Task
+                </h2>
+            </div>
+        </div>
+        <!--Task Specification-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h2>
+                    Task Specification
+                </h2>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-3">
+                Importance Level:
+                @Html.DropDownListFor(model => model.importanceLevel, Enumerable.Range(1, 3).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                <!--Html.EditorFor(model => model.importanceLevel, new { htmlAttributes = new { class = "form-control" } })
+                Html.ValidationMessageFor(model => model.importanceLevel, "", new { lass = "text-danger" })-->
+
+            </div>
+            <div class="col-md-4">
+                Requester:
+                @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <!--Item Specification             Need to make it so quantity is # only.  Need to add fucntionality to have more then 1 type of object.-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h1>Item Specification</h1>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-12">
+                <div id="listSection"><ul></ul></div>
+            </div>
+
+        </div>
+
+        <div id="placeHolderDiv">
+
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-12">
+
+                <div class="form-row">
+
+                    <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col">
+                                Item:
+
+                                <input id="txtVal" type='text' class="form-control"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col">
+                                Quantity:
+                                <input id="txtQ" type='number' class="form-control"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col">
+                                Notes:
+                                <div style="display: flex; flex-direction: row;">
+                                    <input id="txtNote" type='text' class="form-control" style="float:left"></input>      <button class="btn" type="button" onclick="replaceContentsOfDiv(this.id)" id="_Items">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Location info for Pickup and Drop off-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h1>Locations</h1>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="col">
+                        <small>Drop-off</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <div class="form-row">
+                                <div class="col">
+                                    Address:
+                                    @Html.EditorFor(model => model.puAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.puAddress, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-row">
+                                <div class="col">
+                                    City:
+                                    @Html.EditorFor(model => model.puCity, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.puCity, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-row">
+                                <div class="col">
+                                    Postal Code:
+                                    @Html.EditorFor(model => model.puPostal, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.puPostal, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="col">
+                        <small>Drop-off</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <div class="form-row">
+                            <div class="col">
+                                Address:
+                                @Html.EditorFor(model => model.doAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.doAddress, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col">
+                                City:
+                                @Html.EditorFor(model => model.doCity, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.doCity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col">
+                                Postal Code:
+                                @Html.EditorFor(model => model.doPostal, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.doPostal, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Contact info for Pickup and Drop Off-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h1>Contact Information</h1>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="col">
+                        <small>Pick Up Contact</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <div class="form-row">
+                            <div class="col">
+                                Name:
+                                @Html.EditorFor(model => model.puName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.puName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-row">
+                            <div class="col">
+                                Notes:
+                                @Html.EditorFor(model => model.puAdditional, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.puAdditional, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <div class="form-row">
+                            <div class="col">
+                                Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>-->
+                                @Html.EditorFor(model => model.puDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.puDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col">
+
+                                Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
+                                @Html.EditorFor(model => model.puTime, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.puTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-row">
+                    <div class="col">
+                        <small>Drop Off Contact</small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <div class="form-row">
+                            <div class="col">
+                                Name:
+                                @Html.EditorFor(model => model.doName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.doName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-row">
+                            <div class="col">
+                                Notes:
+                                @Html.EditorFor(model => model.doAdditional, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.doAdditional, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <div class="form-row">
+                            <div class="col">
+                                Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
+                                @Html.EditorFor(model => model.doDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.doDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col">
+
+                                Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
+                                @Html.EditorFor(model => model.doTime, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.doTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Additional Info -->
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h1>Additional Information</h1>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.additionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.additionalInfo, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <!--Blank Space-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+            </div>
+        </div>
+        <!--Buttom Buttons-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <input class="btn btn-primary" type="submit" value="Details" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+
+                        <button class="btn btn-primary" type="submit" value="Save" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                        <br /><br /><br />
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div>
+            <div id="listSectionTEST"><ul></ul></div>
+
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+}
+
+
+
+
+<script>
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("puDate")[0].setAttribute('min', today);
+    document.getElementsByName("doDate")[0].setAttribute('min', today);
+
+
+</script>
+
+<script>
+    var x = [];
+
+    function replaceContentsOfDiv(partialViewToInsert) {
+
+        //eventually replace this with just pushing things into a list and reloading
+        $(document).ready(function () {
+            $('#listSection').on('click', '.itemDelete', function () {
+                $(this).closest('li').remove();
+            });
+        });
+        var textV = $('#txtVal').val();
+        var textQ = $('#txtQ').val();
+        var textN = $('#txtNote').val();
+
+        x.push([textV, textQ, textN]);
+
+
+        $('#listSection ul').append("<li class='list-group-item'>" + "<strong>Item: </strong>" + textV + " <strong> Quantity: </strong>" + textQ + "<strong>  Note: </strong>" + textN + "<a href='#' title='Remove Item' class='itemDelete'> <button>X</button></a></li>");
+        $('#txtVal').val("");
+        $('#txtQ').val("");
+        $('#txtNote').val("");
+
+        if (x.length > 0) {
+            for (var i = 0; i < x.length; i++) {
+
+
+                //Testing to make sure the array actually gets it all >//    $('#listSectionTEST ul').append("<li class='list-group-item'>" + "Item: " + x[i][0] + "  Quantity: " + x[i][1] + "  Note: " + x[i][2] + "<a href='#' title='Remove Item' class='itemDelete'> X</a></li>");
+
+
+            }
+        }
+
+
+
+
+
+
+    }
+
+</script>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
