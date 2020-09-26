@@ -194,6 +194,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AllTasksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OtherTasksController.cs" />
     <Compile Include="Controllers\TransportationTasksController.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AllTaskModel.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\OtherTaskModel.cs" />
     <Compile Include="Models\TransportationTaskModel.cs" />
@@ -315,6 +317,9 @@
     <Content Include="Views\OtherTasks\Index.cshtml" />
     <Content Include="Views\OtherTasks\Create.cshtml" />
     <Content Include="Views\OtherTasks\Details.cshtml" />
+    <Content Include="Views\AllTasks\Index.cshtml" />
+    <Content Include="Views\OtherTasks\Edit.cshtml" />
+    <Content Include="Views\OtherTasks\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

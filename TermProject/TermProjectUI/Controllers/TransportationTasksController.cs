@@ -23,7 +23,7 @@ namespace TermProjectUI.Controllers
 
         //private TransportationTaskRepoEF ttr = new TransportationTaskRepoEF();
 
-         static List<TransportationTaskModel.Item> x = new List<TransportationTaskModel.Item>();
+         static List<TransportationTaskModel.Item> itemList = new List<TransportationTaskModel.Item>();
       
 
 
@@ -33,7 +33,7 @@ namespace TermProjectUI.Controllers
         public TransportationTasksController()
         {
             dbcontext = new MongoDBContext();
-            productCollection = dbcontext.database.GetCollection<TransportationTaskModel>("product");
+            productCollection = dbcontext.database.GetCollection<TransportationTaskModel>("transportation");
 
         }
         // GET: TransportationTasks
@@ -42,16 +42,16 @@ namespace TermProjectUI.Controllers
             // return View(db.TransportationTasks.ToList());
             //return View(ttr.GetTransportationTasks());
 
-            List<TransportationTaskModel> products = productCollection.AsQueryable<TransportationTaskModel>().ToList();
-            return View(products);
+            List<TransportationTaskModel> tasks = productCollection.AsQueryable<TransportationTaskModel>().ToList();
+            return View(tasks);
         }
 
         // GET: TransportationTasks/Details/5
         public ActionResult Details(string id)
         {
-            var productId = new ObjectId(id);
-            var product = productCollection.AsQueryable<TransportationTaskModel>().SingleOrDefault(x => x.Id == productId);
-            return View(product);
+            var taskId = new ObjectId(id);
+            var task = productCollection.AsQueryable<TransportationTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            return View(task);
         }
 
         // GET: TransportationTasks/Create
@@ -72,7 +72,7 @@ namespace TermProjectUI.Controllers
             transportationTask.taskType = "Transportation Task";
             transportationTask.taskName = transportationTask.taskType + " - " + transportationTask.PUCity + " to " + transportationTask.DOCity;
             
-            transportationTask.Items = x;
+            transportationTask.Items = itemList;
             transportationTask.creationDate = DateTime.Today;
             //transportationTask.assignees = "0";
             transportationTask.state = "Unassigned";
@@ -92,9 +92,10 @@ namespace TermProjectUI.Controllers
             try
             {
                 productCollection.InsertOne(transportationTask);
-                x = new List<TransportationTaskModel.Item>();
+                itemList = new List<TransportationTaskModel.Item>();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = transportationTask.Id });
+                
             }
             catch
             {
@@ -102,55 +103,55 @@ namespace TermProjectUI.Controllers
             }
         }
        
-        public JsonResult InsertItems(List<TransportationTaskModel.Item> customers)
+        public JsonResult InsertItems(List<TransportationTaskModel.Item> items)
         {
            
                 //Check for NULL.
-                if (customers == null)
+                if (items == null)
                 {
-                    customers = new List<TransportationTaskModel.Item>();
+                    items = new List<TransportationTaskModel.Item>();
                 }
 
                 
-                foreach (TransportationTaskModel.Item customer in customers)
+                foreach (TransportationTaskModel.Item item in items)
                 {
-                    
-                    x.Add(customer);
+
+                itemList.Add(item);
 
                 }
-                Debug.WriteLine(x[0].ItemName);
-                int insertedRecords = x.Count();
+                //Debug.WriteLine(itemList[0].ItemName);
+                int insertedRecords = itemList.Count();
                 return Json(insertedRecords);
             
         }
 
        
-        public JsonResult UpdateItems(List<TransportationTaskModel.Item> customers)
+        public JsonResult UpdateItems(List<TransportationTaskModel.Item> items)
         {
             
             //Check for NULL.
-            if (customers == null)
+            if (items == null)
             {
-                customers = new List<TransportationTaskModel.Item>();
+                items = new List<TransportationTaskModel.Item>();
             }
 
-            x= new List<TransportationTaskModel.Item>();
-            foreach (TransportationTaskModel.Item customer in customers)
+            itemList = new List<TransportationTaskModel.Item>();
+            foreach (TransportationTaskModel.Item item in items)
             {
-                x.Add(customer);
+                itemList.Add(item);
 
             }
-            Debug.WriteLine(x[0].ItemName);
-            int insertedRecords = x.Count();
+           // Debug.WriteLine(itemList[0].ItemName);
+            int insertedRecords = itemList.Count();
             return Json(insertedRecords);
 
         }
         // GET: TransportationTasks/Edit/5
         public ActionResult Edit(string id)
         {
-            var productId = new ObjectId(id);
-            var product = productCollection.AsQueryable<TransportationTaskModel>().SingleOrDefault(x => x.Id == productId);
-            return View(product);
+            var taskId = new ObjectId(id);
+            var task = productCollection.AsQueryable<TransportationTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            return View(task);
         }
 
         // POST: TransportationTasks/Edit/5
@@ -158,40 +159,40 @@ namespace TermProjectUI.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, TransportationTaskModel product)
+        public ActionResult Edit(string id, TransportationTaskModel task)
         {
-            product.Items = x;
+            task.Items = itemList;
             try
             {
                 var filter = Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<TransportationTaskModel>.Update
-                    .Set("ImportanceLevel", product.ImportanceLevel)
-                    .Set("Requester", product.Requester)
-                    .Set("PUAddress", product.PUAddress)
-                    .Set("PUCity", product.PUCity)
-                    .Set("PUPostal", product.PUPostal)
-                    .Set("PUName", product.PUName)
-                    .Set("PUDate", product.PUDate)
-                    .Set("PUTime", product.PUTime)
-                    .Set("PUAdditional", product.PUAdditional)
-                    .Set("DOAddress", product.DOAddress)
-                    .Set("DOCity", product.DOCity)
-                    .Set("DOPostal", product.DOPostal)
-                    .Set("DOName", product.DOName)
-                    .Set("DODate", product.DODate)
-                    .Set("DOTime", product.DOTime)
-                    .Set("DOAdditional", product.DOAdditional)
-                    .Set("AdditionalInfo", product.AdditionalInfo)
-                    .Set("Items",product.Items)
-                    .Set("taskID", product.taskID)
-                    .Set("taskName", product.taskName)
-                    .Set("taskType", product.taskType)
-                    .Set("posterName", product.posterName)
-                    .Set("creationDate", product.creationDate)
-                    .Set("state", product.state);
+                    .Set("ImportanceLevel", task.ImportanceLevel)
+                    .Set("Requester", task.Requester)
+                    .Set("PUAddress", task.PUAddress)
+                    .Set("PUCity", task.PUCity)
+                    .Set("PUPostal", task.PUPostal)
+                    .Set("PUName", task.PUName)
+                    .Set("PUDate", task.PUDate)
+                    .Set("PUTime", task.PUTime)
+                    .Set("PUAdditional", task.PUAdditional)
+                    .Set("DOAddress", task.DOAddress)
+                    .Set("DOCity", task.DOCity)
+                    .Set("DOPostal", task.DOPostal)
+                    .Set("DOName", task.DOName)
+                    .Set("DODate", task.DODate)
+                    .Set("DOTime", task.DOTime)
+                    .Set("DOAdditional", task.DOAdditional)
+                    .Set("AdditionalInfo", task.AdditionalInfo)
+                    .Set("Items", task.Items)
+                    .Set("taskID", task.taskID)
+                    .Set("taskName", task.taskName)
+                    .Set("taskType", task.taskType)
+                    .Set("posterName", task.posterName)
+                    .Set("creationDate", task.creationDate)
+                    .Set("state", task.state);
                 var result = productCollection.UpdateOne(filter, update);
-                
-                return RedirectToAction("Index");
+                itemList = new List<TransportationTaskModel.Item>();
+                return RedirectToAction("Details", new { id = id });
             }
             catch
             {
@@ -202,9 +203,9 @@ namespace TermProjectUI.Controllers
         // GET: TransportationTasks/Delete/5
         public ActionResult Delete(string id)
         {
-            var productId = new ObjectId(id);
-            var product = productCollection.AsQueryable<TransportationTaskModel>().SingleOrDefault(x => x.Id == productId);
-            return View(product);
+            var taskId = new ObjectId(id);
+            var task = productCollection.AsQueryable<TransportationTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            return View(task);
         }
 
         // POST: TransportationTasks/Delete/5

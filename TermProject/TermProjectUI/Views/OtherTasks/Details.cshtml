@@ -18,8 +18,9 @@
             <div class="col-md-8 col-xl-9">
                 <div class="row">
                     <div class="col">
-                        <img src="~/Images/transportation_Nav.JPG" style="float: left; height: 15%; width: 15%;">
-                        <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskName)</h1>
+                        <img src="~/Images/other_Nav.JPG" style="float: left; height: 15%; width: 15%;">
+                        <br />
+                        <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskTitle)</h1>
                     </div>
                 </div>
                 <div class="row">
@@ -36,11 +37,11 @@
                         <div class="row">
 
 
-                            Items
-                            @foreach (var item in Model.Items)
+                            Task Information:
+                            @foreach (var item in Model.TaskRequirements)
                             {
                                 <ul>
-                                    <li>Name:  @Html.DisplayFor(model => item.ItemName) , Quantity: @Html.DisplayFor(model => item.ItemQuantity) , Notes: @Html.DisplayFor(model => item.ItemNote)</li>
+                                    <li> @Html.DisplayFor(model => item.Key) : @Html.DisplayFor(model => item.Value) </li>
 
                                 </ul>
 
@@ -52,49 +53,8 @@
 
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
-                        <div class="row">
-                            <div class="col-md-4">
-
-                                Pick Up
-                                <ul>
-                                    <li>Name:  @Html.DisplayFor(model => model.PUName) </li>
-                                    <li>Address: @Html.DisplayFor(model => model.PUAddress)</li>
-                                    <li>City: @Html.DisplayFor(model => model.PUCity)</li>
-                                    <li>Postal Code:  @Html.DisplayFor(model => model.PUPostal)</li>
-
-                                    <li>Date: @Html.DisplayFor(model => model.PUDate.Date)</li>
-                                    <li>Time: @Html.DisplayFor(model => model.PUTime)</li>
-                                    <li>Notes:  @Html.DisplayFor(model => model.PUAdditional) </li>
-                                </ul>
-
-
-
-                            </div>
-                            <div class="col-md-4">
-
-                                Drop Off
-                                <ul>
-                                    <li>Name:         @Html.DisplayFor(model => model.DOName) </li>
-                                    <li>Address:      @Html.DisplayFor(model => model.DOAddress)</li>
-                                    <li>City:         @Html.DisplayFor(model => model.DOCity)</li>
-                                    <li>Postal Code:  @Html.DisplayFor(model => model.DOPostal)</li>
-                                    <li>Date: @Html.DisplayFor(model => model.DODate.Date)</li>
-                                    <li>Time: @Html.DisplayFor(model => model.DOTime)</li>
-                                    <li>Notes:        @Html.DisplayFor(model => model.DOAdditional) </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        Additional Information: @Html.DisplayFor(model => model.AdditionalInfo)
-                    </div>
-
-                </div>
+               
+                
             </div>
             <div class="col-md-4 col-xl-3">
                 <div class="row">
@@ -133,7 +93,7 @@
 
                 <div class="row">
 
-                    <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/ellie.jpg" /></div><small style="margin-left: 2px"> @Html.DisplayFor(model => model.Requester)</small>
+                    <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/ellie.jpg" /></div><small style="margin-left: 2px"> @Html.DisplayFor(model => model.requester)</small>
                 </div><br />
                 <div class="row">
                     <div class="col">
