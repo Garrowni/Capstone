@@ -221,7 +221,7 @@ namespace TermProjectUI.Controllers
             {
                 productCollection.DeleteOne(Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
 
-                return RedirectToAction("Index");
+                return RedirectToAction("../AllTasks/Index");
             }
             catch
             {
