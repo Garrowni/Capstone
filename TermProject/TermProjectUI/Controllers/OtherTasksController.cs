@@ -1,4 +1,4 @@
-﻿//OTC
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace TermProjectUI.Controllers
     public class OtherTasksController : Controller
     {
 
-        static List<OtherTaskModel.TaskRequirement> x = new List<OtherTaskModel.TaskRequirement>();
+        static List<OtherTaskModel.TaskRequirement> taskSpecList = new List<OtherTaskModel.TaskRequirement>();
 
 
 
@@ -30,14 +30,18 @@ namespace TermProjectUI.Controllers
         // GET: OtherTasks
         public ActionResult Index()
         {
-            List<OtherTaskModel> products = productCollection.AsQueryable<OtherTaskModel>().ToList();
-            return View(products);
+           
+            List<OtherTaskModel> tasks = productCollection.AsQueryable<OtherTaskModel>().ToList();
+            return View(tasks);
+            
         }
 
         // GET: OtherTasks/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var taskId = new ObjectId(id);
+            var task = productCollection.AsQueryable<OtherTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            return View(task);
         }
 
         // GET: OtherTasks/Create
@@ -51,26 +55,28 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OtherTaskModel otherTask)
         {
-            otherTask.TaskRequirements = x;
+            otherTask.posterName = "Nicole Garrow";
+            otherTask.TaskRequirements = taskSpecList;
+           
             try
             {
                 productCollection.InsertOne(otherTask);
-                x = new List<OtherTaskModel.TaskRequirement>();
+                taskSpecList = new List<OtherTaskModel.TaskRequirement>();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = otherTask.Id });
             }
             catch
             {
                 return View();
             }
         }
-        public JsonResult InsertItems(List<OtherTaskModel.TaskRequirement> customers)
+        public JsonResult InsertTaskSpecifications(List<OtherTaskModel.TaskRequirement> itemsSpec)
         {
 
             //Check for NULL.
-            if (customers == null)
+            if (itemsSpec == null)
             {
-                customers = new List<OtherTaskModel.TaskRequirement>();
+                itemsSpec = new List<OtherTaskModel.TaskRequirement>();
             }
 
             //Loop and insert records.
@@ -80,53 +86,86 @@ namespace TermProjectUI.Controllers
             }*/
             // List<Item> x = new List<Item>();
 
-            foreach (OtherTaskModel.TaskRequirement customer in customers)
+            foreach (OtherTaskModel.TaskRequirement itemSpec in itemsSpec)
             {
 
-                x.Add(customer);
+                taskSpecList.Add(itemSpec);
 
             }
-            Debug.WriteLine(x[0].Key);
-            int insertedRecords = x.Count();
+            //Debug.WriteLine(taskSpecList[0].Key);
+            int insertedRecords = taskSpecList.Count();
             return Json(insertedRecords);
 
         }
-
-        // GET: OtherTasks/Edit/5
-        public ActionResult Edit(int id)
+        public JsonResult UpdateTaskSpecifications(List<OtherTaskModel.TaskRequirement> tasksSpec)
         {
-            return View();
+
+            //Check for NULL.
+            if (tasksSpec == null)
+            {
+                tasksSpec = new List<OtherTaskModel.TaskRequirement>();
+            }
+
+            taskSpecList = new List<OtherTaskModel.TaskRequirement>();
+            foreach (OtherTaskModel.TaskRequirement taskSpec in tasksSpec)
+            {
+                taskSpecList.Add(taskSpec);
+
+            }
+           
+            int insertedRecords = taskSpecList.Count();
+            return Json(insertedRecords);
+
+        }
+        // GET: OtherTasks/Edit/5
+        public ActionResult Edit(string id)
+        {
+            var taskId = new ObjectId(id);
+            var task = productCollection.AsQueryable<OtherTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            return View(task);
         }
 
         // POST: OtherTasks/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string id, OtherTaskModel task)
         {
+            task.TaskRequirements = taskSpecList;
+            task.posterName = "Nicole Garrow";
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                var filter = Builders<OtherTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                var update = Builders<OtherTaskModel>.Update
+                    .Set("requester", task.requester)
+                    .Set("posterName", task.posterName)
+                    .Set("taskTitle", task.taskTitle)
+                    .Set("TaskRequirements", task.TaskRequirements);
+                var result = productCollection.UpdateOne(filter, update);
+                taskSpecList = new List<OtherTaskModel.TaskRequirement>();
+                return RedirectToAction("Details", new { id = id });
             }
             catch
             {
                 return View();
             }
         }
+    
 
         // GET: OtherTasks/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
-            return View();
+            var taskId = new ObjectId(id);
+            var task = productCollection.AsQueryable<OtherTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            return View(task);
         }
 
         // POST: OtherTasks/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
         {
             try
             {
-                // TODO: Add delete logic here
+                productCollection.DeleteOne(Builders<OtherTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
 
                 return RedirectToAction("Index");
             }
@@ -136,4 +175,5 @@ namespace TermProjectUI.Controllers
             }
         }
     }
-}
+    }
+

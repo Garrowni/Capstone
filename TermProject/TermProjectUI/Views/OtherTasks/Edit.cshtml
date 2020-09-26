@@ -1,10 +1,14 @@
 ﻿@model TermProjectUI.Models.OtherTaskModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
-
-<h2>Create</h2>
+    <style>
+        a {
+            color: white;
+        }
+    </style>
+<h2>Edit</h2>
 
 @using (Html.BeginForm())
 {
@@ -21,7 +25,7 @@
             <div class="col-md-12">
                 <h2>
 
-                   Other Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                    Other Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
                         <span class="glyphicon glyphicon-remove-circle"></span>
                     </a>
                 </h2>
@@ -39,7 +43,7 @@
         <div class="form-row">
 
             <div class="col-md-4">
-               Title:
+                Title:
                 @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.taskTitle, "", new { @class = "text-danger" })
 
@@ -51,7 +55,7 @@
 
             </div>
         </div>
-        
+
 
         <body>
 
@@ -64,6 +68,18 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var item in Model.TaskRequirements)
+                    {
+
+
+                        <tr>
+                            <td>@item.Key</td>
+                            <td>@item.Value</td>
+                            
+                            <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
+                        </tr>
+
+                    }
                 </tbody>
                 <tfoot>
                     <tr>
@@ -74,7 +90,7 @@
                 </tfoot>
             </table>
             <br />
-            
+
             <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
             <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 
@@ -91,11 +107,11 @@
                     //Add Row.
                     var row = tBody.insertRow(-1);
 
-                    
+
                     var cell = $(row.insertCell(-1));
                     cell.html(txtKey.val());
 
-                    
+
                     cell = $(row.insertCell(-1));
                     cell.html(txtValue.val());
 
@@ -138,14 +154,14 @@
                         taskSpec.Key = row.find("TD").eq(0).html();
                         taskSpec.Value = row.find("TD").eq(1).html();
                         tasksSpec.push(taskSpec);
-                       // alert(itemsSpec[0].Key);
+                        // alert(itemsSpec[0].Key);
 
                     });
 
                     //Send the JSON array to Controller using AJAX.
                     $.ajax({
                         type: "POST",
-                        url: "/OtherTasks/InsertTaskSpecifications",
+                        url: "/OtherTasks/UpdateTaskSpecifications",
                         data: JSON.stringify(tasksSpec),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -157,7 +173,7 @@
             </script>
         </body>
 
-        
+
         <!--Blank Space-->
         <div class="form-row">
             <div class="col-md-12">
@@ -169,8 +185,7 @@
             <div class="col-md-12">
                 <div class="form-row">
                     <div class="col-md-6">
-                        <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
-
+                        <button class="btn btn-primary" type="button" style=" width: 15%; float:right; background-color: grey;border-color: black; margin-left: 2px;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
                         <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
                         <br /><br /><br />
 

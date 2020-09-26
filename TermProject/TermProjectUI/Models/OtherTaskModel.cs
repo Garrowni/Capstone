@@ -11,8 +11,13 @@ namespace TermProjectUI.Models
     {
         [BsonId]
         public ObjectId Id { get; set; }
-        [BsonElement("taskName")]
-        public string taskName { get; set; }
+        [BsonElement("requester")]
+        public string requester { get; set; }
+        [BsonElement("taskTitle")]
+        public string taskTitle { get; set; }
+        [BsonElement("posterName")]
+        public string posterName { get; set; }
+        
         public class TaskRequirement
         {
             public string Key { get; set; }
