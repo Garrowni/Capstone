@@ -163,6 +163,14 @@
                         table.deleteRow(row[0].rowIndex);
                     }
                 };
+                $(document).on('input', '#PUDate', function () {
+                    document.getElementsByName("DODate")[0].setAttribute('min', $(this).val());
+                });
+                $(document).on('input', '#DODate', function () {
+                    document.getElementsByName("PUDate")[0].setAttribute('max', $(this).val());
+                });
+
+
 
                 $("body").on("click", "#btnSave", function () {
                     //Loop through the Table rows and build a JSON array.
@@ -177,18 +185,21 @@
                         //alert(items[0].ItemName);
 
                     });
-
-                    //Send the JSON array to Controller using AJAX.
-                    $.ajax({
-                        type: "POST",
-                        url: "/TransportationTasks/UpdateItems",
-                        data: JSON.stringify(items),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (r) {
-                            //alert(r + " record(s) inserted.");
-                        }
-                    });
+                    if ($('#PUDate').val() == $('#DODate').val() && $('#PUTime').val() >= $('#DOTime').val()) {
+                        alert('Fix your Time '); return false;
+                    } else {
+                        //Send the JSON array to Controller using AJAX.
+                        $.ajax({
+                            type: "POST",
+                            url: "/TransportationTasks/UpdateItems",
+                            data: JSON.stringify(items),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (r) {
+                                //alert(r + " record(s) inserted.");
+                            }
+                        });
+                    }
                 });
             </script>
         </body>
