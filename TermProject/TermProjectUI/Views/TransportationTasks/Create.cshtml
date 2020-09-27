@@ -26,161 +26,172 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+<div class="form-horizontal">
 
 
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-        <div class="form-row">
-            <div class="col-md-12">
-                <h2>
+    <div class="form-row">
+        <div class="col-md-12">
+            <h2>
 
-                    Transportation Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </a>
-                </h2>
-            </div>
+                Transportation Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </a>
+            </h2>
         </div>
-        <!--Task Specification-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h2>
-                    Task Specification
-                </h2>
-            </div>
+    </div>
+    <!--Task Specification-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h2>
+                Task Specification
+            </h2>
         </div>
-        <div class="form-row">
-            <div class="col-md-3">
-                Importance Level:
-                @Html.DropDownListFor(model => model.ImportanceLevel, Enumerable.Range(1, 3).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                <!--Html.EditorFor(model => model.importanceLevel, new { htmlAttributes = new { class = "form-control" } })
-                Html.ValidationMessageFor(model => model.importanceLevel, "", new { lass = "text-danger" })-->
+    </div>
+    <div class="form-row">
+        <div class="col-md-3">
+            Importance Level:
+            @Html.DropDownListFor(model => model.ImportanceLevel, Enumerable.Range(1, 3).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+            <!--Html.EditorFor(model => model.importanceLevel, new { htmlAttributes = new { class = "form-control" } })
+            Html.ValidationMessageFor(model => model.importanceLevel, "", new { lass = "text-danger" })-->
 
-            </div>
-            <div class="col-md-4">
-                Requester:
-                @Html.EditorFor(model => model.Requester, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Requester, "", new { @class = "text-danger" })
-
-            </div>
         </div>
-        <!--Item Specification             Need to make it so quantity is # only.  Need to add fucntionality to have more then 1 type of object.-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h1>Item Specification</h1>
-            </div>
+        <div class="col-md-4">
+            Requester:
+            @Html.EditorFor(model => model.Requester, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Requester, "", new { @class = "text-danger" })
+
         </div>
+    </div>
+    <!--Item Specification             Need to make it so quantity is # only.  Need to add fucntionality to have more then 1 type of object.-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>Item Specification</h1>
+        </div>
+    </div>
 
-        <body>
+    <body>
 
-            <table id="tblItems" class="table" cellpadding="0" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th style="width:150px">Name</th>
-                        <th style="width:150px">Quantity</th>
-                        <th style="width:150px">Notes</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td><input type="text" id="txtName" /></td>
-                        <td><input type="text" id="txtQuantity" /></td>
-                        <td><input type="text" id="txtNotes" /></td>
-                        <td><input type="button" id="btnAdd" value="Add" /></td>
-                    </tr>
-                </tfoot>
-            </table>
-            <br />
-            <!--<input type="button" id="btnSave" value="Save All" />-->
-
-
-
-
-
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-
-
-            <script type="text/javascript">
-                $("body").on("click", "#btnAdd", function () {
-                    //Reference the Name and Country TextBoxes.
-                    var txtName = $("#txtName");
-                    var txtQuantity = $("#txtQuantity");
-                    var txtNotes = $("#txtNotes");
-                    //Get the reference of the Table's TBODY element.
-                    var tBody = $("#tblItems > TBODY")[0];
-
-                    //Add Row.
-                    var row = tBody.insertRow(-1);
-
-                    
-                    var cell = $(row.insertCell(-1));
-                    cell.html(txtName.val());
-
-                    
-                    cell = $(row.insertCell(-1));
-                    cell.html(txtQuantity.val());
+        <table id="tblItems" class="table" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th style="width:150px">Name</th>
+                    <th style="width:150px">Quantity</th>
+                    <th style="width:150px">Notes</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><input type="text" id="txtName" /></td>
+                    <td><input type="text" id="txtQuantity" /></td>
+                    <td><input type="text" id="txtNotes" /></td>
+                    <td><input type="button" id="btnAdd" value="Add" /></td>
+                </tr>
+            </tfoot>
+        </table>
+        <br />
+        <!--<input type="button" id="btnSave" value="Save All" />-->
 
 
-                    cell = $(row.insertCell(-1));
-                    cell.html(txtNotes.val());
 
-                    //Add Button cell.
-                    cell = $(row.insertCell(-1));
-                    var btnRemove = $("<input />");
-                    btnRemove.attr("type", "button");
-                    btnRemove.attr("onclick", "Remove(this);");
-                    btnRemove.val("Remove");
-                    cell.append(btnRemove);
 
-                    //Clear the TextBoxes.
-                    txtName.val("");
-                    txtQuantity.val("");
-                    txtNotes.val("");
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
+
+        <script type="text/javascript">
+            $("body").on("click", "#btnAdd", function () {
+                //Reference the Name and Country TextBoxes.
+                var txtName = $("#txtName");
+                var txtQuantity = $("#txtQuantity");
+                var txtNotes = $("#txtNotes");
+                //Get the reference of the Table's TBODY element.
+                var tBody = $("#tblItems > TBODY")[0];
+
+                //Add Row.
+                var row = tBody.insertRow(-1);
+
+
+                var cell = $(row.insertCell(-1));
+                cell.html(txtName.val());
+
+
+                cell = $(row.insertCell(-1));
+                cell.html(txtQuantity.val());
+
+
+                cell = $(row.insertCell(-1));
+                cell.html(txtNotes.val());
+
+                //Add Button cell.
+                cell = $(row.insertCell(-1));
+                var btnRemove = $("<input />");
+                btnRemove.attr("type", "button");
+                btnRemove.attr("onclick", "Remove(this);");
+                btnRemove.val("Remove");
+                cell.append(btnRemove);
+
+                //Clear the TextBoxes.
+                txtName.val("");
+                txtQuantity.val("");
+                txtNotes.val("");
+            });
+
+            function Remove(button) {
+                //Determine the reference of the Row using the Button.
+                var row = $(button).closest("TR");
+                var name = $("TD", row).eq(0).html();
+                if (confirm("Do you want to delete: " + name)) {
+                    //Get the reference of the Table.
+                    var table = $("#tblItems")[0];
+
+                    //Delete the Table row using it's Index.
+                    table.deleteRow(row[0].rowIndex);
+                }
+            };
+            $("body").on("click", "#reset", function () {
+                $("#tblItems TBODY TR").each(function () {
+                    Remove(this);
                 });
 
-                function Remove(button) {
-                    //Determine the reference of the Row using the Button.
-                    var row = $(button).closest("TR");
-                    var name = $("TD", row).eq(0).html();
-                    if (confirm("Do you want to delete: " + name)) {
-                        //Get the reference of the Table.
-                        var table = $("#tblItems")[0];
 
-                        //Delete the Table row using it's Index.
-                        table.deleteRow(row[0].rowIndex);
-                    }
-                };
-                $("body").on("click", "#reset", function () {
-                    $("#tblItems TBODY TR").each(function () {
-                        Remove(this);
-                    });
-                       
+            });
+            $(document).on('input', '#PUDate', function () {
+                document.getElementsByName("DODate")[0].setAttribute('min', $(this).val() );
+            });
+            $(document).on('input', '#DODate', function () {
+                document.getElementsByName("PUDate")[0].setAttribute('max', $(this).val());
+            });
+            
+                
+               
 
-                    });
-                    
-                  
-                $("body").on("click", "#btnSave", function () {
-                    //Loop through the Table rows and build a JSON array.
-                    var items = new Array();
-                    $("#tblItems TBODY TR").each(function () {
-                        var row = $(this);
-                        var item = {};
-                        item.ItemName = row.find("TD").eq(0).html();
-                        item.ItemQuantity = row.find("TD").eq(1).html();
-                        item.ItemNote = row.find("TD").eq(2).html();
-                        items.push(item);
-                        //alert(items[0].ItemName);
+            
+            $("body").on("click", "#btnSave", function () {
+                //Loop through the Table rows and build a JSON array.
+                var items = new Array();
+                $("#tblItems TBODY TR").each(function () {
+                    var row = $(this);
+                    var item = {};
+                    item.ItemName = row.find("TD").eq(0).html();
+                    item.ItemQuantity = row.find("TD").eq(1).html();
+                    item.ItemNote = row.find("TD").eq(2).html();
+                    items.push(item);
+                    //alert(items[0].ItemName);
 
-                    });
-                    
+                });
+                if ($('#PUDate').val() == $('#DODate').val() && $('#PUTime').val() >= $('#DOTime').val()) {
+                    alert('Fix your Time '); return false;
+                } else {
                     //Send the JSON array to Controller using AJAX.
                     $.ajax({
                         type: "POST",
@@ -192,67 +203,31 @@
                             //alert(r + " record(s) inserted.");
                         }
                     });
-                });
-            </script>
-        </body>
-
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h1>Locations</h1>
-            </div>
+                }
+            });
+        </script>
+    </body>
+    <span id="slider_value">Nothing yet.</span>
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>Locations</h1>
         </div>
-        <div class="form-row">
-            <div class="col-md-6">
-                <div class="form-row">
-                    <div class="col">
-                        <small>Drop-off</small>
-                    </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="form-row">
+                <div class="col">
+                    <small>Drop-off</small>
+                </div>
 
-                    <div class="form-row">
-                        <div class="col-md-5">
-                            <div class="form-row">
-                                <div class="col">
-                                    Address:
-                                    @Html.EditorFor(model => model.PUAddress, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.PUAddress, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-row">
-                                <div class="col">
-                                    City:
-                                    @Html.EditorFor(model => model.PUCity, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.PUCity, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-row">
-                                <div class="col">
-                                    Postal Code:
-                                    @Html.EditorFor(model => model.PUPostal, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.PUPostal, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-row">
-                    <div class="col">
-                        <small>Drop-off</small>
-                    </div>
-                </div>
                 <div class="form-row">
                     <div class="col-md-5">
                         <div class="form-row">
                             <div class="col">
                                 Address:
-                                @Html.EditorFor(model => model.DOAddress, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.DOAddress, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PUAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PUAddress, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -260,8 +235,8 @@
                         <div class="form-row">
                             <div class="col">
                                 City:
-                                @Html.EditorFor(model => model.DOCity, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.DOCity, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PUCity, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PUCity, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -269,173 +244,210 @@
                         <div class="form-row">
                             <div class="col">
                                 Postal Code:
-                                @Html.EditorFor(model => model.DOPostal, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.DOPostal, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PUPostal, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PUPostal, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--Contact info for Pickup and Drop Off-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h1>Contact Information</h1>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-6">
-                <div class="form-row">
-                    <div class="col">
-                        <small>Pick Up Contact</small>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-4">
-                        <div class="form-row">
-                            <div class="col">
-                                Name:
-                                @Html.EditorFor(model => model.PUName, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.PUName, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-5">
-                        <div class="form-row">
-                            <div class="col">
-                                Notes:
-                                @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.PUAdditional, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-5">
-                        <div class="form-row">
-                            <div class="col">
-                                Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>-->
-                                <input type="date" id="PUDate" name="PUDate" class="form-control" required>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-row">
-                            <div class="col">
-
-                                Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
-                                <input type="time" id="PUTime" name="PUTime" class="form-control" style="width: 112%;" required>
-
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-6">
+            <div class="form-row">
+                <div class="col">
+                    <small>Drop-off</small>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-row">
-                    <div class="col">
-                        <small>Drop Off Contact</small>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-4">
-                        <div class="form-row">
-                            <div class="col">
-                                Name:
-                                @Html.EditorFor(model => model.DOName, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.DOName, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-5">
-                        <div class="form-row">
-                            <div class="col">
-                                Notes:
-                                @Html.EditorFor(model => model.DOAdditional, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.DOAdditional, "", new { @class = "text-danger" })
-                            </div>
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-row">
+                        <div class="col">
+                            Address:
+                            @Html.EditorFor(model => model.DOAddress, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DOAddress, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="col-md-5">
-                        <div class="form-row">
-                            <div class="col">
-                                Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
-                                <input type="date" id="DODate" name="DODate" class="form-control" required>
-                            </div>
+                <div class="col-md-3">
+                    <div class="form-row">
+                        <div class="col">
+                            City:
+                            @Html.EditorFor(model => model.DOCity, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DOCity, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-                    <div class="col-md-3">
-                        <div class="form-row">
-                            <div class="col">
-
-                                Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
-                                <input type="time" id="DOTime" name="DOTime" class="form-control" style="width: 112%;" required>
-                            </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-row">
+                        <div class="col">
+                            Postal Code:
+                            @Html.EditorFor(model => model.DOPostal, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DOPostal, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--Additional Info -->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h1>Additional Information</h1>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
-
-            </div>
-        </div>
-        <!--Blank Space-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-            </div>
-        </div>
-        <!--Buttom Buttons-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <input class="btn btn-primary" type="reset" id="reset"value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
-
-                        <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
-                        <br /><br /><br />
-
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-        <div>
-            <div id="listSectionTEST"><ul></ul></div>
-
-        </div>
-
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
     </div>
+    <!--Contact info for Pickup and Drop Off-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>Contact Information</h1>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="form-row">
+                <div class="col">
+                    <small>Pick Up Contact</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-4">
+                    <div class="form-row">
+                        <div class="col">
+                            Name:
+                            @Html.EditorFor(model => model.PUName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PUName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="form-row">
+                        <div class="col">
+                            Notes:
+                            @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PUAdditional, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-row">
+                        <div class="col">
+                            Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>-->
+                            <input type="date" id="PUDate" name="PUDate" class="form-control" required>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-row">
+                        <div class="col">
+
+                            Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
+                            <input type="time" id="PUTime" name="PUTime" class="form-control" style="width: 112%;" required>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-row">
+                <div class="col">
+                    <small>Drop Off Contact</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-4">
+                    <div class="form-row">
+                        <div class="col">
+                            Name:
+                            @Html.EditorFor(model => model.DOName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DOName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="form-row">
+                        <div class="col">
+                            Notes:
+                            @Html.EditorFor(model => model.DOAdditional, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DOAdditional, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-row">
+                        <div class="col">
+                            Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
+                            <input type="date" id="DODate" name="DODate" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-row">
+                        <div class="col">
+
+                            Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
+                            <input type="time" id="DOTime" name="DOTime" class="form-control" style="width: 112%;" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Additional Info -->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>Additional Information</h1>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <!--Blank Space-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+        </div>
+    </div>
+    <!--Buttom Buttons-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <input class="btn btn-primary" type="reset" id="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+
+                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                    <br /><br /><br />
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div>
+        <div id="listSectionTEST"><ul></ul></div>
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
     <script>
         var today = new Date().toISOString().split('T')[0];
         document.getElementsByName("PUDate")[0].setAttribute('min', today);
