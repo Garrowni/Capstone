@@ -44,13 +44,13 @@
 
             <div class="col-md-4">
                 Title:
-                @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control"} })
                 @Html.ValidationMessageFor(model => model.taskTitle, "", new { @class = "text-danger" })
 
             </div>
             <div class="col-md-4">
                 Requester:
-                @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control"} })
                 @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
 
             </div>
@@ -91,8 +91,8 @@
             </table>
             <br />
 
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+            <script type="text/javascript" src="https://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 
 
             <script type="text/javascript">
@@ -100,36 +100,40 @@
                     //Reference the Name and Country TextBoxes.
                     var txtKey = $("#txtKey");
                     var txtValue = $("#txtValue");
+                    if (txtKey.val() == null || txtKey.val() == "" || txtValue.val() == null || txtValue.val() == "") {
+                        alert("Enter Field and Value and press Add"); return false;
 
-                    //Get the reference of the Table's TBODY element.
-                    var tBody = $("#tblTaskSpec > TBODY")[0];
+                    }
+                    else {
+                        //Get the reference of the Table's TBODY element.
+                        var tBody = $("#tblTaskSpec > TBODY")[0];
 
-                    //Add Row.
-                    var row = tBody.insertRow(-1);
-
-
-                    var cell = $(row.insertCell(-1));
-                    cell.html(txtKey.val());
-
-
-                    cell = $(row.insertCell(-1));
-                    cell.html(txtValue.val());
+                        //Add Row.
+                        var row = tBody.insertRow(-1);
 
 
+                        var cell = $(row.insertCell(-1));
+                        cell.html(txtKey.val());
 
 
-                    //Add Button cell.
-                    cell = $(row.insertCell(-1));
-                    var btnRemove = $("<input />");
-                    btnRemove.attr("type", "button");
-                    btnRemove.attr("onclick", "Remove(this);");
-                    btnRemove.val("Remove");
-                    cell.append(btnRemove);
+                        cell = $(row.insertCell(-1));
+                        cell.html(txtValue.val());
 
-                    //Clear the TextBoxes.
-                    txtKey.val("");
-                    txtValue.val("");
 
+
+
+                        //Add Button cell.
+                        cell = $(row.insertCell(-1));
+                        var btnRemove = $("<input />");
+                        btnRemove.attr("type", "button");
+                        btnRemove.attr("onclick", "Remove(this);");
+                        btnRemove.val("Remove");
+                        cell.append(btnRemove);
+
+                        //Clear the TextBoxes.
+                        txtKey.val("");
+                        txtValue.val("");
+                    }
                 });
 
                 function Remove(button) {
@@ -157,18 +161,24 @@
                         // alert(itemsSpec[0].Key);
 
                     });
-
-                    //Send the JSON array to Controller using AJAX.
-                    $.ajax({
-                        type: "POST",
-                        url: "/OtherTasks/UpdateTaskSpecifications",
-                        data: JSON.stringify(tasksSpec),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (r) {
-                            //alert(r + " record(s) inserted.");
-                        }
-                    });
+                    if (!tasksSpec.length) {
+                        alert('Add items'); return false;
+                    } else if ($('#requester').val() === "" || $('#taskTitle').val() === "") {
+                        alert('Enter all the fields required'); return false;
+                    }
+                    else {
+                        //Send the JSON array to Controller using AJAX.
+                        $.ajax({
+                            type: "POST",
+                            url: "/OtherTasks/UpdateTaskSpecifications",
+                            data: JSON.stringify(tasksSpec),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (r) {
+                                //alert(r + " record(s) inserted.");
+                            }
+                        });
+                    }
                 });
             </script>
         </body>

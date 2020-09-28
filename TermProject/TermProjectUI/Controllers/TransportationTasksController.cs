@@ -112,8 +112,8 @@ namespace TermProjectUI.Controllers
                     items = new List<TransportationTaskModel.Item>();
                 }
 
-                
-                foreach (TransportationTaskModel.Item item in items)
+            
+            foreach (TransportationTaskModel.Item item in items)
                 {
 
                 itemList.Add(item);
@@ -121,7 +121,8 @@ namespace TermProjectUI.Controllers
                 }
                 //Debug.WriteLine(itemList[0].ItemName);
                 int insertedRecords = itemList.Count();
-                return Json(insertedRecords);
+            
+            return Json(insertedRecords);
             
         }
 

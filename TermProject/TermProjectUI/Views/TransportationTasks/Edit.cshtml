@@ -55,7 +55,7 @@
             </div>
             <div class="col-md-4">
                 Requester:
-                @Html.EditorFor(model => model.Requester, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Requester, new { htmlAttributes = new { @class = "form-control"} })
                 @Html.ValidationMessageFor(model => model.Requester, "", new { @class = "text-danger" })
 
             </div>
@@ -109,8 +109,8 @@
 
 
 
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+            <script type="text/javascript" src="https://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 
 
             <script type="text/javascript">
@@ -119,36 +119,42 @@
                     var txtName = $("#txtName");
                     var txtQuantity = $("#txtQuantity");
                     var txtNotes = $("#txtNotes");
-                    //Get the reference of the Table's TBODY element.
-                    var tBody = $("#tblItems > TBODY")[0];
+                    if (txtName.val() == null || txtName.val() == "" || txtQuantity.val() == null || txtQuantity.val() == "" || txtNotes.val() == null || txtNotes.val() == "") {
+                        alert("Enter all fields for item Specification and press Add"); return false;
 
-                    //Add Row.
-                    var row = tBody.insertRow(-1);
+                    }
+                    else {
+                        //Get the reference of the Table's TBODY element.
+                        var tBody = $("#tblItems > TBODY")[0];
 
-
-                    var cell = $(row.insertCell(-1));
-                    cell.html(txtName.val());
-
-
-                    cell = $(row.insertCell(-1));
-                    cell.html(txtQuantity.val());
+                        //Add Row.
+                        var row = tBody.insertRow(-1);
 
 
-                    cell = $(row.insertCell(-1));
-                    cell.html(txtNotes.val());
+                        var cell = $(row.insertCell(-1));
+                        cell.html(txtName.val());
 
-                    //Add Button cell.
-                    cell = $(row.insertCell(-1));
-                    var btnRemove = $("<input />");
-                    btnRemove.attr("type", "button");
-                    btnRemove.attr("onclick", "Remove(this);");
-                    btnRemove.val("Remove");
-                    cell.append(btnRemove);
 
-                    //Clear the TextBoxes.
-                    txtName.val("");
-                    txtQuantity.val("");
-                    txtNotes.val("");
+                        cell = $(row.insertCell(-1));
+                        cell.html(txtQuantity.val());
+
+
+                        cell = $(row.insertCell(-1));
+                        cell.html(txtNotes.val());
+
+                        //Add Button cell.
+                        cell = $(row.insertCell(-1));
+                        var btnRemove = $("<input />");
+                        btnRemove.attr("type", "button");
+                        btnRemove.attr("onclick", "Remove(this);");
+                        btnRemove.val("Remove");
+                        cell.append(btnRemove);
+
+                        //Clear the TextBoxes.
+                        txtName.val("");
+                        txtQuantity.val("");
+                        txtNotes.val("");
+                    }
                 });
 
                 function Remove(button) {
@@ -187,7 +193,16 @@
                     });
                     if ($('#PUDate').val() == $('#DODate').val() && $('#PUTime').val() >= $('#DOTime').val()) {
                         alert('Fix your Time '); return false;
-                    } else {
+                    } else if (!items.length) {
+                        alert('Add items'); return false;
+                    } else if ($('#Requester').val() === "" || $('#PUAddress').val() === "" || $('#PUCity').val() === ""
+                        || $('#PUPostal').val() === "" || $('#PUName').val() === ""
+                        || $('#PUAdditional').val() === "" || $('#DOAddress').val() === "" || $('#DOCity').val() === ""
+                        || $('#DOPostal').val() === "" || $('#DOName').val() === "" || $('#DOAdditional').val() === "" || $('#AdditionalInfo').val() === ""
+                        || $('#DODate').val() === "" || $('#PUDate').val() === "") {
+                        alert('Enter all the fields required'); return false;
+                    }
+                    else {
                         //Send the JSON array to Controller using AJAX.
                         $.ajax({
                             type: "POST",
@@ -215,7 +230,7 @@
             <div class="col-md-6">
                 <div class="form-row">
                     <div class="col">
-                        <small>Drop-off</small>
+                        <small>Pick-Up</small>
                     </div>
 
                     <div class="form-row">
@@ -223,7 +238,7 @@
                             <div class="form-row">
                                 <div class="col">
                                     Address:
-                                    @Html.EditorFor(model => model.PUAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.PUAddress, new { htmlAttributes = new { @class = "form-control"} })
                                     @Html.ValidationMessageFor(model => model.PUAddress, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -232,7 +247,7 @@
                             <div class="form-row">
                                 <div class="col">
                                     City:
-                                    @Html.EditorFor(model => model.PUCity, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.PUCity, new { htmlAttributes = new { @class = "form-control"} })
                                     @Html.ValidationMessageFor(model => model.PUCity, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -241,7 +256,7 @@
                             <div class="form-row">
                                 <div class="col">
                                     Postal Code:
-                                    @Html.EditorFor(model => model.PUPostal, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.EditorFor(model => model.PUPostal, new { htmlAttributes = new { @class = "form-control"} })
                                     @Html.ValidationMessageFor(model => model.PUPostal, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -269,7 +284,7 @@
                         <div class="form-row">
                             <div class="col">
                                 City:
-                                @Html.EditorFor(model => model.DOCity, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.DOCity, new { htmlAttributes = new { @class = "form-control"} })
                                 @Html.ValidationMessageFor(model => model.DOCity, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -278,7 +293,7 @@
                         <div class="form-row">
                             <div class="col">
                                 Postal Code:
-                                @Html.EditorFor(model => model.DOPostal, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.DOPostal, new { htmlAttributes = new { @class = "form-control"} })
                                 @Html.ValidationMessageFor(model => model.DOPostal, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -315,7 +330,7 @@
                         <div class="form-row">
                             <div class="col">
                                 Notes:
-                                @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control"} })
                                 @Html.ValidationMessageFor(model => model.PUAdditional, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -338,7 +353,7 @@
                             <div class="col">
 
                                 Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
-                                @Html.EditorFor(model => model.PUTime, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.PUTime, new { htmlAttributes = new { @class = "form-control"} })
                                 @Html.ValidationMessageFor(model => model.PUTime, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -377,7 +392,7 @@
                         <div class="form-row">
                             <div class="col">
                                 Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>--><br />
-                                @Html.TextBoxFor(model => model.DODate, new { @type = "date", @class = "form-​control datepicker", @Value = Model.DODate.ToString("yyyy-MM-dd") })
+                                @Html.TextBoxFor(model => model.DODate, new { @type = "date", @class = "form-​control datepicker", @Value = Model.DODate.ToString("yyyy-MM-dd")})
                                 @Html.ValidationMessageFor(model => model.DODate.Date, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -388,7 +403,7 @@
                             <div class="col">
 
                                 Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
-                                @Html.EditorFor(model => model.DOTime, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.DOTime, new { htmlAttributes = new { @class = "form-control"} })
                                 @Html.ValidationMessageFor(model => model.DOTime, "", new { @class = "text-danger" })
                             </div>
                         </div>
