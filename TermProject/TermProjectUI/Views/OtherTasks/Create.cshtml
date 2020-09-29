@@ -10,205 +10,219 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+<div class="form-horizontal">
 
 
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-        <div class="form-row">
-            <div class="col-md-12">
-                <h2>
+    <div class="form-row">
+        <div class="col-md-12">
+            <h2>
 
-                   Other Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </a>
-                </h2>
-            </div>
+                Other Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </a>
+            </h2>
         </div>
-        <!--Task Specification-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h2>
-                    Task Specification
-                </h2>
-            </div>
-        </div>
-        <div class="form-row">
-
-            <div class="col-md-4">
-               Title:
-                @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.taskTitle, "", new { @class = "text-danger" })
-
-            </div>
-            <div class="col-md-4">
-                Requester:
-                @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control"} })
-                @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
-
-            </div>
-        </div>
-        
-
-        <body>
-
-            <table id="tblTaskSpec" class="table" cellpadding="0" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th style="width:150px">Field</th>
-                        <th style="width:150px">Value</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td><input type="text" id="txtKey" /></td>
-                        <td><input type="text" id="txtValue" /></td>
-                        <td><input type="button" id="btnAdd" value="Add" /></td>
-                    </tr>
-                </tfoot>
-            </table>
-            <br />
-            
-            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <script type="text/javascript" src="https://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-
-
-            <script type="text/javascript">
-                $("body").on("click", "#btnAdd", function () {
-                    //Reference the Name and Country TextBoxes.
-                    var txtKey = $("#txtKey");
-                    var txtValue = $("#txtValue");
-
-                   
-                    if (txtKey.val() == null || txtKey.val() == ""||txtValue.val() == null || txtValue.val() == "") {
-                        alert("Enter Field and Value and press Add"); return false;
-
-                    }
-                    else {
-                        //Get the reference of the Table's TBODY element.
-                        var tBody = $("#tblTaskSpec > TBODY")[0];
-
-                        //Add Row.
-                        var row = tBody.insertRow(-1);
-
-
-                        var cell = $(row.insertCell(-1));
-                        cell.html(txtKey.val());
-                        cell = $(row.insertCell(-1));
-                        cell.html(txtValue.val());
-
-
-
-
-                        //Add Button cell.
-                        cell = $(row.insertCell(-1));
-                        var btnRemove = $("<input />");
-                        btnRemove.attr("type", "button");
-                        btnRemove.attr("onclick", "Remove(this);");
-                        btnRemove.val("Remove");
-                        cell.append(btnRemove);
-
-                        //Clear the TextBoxes.
-                        txtKey.val("");
-                        txtValue.val("");
-                    }
-                    
-
-                    
-                   
-
-                });
-
-                function Remove(button) {
-                    //Determine the reference of the Row using the Button.
-                    var row = $(button).closest("TR");
-                    var name = $("TD", row).eq(0).html();
-                    if (confirm("Do you want to delete: " + name)) {
-                        //Get the reference of the Table.
-                        var table = $("#tblTaskSpec")[0];
-
-                        //Delete the Table row using it's Index.
-                        table.deleteRow(row[0].rowIndex);
-                    }
-                };
-
-                $("body").on("click", "#btnSave", function () {
-                    //Loop through the Table rows and build a JSON array.
-                    var tasksSpec = new Array();
-                    $("#tblTaskSpec TBODY TR").each(function () {
-                        var row = $(this);
-                        var taskSpec = {};
-                        taskSpec.Key = row.find("TD").eq(0).html();
-                        taskSpec.Value = row.find("TD").eq(1).html();
-                        tasksSpec.push(taskSpec);
-                       // alert(itemsSpec[0].Key);
-
-                    });
-                    if (!tasksSpec.length) {
-                        alert('Add more info'); return false;
-                    } else if ($('#requester').val() === "" || $('#taskTitle').val() === "") {
-                        alert('Enter all the fields required'); return false;
-                    }
-                    else {
-                        //Send the JSON array to Controller using AJAX.
-                        $.ajax({
-                            type: "POST",
-                            url: "/OtherTasks/InsertTaskSpecifications",
-                            data: JSON.stringify(tasksSpec),
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            success: function (r) {
-                                //alert(r + " record(s) inserted.");
-                            }
-                        });
-                    }
-                });
-            </script>
-        </body>
-
-        
-        <!--Blank Space-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-            </div>
-        </div>
-        <!--Buttom Buttons-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
-
-                        <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
-                        <br /><br /><br />
-
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-        <div>
-            <div id="listSectionTEST"><ul></ul></div>
-
-        </div>
-
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
     </div>
+    <!--Task Specification-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>
+                Task Specification
+            </h1>
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-4">
+            <font color="red"><strong>*</strong></font>Title:
+            @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.taskTitle, "", new { @class = "text-danger" })
+
+        </div>
+        <div class="col-md-4">
+            <font color="red"><strong>*</strong></font>Requester:
+            @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
+
+        </div>
+        
+    </div>
+   
+    
+    <body>
+      
+        <table id="tblTaskSpec" class="table" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Field</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Value</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><input type="text" id="txtKey" /></td>
+                    <td><input type="text" id="txtValue" /></td>
+                    <td><input type="button" id="btnAdd" value="Add" /></td>
+                </tr>
+            </tfoot>
+        </table>
+        
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
+
+        <script type="text/javascript">
+            $("body").on("click", "#btnAdd", function () {
+                //Reference the Name and Country TextBoxes.
+                var txtKey = $("#txtKey");
+                var txtValue = $("#txtValue");
+
+
+                if (txtKey.val() == null || txtKey.val() == "" || txtValue.val() == null || txtValue.val() == "") {
+                    alert("Enter Field and Value and press Add"); return false;
+
+                }
+                else {
+                    //Get the reference of the Table's TBODY element.
+                    var tBody = $("#tblTaskSpec > TBODY")[0];
+
+                    //Add Row.
+                    var row = tBody.insertRow(-1);
+
+
+                    var cell = $(row.insertCell(-1));
+                    cell.html(txtKey.val());
+                    cell = $(row.insertCell(-1));
+                    cell.html(txtValue.val());
+
+
+
+
+                    //Add Button cell.
+                    cell = $(row.insertCell(-1));
+                    var btnRemove = $("<input />");
+                    btnRemove.attr("type", "button");
+                    btnRemove.attr("onclick", "Remove(this);");
+                    btnRemove.val("Remove");
+                    cell.append(btnRemove);
+
+                    //Clear the TextBoxes.
+                    txtKey.val("");
+                    txtValue.val("");
+                }
+
+
+
+
+
+            });
+
+            function Remove(button) {
+                //Determine the reference of the Row using the Button.
+                var row = $(button).closest("TR");
+                var name = $("TD", row).eq(0).html();
+                if (confirm("Do you want to delete: " + name)) {
+                    //Get the reference of the Table.
+                    var table = $("#tblTaskSpec")[0];
+
+                    //Delete the Table row using it's Index.
+                    table.deleteRow(row[0].rowIndex);
+                }
+            };
+
+            $("body").on("click", "#btnSave", function () {
+                //Loop through the Table rows and build a JSON array.
+                var tasksSpec = new Array();
+                $("#tblTaskSpec TBODY TR").each(function () {
+                    var row = $(this);
+                    var taskSpec = {};
+                    taskSpec.Key = row.find("TD").eq(0).html();
+                    taskSpec.Value = row.find("TD").eq(1).html();
+                    tasksSpec.push(taskSpec);
+                    // alert(itemsSpec[0].Key);
+
+                });
+                if (!tasksSpec.length) {
+                    alert('Add more info'); return false;
+                } else if ($('#requester').val() === "" || $('#taskTitle').val() === "") {
+                    alert('Enter all the fields required'); return false;
+                }
+                else {
+                    //Send the JSON array to Controller using AJAX.
+                    $.ajax({
+                        type: "POST",
+                        url: "/OtherTasks/InsertTaskSpecifications",
+                        data: JSON.stringify(tasksSpec),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            //alert(r + " record(s) inserted.");
+                        }
+                    });
+                }
+            });
+        </script>
+    </body>
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h2>Additional Information</h2>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
+            @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <!--Blank Space-->
+    <div class="form-row">
+        <div class="col-md-12">
+            
+        </div>
+    </div>
+    <!--Buttom Buttons-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+
+                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                    <br /><br /><br />
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div>
+        <div id="listSectionTEST"><ul></ul></div>
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
 }

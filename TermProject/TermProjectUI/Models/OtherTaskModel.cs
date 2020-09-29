@@ -34,6 +34,6 @@ namespace TermProjectUI.Models
             set;
 
         }
-
+        public string AdditionalInfo { get; set; }
     }
 }

@@ -61,8 +61,8 @@
 
         </div>
         <div class="col-md-4">
-            Requester:
-            @Html.EditorFor(model => model.Requester, new { htmlAttributes = new { @class = "form-control" } } )
+            <font color="red"><strong>*</strong></font>Requester:
+            @Html.EditorFor(model => model.Requester, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Requester, "", new { @class = "text-danger" })
 
         </div>
@@ -80,9 +80,9 @@
         <table id="tblItems" class="table" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
-                    <th style="width:150px">Name</th>
-                    <th style="width:150px">Quantity</th>
-                    <th style="width:150px">Notes</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Name</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Quantity</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Notes</th>
                     <th></th>
                 </tr>
             </thead>
@@ -104,8 +104,8 @@
 
 
 
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script type="text/javascript" src="https://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 
 
         <script type="text/javascript">
@@ -241,8 +241,8 @@
                     <div class="col-md-5">
                         <div class="form-row">
                             <div class="col">
-                                Address:
-                                @Html.EditorFor(model => model.PUAddress, new { htmlAttributes = new { @class = "form-control"} })
+                                <font color="red"><strong>*</strong></font>Address:
+                                @Html.EditorFor(model => model.PUAddress, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.PUAddress, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -250,7 +250,7 @@
                     <div class="col-md-3">
                         <div class="form-row">
                             <div class="col">
-                                City:
+                                <font color="red"><strong>*</strong></font>City:
                                 @Html.EditorFor(model => model.PUCity, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.PUCity, "", new { @class = "text-danger" })
                             </div>
@@ -259,8 +259,8 @@
                     <div class="col-md-3">
                         <div class="form-row">
                             <div class="col">
-                                Postal Code:
-                                @Html.EditorFor(model => model.PUPostal, new { htmlAttributes = new { @class = "form-control"} })
+                                <font color="red"><strong>*</strong></font>Postal Code:
+                                @Html.EditorFor(model => model.PUPostal, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.PUPostal, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -278,8 +278,8 @@
                 <div class="col-md-5">
                     <div class="form-row">
                         <div class="col">
-                            Address:
-                            @Html.EditorFor(model => model.DOAddress, new { htmlAttributes = new { @class = "form-control"} })
+                            <font color="red"><strong>*</strong></font>Address:
+                            @Html.EditorFor(model => model.DOAddress, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.DOAddress, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -287,8 +287,8 @@
                 <div class="col-md-3">
                     <div class="form-row">
                         <div class="col">
-                            City:
-                            @Html.EditorFor(model => model.DOCity, new { htmlAttributes = new { @class = "form-control"} })
+                            <font color="red"><strong>*</strong></font>City:
+                            @Html.EditorFor(model => model.DOCity, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.DOCity, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -296,7 +296,7 @@
                 <div class="col-md-3">
                     <div class="form-row">
                         <div class="col">
-                            Postal Code:
+                            <font color="red"><strong>*</strong></font>Postal Code:
                             @Html.EditorFor(model => model.DOPostal, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.DOPostal, "", new { @class = "text-danger" })
                         </div>
@@ -323,7 +323,7 @@
                 <div class="col-md-4">
                     <div class="form-row">
                         <div class="col">
-                            Name:
+                            <font color="red"><strong>*</strong></font>Name:
                             @Html.EditorFor(model => model.PUName, new { htmlAttributes = new { @class = "form-control"} })
                             @Html.ValidationMessageFor(model => model.PUName, "", new { @class = "text-danger" })
                         </div>
@@ -334,7 +334,7 @@
                     <div class="form-row">
                         <div class="col">
                             Notes:
-                            @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
                             @Html.ValidationMessageFor(model => model.PUAdditional, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -344,7 +344,7 @@
                 <div class="col-md-5">
                     <div class="form-row">
                         <div class="col">
-                            Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>-->
+                            <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>-->
                             <input type="date" id="PUDate" name="PUDate" class="form-control" required>
 
                         </div>
@@ -355,7 +355,7 @@
                     <div class="form-row">
                         <div class="col">
 
-                            Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
+                            <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
                             <input type="time" id="PUTime" name="PUTime" class="form-control" style="width: 112%;" required>
 
                         </div>
@@ -373,8 +373,8 @@
                 <div class="col-md-4">
                     <div class="form-row">
                         <div class="col">
-                            Name:
-                            @Html.EditorFor(model => model.DOName, new { htmlAttributes = new { @class = "form-control"} })
+                            <font color="red"><strong>*</strong></font>Name:
+                            @Html.EditorFor(model => model.DOName, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.DOName, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -384,7 +384,7 @@
                     <div class="form-row">
                         <div class="col">
                             Notes:
-                            @Html.EditorFor(model => model.DOAdditional, new { htmlAttributes = new { @class = "form-control"} })
+                            @Html.EditorFor(model => model.DOAdditional, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
                             @Html.ValidationMessageFor(model => model.DOAdditional, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -394,7 +394,7 @@
                 <div class="col-md-5">
                     <div class="form-row">
                         <div class="col">
-                            Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
+                            <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
                             <input type="date" id="DODate" name="DODate" class="form-control" required>
                         </div>
                     </div>
@@ -404,7 +404,7 @@
                     <div class="form-row">
                         <div class="col">
 
-                            Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
+                            <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
                             <input type="time" id="DOTime" name="DOTime" class="form-control" style="width: 112%;" required>
                         </div>
                     </div>
@@ -421,7 +421,7 @@
     </div>
     <div class="form-row">
         <div class="col-md-12">
-            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control"} })
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
             @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
 
         </div>
