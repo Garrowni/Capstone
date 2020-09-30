@@ -203,6 +203,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AllTaskModel.cs" />
+    <Compile Include="Models\DeletedTaskModel.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\OtherTaskModel.cs" />
     <Compile Include="Models\TransportationTaskModel.cs" />

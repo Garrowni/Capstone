@@ -24,16 +24,19 @@ namespace TermProjectUI.Controllers
         //private TransportationTaskRepoEF ttr = new TransportationTaskRepoEF();
 
          static List<TransportationTaskModel.Item> itemList = new List<TransportationTaskModel.Item>();
-      
+       
 
+        static List<TransportationTaskModel> deletedTask = new List<TransportationTaskModel>();
 
         private MongoDBContext dbcontext;
         private IMongoCollection<TransportationTaskModel> productCollection;
-       
+        private IMongoCollection<DeletedTaskModel> deletedCollection;
+
         public TransportationTasksController()
         {
             dbcontext = new MongoDBContext();
             productCollection = dbcontext.database.GetCollection<TransportationTaskModel>("transportation");
+            deletedCollection = dbcontext.database.GetCollection<DeletedTaskModel>("deletedTasks");
 
         }
         // GET: TransportationTasks
@@ -92,6 +95,8 @@ namespace TermProjectUI.Controllers
             try
             {
                 productCollection.InsertOne(transportationTask);
+                deletedTask.Add(transportationTask);
+                Debug.WriteLine(deletedTask[0].DOAddress);
                 itemList = new List<TransportationTaskModel.Item>();
 
                 return RedirectToAction("Details", new { id = transportationTask.Id });
@@ -212,7 +217,7 @@ namespace TermProjectUI.Controllers
         // POST: TransportationTasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(string id, DeletedTaskModel taskDelete)
         {
             //  TransportationTask transportationTask = db.TransportationTasks.Find(id);
             //  db.TransportationTasks.Remove(transportationTask);
@@ -220,8 +225,13 @@ namespace TermProjectUI.Controllers
 
             try
             {
-                productCollection.DeleteOne(Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
 
+                
+                taskDelete.deletedTransTask = deletedTask;
+                deletedCollection.InsertOne(taskDelete);
+                deletedTask = new List<TransportationTaskModel>();
+                productCollection.DeleteOne(Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
+                
                 return RedirectToAction("../AllTasks/Index");
             }
             catch
