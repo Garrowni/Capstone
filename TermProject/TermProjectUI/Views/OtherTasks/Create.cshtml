@@ -193,7 +193,7 @@
     </div>
     <div class="form-row">
         <div class="col-md-12">
-            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
             @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
             <font color="red" size="2px"> <p id="additionaInfo"></p></font>
         </div>

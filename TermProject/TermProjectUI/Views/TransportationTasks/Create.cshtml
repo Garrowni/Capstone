@@ -207,12 +207,12 @@
                 $('#pucity').html("");
                 $('#pupostal').html("");
                 $('#puname').html("");
-                $('#puadditional').html("");
+                $('#puadditional').html(".");
                 $('#dpaddress').html("");
                 $('#docity').html("");
                 $('#dopostal').html("");
                 $('#doname').html("");
-                $('#doadditional').html("");
+                $('#doadditional').html(".");
                 $('#additionalinfo').html("");
                 $('#dodate').html("");
                 $('#pudate').html("");
@@ -223,9 +223,7 @@
                     || $('#DODate').val() === "" || $('#PUDate').val() === "") {
                     if ($('#Requester').val() === "") {
                         $('#requester').html("Requester is required"); 
-                    } if (!items.length) {
-                        $('#itemInfo').html("Add Items");
-                    }
+                    } 
                    if ($('#PUAddress').val() === "") {
                         $('#puaddress').html("Pick-up address is required"); 
                     } if ($('#PUCity').val() === "") {
@@ -255,7 +253,9 @@
                     }
                     return false;
                 }
-               
+                else if (!items.length) {
+                    $('#itemInfo').html("Add Items"); return false;
+                }
                 else if ($('#PUDate').val() == $('#DODate').val() && $('#PUTime').val() >= $('#DOTime').val()) {
                     $('#dotime').html("Change Drop-off time"); return false;
                 } 
@@ -393,7 +393,7 @@
                     <div class="form-row">
                         <div class="col">
                             Notes:
-                            @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
                             @Html.ValidationMessageFor(model => model.PUAdditional, "", new { @class = "text-danger" })
 
                         </div>
@@ -404,7 +404,7 @@
                 <div class="col-md-4">
                     <div class="form-row">
                         <div class="col">
-                            <font color="red" size="2px"> <p id="puname"><br /><br /></p></font>
+                            <font color="red" size="2px"> <p id="puname"><br /><br />.</p></font>
                         </div>
                     </div>
                 </div>
@@ -412,7 +412,7 @@
                 <div class="col-md-5">
                     <div class="form-row">
                         <div class="col">
-                            <font color="red" size="2px"> <p id="puadditional"><br /><br /></p></font>
+                            <font color="red" size="2px"> <p id="puadditional"><br /><br />.</p></font>
 
                         </div>
                     </div>
@@ -482,7 +482,7 @@
                     <div class="form-row">
                         <div class="col">
                             Notes:
-                            @Html.EditorFor(model => model.DOAdditional, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.DOAdditional, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
                             @Html.ValidationMessageFor(model => model.DOAdditional, "", new { @class = "text-danger" })
                             
                         </div>
@@ -560,7 +560,7 @@
     </div>
     <div class="form-row">
         <div class="col-md-12">
-            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" , @Value = "NA" } })
             @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
             <font color="red" size="2px"> <p id="additionalinfo"></p></font>
         </div>

@@ -57,7 +57,7 @@
                 <font color="red"><strong>*</strong></font>Requester:
                 @Html.EditorFor(model => model.Requester, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Requester, "", new { @class = "text-danger" })
-
+                <font color="red" size="2px"> <p id="requester"></p></font>
             </div>
         </div>
         <!--Item Specification             Need to make it so quantity is # only.  Need to add fucntionality to have more then 1 type of object.-->
@@ -101,7 +101,7 @@
                         <td><input type="button" id="btnAdd" value="Add" /></td>
                     </tr>
                 </tfoot>
-            </table>
+            </table><font color="red" size="2px"> <p id="itemInfo"></p></font>
             <br />
             <!--<input type="button" id="btnSave" value="Save All" />-->
 
@@ -191,17 +191,67 @@
                         //alert(items[0].ItemName);
 
                     });
-                    if ($('#PUDate').val() == $('#DODate').val() && $('#PUTime').val() >= $('#DOTime').val()) {
-                        alert('Fix your Time '); return false;
-                    } else if (!items.length) {
-                        alert('Add items'); return false;
-                    } else if ($('#Requester').val() === "" || $('#PUAddress').val() === "" || $('#PUCity').val() === ""
+
+                    $('#requester').html("");
+                    $('#dotime').html("");
+                    $('#itemInfo').html("");
+                    $('#puaddress').html("");
+                    $('#pucity').html("");
+                    $('#pupostal').html("");
+                    $('#puname').html("");
+                    $('#puadditional').html(".");
+                    $('#dpaddress').html("");
+                    $('#docity').html("");
+                    $('#dopostal').html("");
+                    $('#doname').html("");
+                    $('#doadditional').html(".");
+                    $('#additionalinfo').html("");
+                    $('#dodate').html("");
+                    $('#pudate').html("");
+
+                   if ($('#Requester').val() === "" || $('#PUAddress').val() === "" || $('#PUCity').val() === ""
                         || $('#PUPostal').val() === "" || $('#PUName').val() === ""
                         || $('#PUAdditional').val() === "" || $('#DOAddress').val() === "" || $('#DOCity').val() === ""
                         || $('#DOPostal').val() === "" || $('#DOName').val() === "" || $('#DOAdditional').val() === "" || $('#AdditionalInfo').val() === ""
                         || $('#DODate').val() === "" || $('#PUDate').val() === "") {
-                        alert('Enter all the fields required'); return false;
+                       if ($('#Requester').val() === "") {
+                           $('#requester').html("Requester is required");
+                       }
+                       if ($('#PUAddress').val() === "") {
+                           $('#puaddress').html("Pick-up address is required");
+                       } if ($('#PUCity').val() === "") {
+                           $('#pucity').html("Pick-up city is required");
+                       } if ($('#PUPostal').val() === "") {
+                           $('#pupostal').html("Pick-up postal code is required");
+                       } if ($('#PUName').val() === "") {
+                           $('#puname').html("Pick-up Name is required");
+                       } if ($('#PUAdditional').val() === "") {
+                           $('#puadditional').html("If you have no Additional Info add NA as an answer");
+                       } if ($('#DOAddress').val() === "") {
+                           $('#dpaddress').html("Drop-off address is required");
+                       } if ($('#DOCity').val() === "") {
+                           $('#docity').html("Drop-off city is required");
+                       } if ($('#DOPostal').val() === "") {
+                           $('#dopostal').html("Drop-off postal code is required");
+                       } if ($('#DOName').val() === "") {
+                           $('#doname').html("Drop-off Name is required");
+                       } if ($('#DOAdditional').val() === "") {
+                           $('#doadditional').html("If you have no Additional Info add NA as an answer");
+                       } if ($('#AdditionalInfo').val() === "") {
+                           $('#additionalinfo').html("If you have no Additional Info add NA as an answer");
+                       } if ($('#DODate').val() === "") {
+                           $('#dodate').html("Drop-off date is required");
+                       } if ($('#PUDate').val() === "") {
+                           $('#pudate').html("Pick-up date is required");
+                       }
+                       return false;
+                   }
+                    else if (!items.length) {
+                       $('#itemInfo').html("Add Items"); return false;
                     }
+                   else if ($('#PUDate').val() == $('#DODate').val() && $('#PUTime').val() >= $('#DOTime').val()) {
+                       $('#dotime').html("Change Drop-off time"); return false;
+                   } 
                     else {
                         //Send the JSON array to Controller using AJAX.
                         $.ajax({
@@ -240,6 +290,7 @@
                                     <font color="red"><strong>*</strong></font>Address:
                                     @Html.EditorFor(model => model.PUAddress, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.PUAddress, "", new { @class = "text-danger" })
+                                    <font color="red" size="2px"> <p id="puaddress"></p></font>
                                 </div>
                             </div>
                         </div>
@@ -249,6 +300,7 @@
                                     <font color="red"><strong>*</strong></font>City:
                                     @Html.EditorFor(model => model.PUCity, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.PUCity, "", new { @class = "text-danger" })
+                                    <font color="red" size="2px"> <p id="pucity"></p></font>
                                 </div>
                             </div>
                         </div>
@@ -258,6 +310,7 @@
                                     <font color="red"><strong>*</strong></font>Postal Code:
                                     @Html.EditorFor(model => model.PUPostal, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.PUPostal, "", new { @class = "text-danger" })
+                                    <font color="red" size="2px"> <p id="pupostal"></p></font>
                                 </div>
                             </div>
                         </div>
@@ -277,6 +330,7 @@
                                 <font color="red"><strong>*</strong></font>Address:
                                 @Html.EditorFor(model => model.DOAddress, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.DOAddress, "", new { @class = "text-danger" })
+                                <font color="red" size="2px"> <p id="dpaddress"></p></font>
                             </div>
                         </div>
                     </div>
@@ -286,6 +340,7 @@
                                 <font color="red"><strong>*</strong></font>City:
                                 @Html.EditorFor(model => model.DOCity, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.DOCity, "", new { @class = "text-danger" })
+                                <font color="red" size="2px"> <p id="docity"></p></font>
                             </div>
                         </div>
                     </div>
@@ -295,6 +350,7 @@
                                 <font color="red"><strong>*</strong></font>Postal Code:
                                 @Html.EditorFor(model => model.DOPostal, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.DOPostal, "", new { @class = "text-danger" })
+                                <font color="red" size="2px"> <p id="dopostal"></p></font>
                             </div>
                         </div>
                     </div>
@@ -330,8 +386,26 @@
                         <div class="form-row">
                             <div class="col">
                                 Notes:
-                                @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control"} })
+                                @Html.EditorFor(model => model.PUAdditional, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.PUAdditional, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <div class="form-row">
+                            <div class="col">
+                                <font color="red" size="2px"> <p id="puname"><br /><br />.</p></font>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-row">
+                            <div class="col">
+                                <font color="red" size="2px"> <p id="puadditional"><br /><br />.</p></font>
+
                             </div>
                         </div>
                     </div>
@@ -355,6 +429,24 @@
                                 <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
                                 @Html.EditorFor(model => model.PUTime, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.PUTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <div class="form-row">
+                            <div class="col">
+                                <font color="red" size="2px"> <p id="pudate">.</p></font>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col">
+                                <font color="red" size="2px"> <p id="putime">.</p></font>
+
                             </div>
                         </div>
                     </div>
@@ -388,6 +480,24 @@
                     </div>
                 </div>
                 <div class="form-row">
+                    <div class="col-md-4">
+                        <div class="form-row">
+                            <div class="col">
+                                <font color="red" size="2px"> <p id="doname"><br /><br /></p></font>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-row">
+                            <div class="col">
+                                <font color="red" size="2px"> <p id="doadditional"><br /><br /></p></font>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="col-md-5">
                         <div class="form-row">
                             <div class="col">
@@ -409,6 +519,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <div class="form-row">
+                            <div class="col">
+                                <font color="red" size="2px"> <p id="dodate">.</p></font>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-row">
+                            <div class="col">
+                                <font color="red" size="2px"> <p id="dotime">.</p></font>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--Additional Info -->
@@ -420,9 +548,9 @@
         </div>
         <div class="form-row">
             <div class="col-md-12">
-                @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control"} })
+                @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
-
+                <font color="red" size="2px"> <p id="additionalinfo"></p></font>
             </div>
         </div>
         <!--Blank Space-->
