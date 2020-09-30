@@ -46,13 +46,13 @@
             <font color="red"><strong>*</strong></font>Title:
             @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.taskTitle, "", new { @class = "text-danger" })
-
+            <font color="red" size="2px"> <p id="title"></p></font>
         </div>
         <div class="col-md-4">
             <font color="red"><strong>*</strong></font>Requester:
             @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
-
+            <font color="red" size="2px"> <p id="req"></p></font>
         </div>
     </div>
 
@@ -160,12 +160,23 @@
                     tasksSpec.push(taskSpec);
                     // alert(itemsSpec[0].Key);
 
-                });
-                if (!tasksSpec.length) {
-                    alert('Add items'); return false;
-                } else if ($('#requester').val() === "" || $('#taskTitle').val() === "") {
-                    alert('Enter all the fields required'); return false;
-                }
+                    $('#req').html("");
+                    $('#title').html("");
+                    $('#additionaInfo').html("");
+                    $('#taskspeci').html("");
+                    if ($('#requester').val() === "" || $('#taskTitle').val() === "" || $('#AdditionaInfo').val() === "") {
+
+                        if ($('#requester').val() === "") {
+                            $('#req').html("Requester is required");
+                        } if ($('#taskTitle').val() === "") {
+                            $('#title').html("Title is required");
+                        } if ($('#AdditionalInfo').val() === "") {
+                            $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
+                        }
+                        return false;
+                    } else if (!tasksSpec.length) {
+                        $('#taskspeci').html("add more in information"); return false;
+                    }
                 else {
                     //Send the JSON array to Controller using AJAX.
                     $.ajax({
@@ -192,7 +203,7 @@
         <div class="col-md-12">
             @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
-
+            <font color="red" size="2px"> <p id="additionaInfo"></p></font>
         </div>
     </div>
 
