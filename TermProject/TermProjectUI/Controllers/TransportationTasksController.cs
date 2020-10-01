@@ -26,7 +26,7 @@ namespace TermProjectUI.Controllers
          static List<TransportationTaskModel.Item> itemList = new List<TransportationTaskModel.Item>();
        
 
-        static List<TransportationTaskModel> deletedTask = new List<TransportationTaskModel>();
+        static List<Object> deletedTask = new List<Object>();
 
         private MongoDBContext dbcontext;
         private IMongoCollection<TransportationTaskModel> productCollection;
@@ -95,8 +95,9 @@ namespace TermProjectUI.Controllers
             try
             {
                 productCollection.InsertOne(transportationTask);
+                deletedTask = new List<object>();
                 deletedTask.Add(transportationTask);
-                Debug.WriteLine(deletedTask[0].DOAddress);
+                
                 itemList = new List<TransportationTaskModel.Item>();
 
                 return RedirectToAction("Details", new { id = transportationTask.Id });
@@ -197,7 +198,11 @@ namespace TermProjectUI.Controllers
                     .Set("creationDate", task.creationDate)
                     .Set("state", task.state);
                 var result = productCollection.UpdateOne(filter, update);
+                deletedTask = new List<object>();
+                task.Id = ObjectId.Parse(id);
+                deletedTask.Add(task);
                 itemList = new List<TransportationTaskModel.Item>();
+
                 return RedirectToAction("Details", new { id = id });
             }
             catch
@@ -227,9 +232,10 @@ namespace TermProjectUI.Controllers
             {
 
                 
-                taskDelete.deletedTransTask = deletedTask;
+                taskDelete.deletedTask = deletedTask;
+                taskDelete.tasksType = "Transportation";
                 deletedCollection.InsertOne(taskDelete);
-                deletedTask = new List<TransportationTaskModel>();
+                deletedTask = new List<Object>();
                 productCollection.DeleteOne(Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
                 
                 return RedirectToAction("../AllTasks/Index");

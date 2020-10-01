@@ -16,7 +16,7 @@ namespace TermProjectUI.Controllers
 
         static List<OtherTaskModel.TaskRequirement> taskSpecList = new List<OtherTaskModel.TaskRequirement>();
 
-        static List<OtherTaskModel> deletedTask = new List<OtherTaskModel>();
+        static List<Object> deletedTask = new List<Object>();
 
 
         private MongoDBContext dbcontext;
@@ -66,6 +66,7 @@ namespace TermProjectUI.Controllers
             {
                 productCollection.InsertOne(otherTask);
                 taskSpecList = new List<OtherTaskModel.TaskRequirement>();
+                deletedTask = new List<object>();
                 deletedTask.Add(otherTask);
                 
                 return RedirectToAction("Details", new { id = otherTask.Id });
@@ -145,6 +146,10 @@ namespace TermProjectUI.Controllers
                     .Set("taskTitle", task.taskTitle)
                     .Set("TaskRequirements", task.TaskRequirements);
                 var result = productCollection.UpdateOne(filter, update);
+                deletedTask = new List<object>();
+                task.Id = ObjectId.Parse(id);
+                deletedTask.Add(task);
+
                 taskSpecList = new List<OtherTaskModel.TaskRequirement>();
                 return RedirectToAction("Details", new { id = id });
             }
@@ -170,9 +175,10 @@ namespace TermProjectUI.Controllers
         {
             try
             {
-                taskDelete.deletedOtherTask = deletedTask;
+                taskDelete.deletedTask = deletedTask;
+                taskDelete.tasksType = "Other";
                 deletedCollection.InsertOne(taskDelete);
-                deletedTask = new List<OtherTaskModel>();
+                deletedTask = new List<Object>();
                 productCollection.DeleteOne(Builders<OtherTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
 
                 return RedirectToAction("../AllTasks/Index");
