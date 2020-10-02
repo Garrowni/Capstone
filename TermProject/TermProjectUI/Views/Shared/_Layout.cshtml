@@ -9,6 +9,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
+
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <!--  <button name="AddIt"><span class="glyphicon glyphicon-menu-hamburger"></span></button>
@@ -29,8 +30,29 @@
                 <ul class="nav navbar-nav">
 
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("Tasks", "Index", "AllTasks", new { area = ""}, null)" </li>
+                    <li>@Html.ActionLink("Tasks", "Index", "AllTasks", new { area = "" }, null)" </li>
+
+
+
+
                 </ul>
+                <ul class="nav navbar-nav pull-right">
+                    @{
+                        if (Session["Username"] == null)
+                        {
+
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink(@Session["Username"].ToString(), "LogOut", "LogIn")</li>
+
+                            <li>@Html.ActionLink("Log out", "LogOut", "LogIn")</li>
+
+                        }
+
+                    }
+                </ul>
+               
             </div>
 
         </div>

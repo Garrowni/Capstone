@@ -59,7 +59,7 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OtherTaskModel otherTask)
         {
-            otherTask.posterName = "Nicole Garrow";
+            otherTask.posterName = Session["Username"].ToString(); ;
             otherTask.TaskRequirements = taskSpecList;
            
             try
@@ -136,7 +136,7 @@ namespace TermProjectUI.Controllers
         public ActionResult Edit(string id, OtherTaskModel task)
         {
             task.TaskRequirements = taskSpecList;
-            task.posterName = "Nicole Garrow";
+            //task.posterName = "Nicole Garrow";
             try
             {
                 var filter = Builders<OtherTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
@@ -144,7 +144,8 @@ namespace TermProjectUI.Controllers
                     .Set("requester", task.requester)
                     .Set("posterName", task.posterName)
                     .Set("taskTitle", task.taskTitle)
-                    .Set("TaskRequirements", task.TaskRequirements);
+                    .Set("TaskRequirements", task.TaskRequirements)
+                    .Set("AdditionalInfo",task.AdditionalInfo);
                 var result = productCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);

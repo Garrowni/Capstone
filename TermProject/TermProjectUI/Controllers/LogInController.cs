@@ -22,27 +22,48 @@ namespace TermProjectUI.Controllers
 
         }
         // GET: LogIn
-        public ActionResult Create()
+        public ActionResult LogIn()
         {
+            
+            List<VolunteerModel> volunteers = volunteerCollection.AsQueryable<VolunteerModel>().ToList();
+            bool isEmpty = !volunteers.Any();
+            if (isEmpty)
+            {
+               VolunteerModel logIn = new VolunteerModel();
+                logIn.Email = "Test@gmail.com";
+                logIn.Name = "Test";
+                logIn.Role = "Admin";
+                logIn.Password = "TestPass";
+                volunteerCollection.InsertOne(logIn);
+            }
+            
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(LogInModel logIn)
+        public ActionResult LogIn(LogInModel logIn)
         {
             var email =logIn.Email;
             var password = logIn.Password;
             var volunteer = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email == email && x.Password==password);
             if (volunteer==null)
             {
-                ViewBag.Message="Contact me";
+                ViewBag.Message="Your Email or Password is NOT correct!!! Contact The Administrator to fix it... ";
                 return View();
             }
             else
             {
+                var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email == email && x.Password == password);
+                
+                Session["Username"] = volunteerName.Name;
                 return View("../Home/Index");
             }
            
+        }
+        public ActionResult LogOut()
+        {
+            Session.Abandon();
+            return RedirectToAction("LogIn","LogIn");
         }
 
     }
