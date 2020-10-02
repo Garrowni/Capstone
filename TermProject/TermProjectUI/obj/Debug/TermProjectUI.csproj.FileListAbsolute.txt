@@ -1030,3 +1030,6 @@ D:\Semester 6\Capstone Term6\CapstoneProject\Capstone\TermProject\TermProjectUI\
 D:\Semester 6\Capstone Term6\CapstoneProject\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.csproj.CopyComplete
 D:\Semester 6\Capstone Term6\CapstoneProject\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.dll
 D:\Semester 6\Capstone Term6\CapstoneProject\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.pdb
+D:\Semester 6\Capstone Term6\CapstoneProject\Capstone\TermProject\TermProjectUI\bin\Microsoft.Owin.dll
+D:\Semester 6\Capstone Term6\CapstoneProject\Capstone\TermProject\TermProjectUI\bin\Owin.dll
+D:\Semester 6\Capstone Term6\CapstoneProject\Capstone\TermProject\TermProjectUI\bin\Microsoft.Owin.xml
