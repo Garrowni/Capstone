@@ -1,6 +1,8 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -34,6 +36,7 @@ namespace TermProjectUI.Controllers
                 logIn.Name = "Test";
                 logIn.Role = "Admin";
                 logIn.Password = "TestPass";
+                logIn.UserPhoto = "/UserImages/nicole.jpg";
                 volunteerCollection.InsertOne(logIn);
             }
             
@@ -56,6 +59,10 @@ namespace TermProjectUI.Controllers
                 var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email == email && x.Password == password);
                 
                 Session["Username"] = volunteerName.Name;
+
+                Session["UserId"] = volunteerName.Id;
+                //Session["UserPhoto"] = volunteer.UserPhoto.ToString();
+                ViewData["Img"]= volunteer.UserPhoto.ToString();
                 return View("../Home/Index");
             }
            
@@ -66,5 +73,24 @@ namespace TermProjectUI.Controllers
             return RedirectToAction("LogIn","LogIn");
         }
 
+        public ActionResult UserImageChange(HttpPostedFileBase file)
+        {
+
+            if(file!=null && file.ContentLength > 0)
+            {
+                string fileName = Path.GetFileName(file.FileName);
+                string filePath = Path.Combine(Server.MapPath("/UserImages/"),fileName);
+                file.SaveAs(filePath);
+
+                var filter = Builders<VolunteerModel>.Filter.Eq("_id", ObjectId.Parse(Session["UserId"].ToString()));
+                var update = Builders<VolunteerModel>.Update
+                    .Set("UserPhoto", "/UserImages/"+file.FileName);
+                var result = volunteerCollection.UpdateOne(filter, update);
+                var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id== ObjectId.Parse(Session["UserId"].ToString()));
+                ViewData["Img"] = volunteerName.UserPhoto.ToString();
+
+            }
+            return View("../Home/Index");
+        }
     }
 }

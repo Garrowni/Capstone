@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,6 +22,8 @@ namespace TermProjectUI.Models
         public string Email { get; set; }
         [BsonElement("Password")]
         public string Password { get; set; }
+        [Display(Name = "UserPhoto")]
+        public string UserPhoto { get; set; }
 
         [BsonElement("Role")]
         public string Role { get; set; }
