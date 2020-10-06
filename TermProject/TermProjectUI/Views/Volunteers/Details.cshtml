@@ -3,13 +3,26 @@
 @{
     ViewBag.Title = "Details";
 }
-
-<h2>Details</h2>
+    <style>
+        a {
+            color: black;
+        }
+    </style>
+<h2>User Details</h2>
 
 <div>
-    <h4>VolunteerModel</h4>
+    
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
+
+        </dt>
+        <dd>
+            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
+
+        </dd>
+         
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -42,7 +55,4 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

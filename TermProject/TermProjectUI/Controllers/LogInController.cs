@@ -36,6 +36,7 @@ namespace TermProjectUI.Controllers
                 logIn.Name = "Test";
                 logIn.Role = "Admin";
                 logIn.Password = "TestPass";
+                logIn.ConfirmPassword = "TestPass";
                 logIn.UserPhoto = "/UserImages/nicole.jpg";
                 volunteerCollection.InsertOne(logIn);
             }
@@ -61,8 +62,8 @@ namespace TermProjectUI.Controllers
                 Session["Username"] = volunteerName.Name;
 
                 Session["UserId"] = volunteerName.Id;
-                //Session["UserPhoto"] = volunteer.UserPhoto.ToString();
-                ViewData["Img"]= volunteer.UserPhoto.ToString();
+                
+                Session["Img"]= volunteerName.UserPhoto.ToString();
                 return View("../Home/Index");
             }
            
@@ -87,7 +88,7 @@ namespace TermProjectUI.Controllers
                     .Set("UserPhoto", "/UserImages/"+file.FileName);
                 var result = volunteerCollection.UpdateOne(filter, update);
                 var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id== ObjectId.Parse(Session["UserId"].ToString()));
-                ViewData["Img"] = volunteerName.UserPhoto.ToString();
+                Session["Img"] = volunteerName.UserPhoto.ToString();
 
             }
             return View("../Home/Index");

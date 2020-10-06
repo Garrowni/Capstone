@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TermProjectUI.Models.VolunteerModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+    <style>
+        a {
+            color: black;
+        }
+    </style>
+
+    
+
+
+<link href="@Url.Content("https://fonts.googleapis.com/css?family=Playfair+Display:400,700")" rel="stylesheet" type="text/css" />
+
+<link href="@Url.Content("~/assets/fonts/font-awesome.min.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/assets/css/Comment.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/assets/css/Community-ChatComments.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/assets/css/Map-Clean.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/assets/css/styles.css")" rel="stylesheet" type="text/css" />
+<br />
+<br />
+<br />
+<br />
+<div>
+    <button class="btn btn-primary" type="button" style=" width: 15%; float:right; background-color: grey;border-color: black;color:black; "> @Html.ActionLink("Create User", "Create") </button>
+
+</div>
+
+@foreach (var item in Model)
+{
+
+
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-11 col-xl-9">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="~/Images/transportation_Nav.JPG" style="float: left; margin-left: -2%;height: 15%; width: 15%;">
+                            <h1 style="margin-top : 3%;">
+
+                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.Name), "Details", new { id = item.Id })
+                            </h1>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <hr />
+
+
+
+}
+
+

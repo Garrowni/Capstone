@@ -24,36 +24,41 @@
                     <span class="icon-bar"></span>
 
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Capstone Magic", "LogIn", "LogIn", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav ">
 
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("Tasks", "Index", "AllTasks", new { area = "" }, null)" </li>
+                    
 
 
 
 
                 </ul>
-                <ul class="nav navbar-nav pull-right">
-                    @{
-                        if (Session["Username"] == null)
-                        {
 
-                        }
-                        else
-                        {
-                            <li>@Html.ActionLink(@Session["Username"].ToString(), "LogOut", "LogIn")</li>
-
-                            <li>@Html.ActionLink("Log out", "LogOut", "LogIn")</li>
-
-                        }
+                @{
+                    if (Session["Username"] == null)
+                    {
 
                     }
-                </ul>
-               
-            </div>
+                    else
+                    {
+                                <ul class="nav navbar-nav">
+                                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink("Tasks", "Index", "AllTasks", new { area = "" }, null)" </li>
+                                    <li>@Html.ActionLink("Manage Users", "Index", "Volunteers", new { area = "" }, null)" </li>
+                                </ul>
+                        <ul class="nav navbar-nav pull-right">
+                             <li>@Html.ActionLink(@Session["Username"].ToString(), "LogOut", "LogIn")</li>
+
+                            <li>@Html.ActionLink("Log out", "LogOut", "LogIn")</li>
+                         </ul>
+    }
+
+    }
+
+
+</div>
 
         </div>
 

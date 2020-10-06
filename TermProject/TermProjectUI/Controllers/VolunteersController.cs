@@ -26,6 +26,7 @@ namespace TermProjectUI.Controllers
         // GET: Members
         public ActionResult Index()
         {
+           
             List<VolunteerModel> volunteer = volunteerCollection.AsQueryable<VolunteerModel>().ToList();
             return View(volunteer);
         }
@@ -41,6 +42,8 @@ namespace TermProjectUI.Controllers
         // GET: Members/Create
         public ActionResult Create()
         {
+            var list = new List<string>() { "Admin", "Moderator", "Volunteer" };
+            ViewBag.list = list;
             return View();
         }
 
@@ -51,6 +54,7 @@ namespace TermProjectUI.Controllers
         {
             try
             {
+                volunteer.UserPhoto= "/UserImages/nicole.jpg";
                 // TODO: Add insert logic here
                 volunteerCollection.InsertOne(volunteer);
                 return RedirectToAction("Details", new { id = volunteer.Id });
@@ -80,6 +84,8 @@ namespace TermProjectUI.Controllers
                 var update = Builders<VolunteerModel>.Update
                     .Set("Name", volunteer.Name)
                     .Set("Email", volunteer.Email)
+                    .Set("Password", volunteer.Password)
+                    .Set("ConfirmPassword", volunteer.ConfirmPassword)
                     .Set("Role", volunteer.Role);
 
                 var result = volunteerCollection.UpdateOne(filter, update);

@@ -15,7 +15,7 @@
                     enctype = "multipart/form-data"
                 }))
                 {
-                    <img src="@Html.ViewData["Img"]" style="margin-left: 2%;width: 70%;height:100%;">
+                    <img src="@Session["Img"]" style="margin-left: 2%;width: 70%;height:100%;">
                     <input type="file" name="file" id="fileUpload" accept=".png,.jpg,.jpeg,.gif,.tif"  /><br />
                     <input type="submit" value="Update Image"/>
                 }

@@ -15,17 +15,26 @@ namespace TermProjectUI.Models
         public ObjectId Id { get; set; }
 
         [BsonElement("Name")]
+        [Required(ErrorMessage = "Name is Required")]
         public string Name { get; set; }
 
         [BsonElement("Email")]
-        [Remote("Create", "LogIn", ErrorMessage = "Email already exists!")]
+        [Required(ErrorMessage = "Email is Required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
-        [BsonElement("Password")]
+        [BsonElement("Password"), DataType(DataType.Password)]
+        [Required(ErrorMessage = "Password is Required")]
         public string Password { get; set; }
+        [BsonElement("ConfirmPassword"), DataType(DataType.Password)]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again !")]
+        [Required(ErrorMessage = "Confirm Password is Required")]
+        public string ConfirmPassword { get; set; }
         [Display(Name = "UserPhoto")]
+        
         public string UserPhoto { get; set; }
 
         [BsonElement("Role")]
+        [Required(ErrorMessage = "Role is Required")]
         public string Role { get; set; }
     }
 }

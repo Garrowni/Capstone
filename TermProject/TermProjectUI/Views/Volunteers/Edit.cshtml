@@ -1,21 +1,21 @@
 ﻿@model TermProjectUI.Models.VolunteerModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Create User</h2>
+<h2>Edit User</h2>
 <style>
     a {
         color: white;
     }
 </style>
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    
+   
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
@@ -33,24 +33,35 @@
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
     </div>
+
     <div class="form-group">
         @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.TextBoxFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
         </div>
     </div>
+
     <div class="form-group">
         @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.TextBoxFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserPhoto, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UserPhoto, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UserPhoto, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
     <div class="form-group">
         @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.Role, new SelectList(ViewBag.list))
+            @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -62,17 +73,27 @@
         <div class="col-md-12">
             <div class="form-row">
                 <div class="col-md-6">
-                    <input class="btn btn-primary" type="reset" id="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+                    <button class="btn btn-primary" type="button" style=" width: 15%; float:right; background-color: grey;border-color: black; margin-left: 2px;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
+                    <button class="btn btn-primary" type="submit" value="Save" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                    <br /><br /><br />
 
-                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+
+
+
+
+
+
+
+
+
+
+
                 </div>
             </div>
 
         </div>
     </div>
-
 </div>
-           
-            }
+}
 
 
