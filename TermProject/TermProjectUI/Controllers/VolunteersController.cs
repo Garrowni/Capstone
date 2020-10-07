@@ -216,7 +216,7 @@ namespace TermProjectUI.Controllers
                     mode.To = email;
                     mode.From = Session["Email"].ToString();
                     mode.Subject = "Hello";
-                    mode.Body = "This Is Testing Email";
+                    mode.Body = "Hello, your account has been activated!!! Please log in ...";
                     SendEmail(mode);
                     var update = Builders<VolunteerModel>.Update
                    .Set("Active", "Yes")
@@ -271,7 +271,7 @@ namespace TermProjectUI.Controllers
                     mode.To = email;
                     mode.From = Session["Email"].ToString();
                     mode.Subject = "Hello";
-                    mode.Body = "This Is Testing Email";
+                    mode.Body = "Hello, your account has been activated!!! Please log in ...";
                     SendEmail(mode);
                     var update = Builders<VolunteerModel>.Update
                    .Set("Active", "Yes")

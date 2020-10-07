@@ -126,7 +126,7 @@ namespace TermProjectUI.Controllers
                 mode.To = email;
                 mode.From = "testint65@gmail.com";
                 mode.Subject = "Hello";
-                mode.Body = "This Is Testing Email use the following temporary password: <h2>"+password+"</h2>";
+                mode.Body = "Hello, use the following temporary password to log in and make sure you change it as soon as you can: <h2>"+password+"</h2> ";
                 
                 SendEmail(mode);
                 
