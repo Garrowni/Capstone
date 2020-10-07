@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "UpdateProfile";
+}
+
+<h2>UpdateProfile</h2>
+
+@using (Html.BeginForm("UpdateProfile", "Volunteers", FormMethod.Post, new
+{
+    @class = "form-horizontal",
+    role = "form",
+    enctype = "multipart/form-data"
+}))
+{
+    <img src="@Session["Img"]" style="margin-left: 2%;width:200px;height:200px;">
+    <br />
+    <br />
+    <input type="file" name="file" id="fileUpload" accept=".png,.jpg,.jpeg,.gif,.tif" />
+    <br />
+    <input type="submit" value="Update Image" />
+}

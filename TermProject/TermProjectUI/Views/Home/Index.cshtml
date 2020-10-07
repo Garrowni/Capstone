@@ -8,17 +8,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-2 col-xl-3">
-                @using (Html.BeginForm("UserImageChange", "LogIn", FormMethod.Post, new
-                {
-                    @class = "form-horizontal",
-                    role = "form",
-                    enctype = "multipart/form-data"
-                }))
-                {
-                    <img src="@Session["Img"]" style="margin-left: 2%;width: 70%;height:100%;">
-                    <input type="file" name="file" id="fileUpload" accept=".png,.jpg,.jpeg,.gif,.tif"  /><br />
-                    <input type="submit" value="Update Image"/>
-                }
+                
+                    <img src="@Session["Img"]" style="margin-left: 2%;width: 100px;height:100px;">
+                    
+                
 
                     <div class="card" style="border-right: solid grey 1px; width: 80%;">
                         <div class="card-body">

@@ -15,7 +15,7 @@
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    
+
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
@@ -47,13 +47,13 @@
             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
         </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
+    <!--<div class="form-group">
+        @*@Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(model => model.Role, new SelectList(ViewBag.list))
-            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })*@
         </div>
-    </div>
+    </div>-->
     <script src="~/Scripts/jquery-3.4.1.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
 

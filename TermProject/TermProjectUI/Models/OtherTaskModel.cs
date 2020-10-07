@@ -35,5 +35,7 @@ namespace TermProjectUI.Models
 
         }
         public string AdditionalInfo { get; set; }
+        [BsonElement("posterPhoto")]
+        public string posterPhoto { get; set; }
     }
 }

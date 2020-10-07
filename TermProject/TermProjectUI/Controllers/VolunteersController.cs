@@ -2,7 +2,10 @@
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TermProjectUI.App_Start;
@@ -27,8 +30,20 @@ namespace TermProjectUI.Controllers
         public ActionResult Index()
         {
            
-            List<VolunteerModel> volunteer = volunteerCollection.AsQueryable<VolunteerModel>().ToList();
-            return View(volunteer);
+            // List<VolunteerModel> volunteer = volunteerCollection.AsQueryable<VolunteerModel>().ToList();
+            List<VolunteerModel> volunteers = volunteerCollection.AsQueryable<VolunteerModel>().ToList();
+           // List<VolunteerModel> vols = new List<VolunteerModel>();
+          //  foreach (var volunteer in volunteers)
+          /** {
+                if (volunteer.Active=="No")
+                {
+                    vols.Add(volunteer);
+                }
+                
+            }
+           */
+
+            return View(volunteers);
         }
 
         // GET: Members/Details/5
@@ -42,8 +57,7 @@ namespace TermProjectUI.Controllers
         // GET: Members/Create
         public ActionResult Create()
         {
-            var list = new List<string>() { "Admin", "Moderator", "Volunteer" };
-            ViewBag.list = list;
+           
             return View();
         }
 
@@ -54,7 +68,8 @@ namespace TermProjectUI.Controllers
         {
             try
             {
-                volunteer.UserPhoto= "/UserImages/nicole.jpg";
+                volunteer.UserPhoto= "/UserImages/default-user-image.png";
+                volunteer.Active = "No";
                 // TODO: Add insert logic here
                 volunteerCollection.InsertOne(volunteer);
                 return RedirectToAction("Details", new { id = volunteer.Id });
@@ -85,11 +100,10 @@ namespace TermProjectUI.Controllers
                     .Set("Name", volunteer.Name)
                     .Set("Email", volunteer.Email)
                     .Set("Password", volunteer.Password)
-                    .Set("ConfirmPassword", volunteer.ConfirmPassword)
-                    .Set("Role", volunteer.Role);
-
+                    .Set("ConfirmPassword", volunteer.ConfirmPassword);
+                    
                 var result = volunteerCollection.UpdateOne(filter, update);
-                return RedirectToAction("Index", new { id = id });
+                return RedirectToAction("Details", new { id = id });
             }
             catch
             {
@@ -114,13 +128,174 @@ namespace TermProjectUI.Controllers
             {
                 // TODO: Add delete logic here
                 volunteerCollection.DeleteOne(Builders<VolunteerModel>.Filter.Eq("_id", ObjectId.Parse(id)));
-
-                return RedirectToAction("Index");
+                if (Session["Role"]==null)
+                {
+                    return RedirectToAction("../LogIn/LogIn");
+                }
+                else
+                {
+                    return RedirectToAction("../Volunteers/Index");
+                }
+               
             }
             catch
             {
                 return View();
             }
         }
+        public ActionResult UpdateProfile()
+        {
+            return View();
+        }
+        [HttpPost]
+            public ActionResult UpdateProfile(HttpPostedFileBase file)
+        {
+
+            if (file != null && file.ContentLength > 0)
+            {
+                string fileName = Path.GetFileName(file.FileName);
+                string filePath = Path.Combine(Server.MapPath("/UserImages/"), fileName);
+                file.SaveAs(filePath);
+
+                var filter = Builders<VolunteerModel>.Filter.Eq("_id", ObjectId.Parse(Session["UserId"].ToString()));
+                var update = Builders<VolunteerModel>.Update
+                    .Set("UserPhoto", "/UserImages/" + file.FileName);
+                var result = volunteerCollection.UpdateOne(filter, update);
+                var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == ObjectId.Parse(Session["UserId"].ToString()));
+                Session["Img"] = volunteerName.UserPhoto.ToString();
+
+            }
+            return View("../Home/Index");
+        }
+
+        public ActionResult AddRole(string id)
+        {
+            var list = new List<string>() { null, "Admin", "Moderator", "Volunteer" };
+            ViewBag.list = list;
+            var volunteerId = new ObjectId(id);
+            var volunteer = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == volunteerId);
+            return View(volunteer);
+        }
+        
+       
+        [HttpPost]
+        public ActionResult AddRole(string id, VolunteerModel volunteer)
+        {
+            var list = new List<string>() { null, "Admin", "Moderator", "Volunteer" };
+            ViewBag.list = list;
+            var volunteerId = new ObjectId(id);
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == volunteerId);
+            var email = vol.Email;
+
+            try
+            {
+                // TODO: Add update logic here
+                var filter = Builders<VolunteerModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                if (volunteer.Role == null)
+                {
+                    var update = Builders<VolunteerModel>.Update
+                   .Set("Active", "No")
+                   .Set("Role", volunteer.Role);
+
+                    var result = volunteerCollection.UpdateOne(filter, update);
+                }
+                else
+                {
+                    
+
+                    MailAddressModel mode = new MailAddressModel();
+                    mode.To = email;
+                    mode.From = Session["Email"].ToString();
+                    mode.Subject = "Hello";
+                    mode.Body = "This Is Testing Email";
+                    SendEmail(mode);
+                    var update = Builders<VolunteerModel>.Update
+                   .Set("Active", "Yes")
+                   .Set("Role", volunteer.Role);
+                    var result = volunteerCollection.UpdateOne(filter, update);
+
+                }
+
+
+                return RedirectToAction("../Volunteers/Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        public ActionResult EditRole(string id)
+        {
+
+            var list = new List<string>() { null, "Admin", "Moderator", "Volunteer" };
+            ViewBag.list = list;
+            var volunteerId = new ObjectId(id);
+            var volunteer = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == volunteerId);
+            return View(volunteer);
+        }
+
+        [HttpPost]
+        public ActionResult EditRole(string id, VolunteerModel volunteer)
+        {
+            var list = new List<string>() { null, "Admin", "Moderator", "Volunteer" };
+            ViewBag.list = list;
+            var volunteerId = new ObjectId(id);
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == volunteerId);
+            var email = vol.Email;
+            
+            try
+            {
+                // TODO: Add update logic here
+                var filter = Builders<VolunteerModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                if (volunteer.Role==null)
+                {
+                    var update = Builders<VolunteerModel>.Update
+                   .Set("Active", "No")
+                   .Set("Role", volunteer.Role);
+
+                    var result = volunteerCollection.UpdateOne(filter, update);
+                }
+                else
+                {
+                    
+                    MailAddressModel mode = new MailAddressModel();
+                    mode.To = email;
+                    mode.From = Session["Email"].ToString();
+                    mode.Subject = "Hello";
+                    mode.Body = "This Is Testing Email";
+                    SendEmail(mode);
+                    var update = Builders<VolunteerModel>.Update
+                   .Set("Active", "Yes")
+                   .Set("Role", volunteer.Role);
+
+                    var result = volunteerCollection.UpdateOne(filter, update);
+                }
+               
+                return RedirectToAction("../Volunteers/Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        public void SendEmail (MailAddressModel model) {
+                 MailMessage mail = new MailMessage();
+                
+                    mail.To.Add(model.To);
+                    mail.From = new MailAddress(model.From);
+                      mail.Subject = model.Subject;
+                    string Body = model.Body;
+                        mail.Body = Body;
+                    mail.IsBodyHtml = true;
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.Port = 587;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new System.Net.NetworkCredential("testint65@gmail.com", "TestingPass"); // Enter seders User name and password  
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                    
+        }
+
     }
 }

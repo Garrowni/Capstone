@@ -73,6 +73,7 @@ namespace TermProjectUI.Controllers
         {
 
             transportationTask.posterName = Session["Username"].ToString();
+            transportationTask.posterPhoto = Session["Img"].ToString();
             transportationTask.taskType = "Transportation Task";
             transportationTask.taskName = transportationTask.taskType + " - " + transportationTask.PUCity + " to " + transportationTask.DOCity;
             

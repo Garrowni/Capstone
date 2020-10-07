@@ -37,7 +37,8 @@ namespace TermProjectUI.Controllers
                 logIn.Role = "Admin";
                 logIn.Password = "TestPass";
                 logIn.ConfirmPassword = "TestPass";
-                logIn.UserPhoto = "/UserImages/nicole.jpg";
+                logIn.UserPhoto = "/UserImages/default-user-image.png";
+                logIn.Active = "Yes";
                 volunteerCollection.InsertOne(logIn);
             }
             
@@ -49,7 +50,7 @@ namespace TermProjectUI.Controllers
         {
             var email =logIn.Email;
             var password = logIn.Password;
-            var volunteer = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email == email && x.Password==password);
+            var volunteer = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email == email && x.Password==password && x.Active=="Yes");
             if (volunteer==null)
             {
                 ViewBag.Message="Your Email or Password is NOT correct!!! Contact The Administrator to fix it... ";
@@ -57,13 +58,15 @@ namespace TermProjectUI.Controllers
             }
             else
             {
-                var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email == email && x.Password == password);
+                var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email == email && x.Password == password && x.Active == "Yes");
                 
                 Session["Username"] = volunteerName.Name;
 
                 Session["UserId"] = volunteerName.Id;
-                
+                Session["Pass"] = volunteerName.Password;
+                Session["Email"] = volunteerName.Email;
                 Session["Img"]= volunteerName.UserPhoto.ToString();
+                Session["Role"] = volunteerName.Role;
                 return View("../Home/Index");
             }
            
@@ -74,24 +77,6 @@ namespace TermProjectUI.Controllers
             return RedirectToAction("LogIn","LogIn");
         }
 
-        public ActionResult UserImageChange(HttpPostedFileBase file)
-        {
-
-            if(file!=null && file.ContentLength > 0)
-            {
-                string fileName = Path.GetFileName(file.FileName);
-                string filePath = Path.Combine(Server.MapPath("/UserImages/"),fileName);
-                file.SaveAs(filePath);
-
-                var filter = Builders<VolunteerModel>.Filter.Eq("_id", ObjectId.Parse(Session["UserId"].ToString()));
-                var update = Builders<VolunteerModel>.Update
-                    .Set("UserPhoto", "/UserImages/"+file.FileName);
-                var result = volunteerCollection.UpdateOne(filter, update);
-                var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id== ObjectId.Parse(Session["UserId"].ToString()));
-                Session["Img"] = volunteerName.UserPhoto.ToString();
-
-            }
-            return View("../Home/Index");
-        }
+       
     }
 }

@@ -34,7 +34,10 @@ namespace TermProjectUI.Models
         public string UserPhoto { get; set; }
 
         [BsonElement("Role")]
-        [Required(ErrorMessage = "Role is Required")]
+        
         public string Role { get; set; }
+        [Display(Name = "Active")]
+
+        public string Active { get; set; }
     }
 }
