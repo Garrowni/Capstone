@@ -5,12 +5,6 @@
 }
 
 
-<style>
-    a {
-        color: black;
-    }
-</style>
-
 
 
 
@@ -25,79 +19,93 @@
 <br />
 <br />
 <br />
+<div class="form-row">
+    <div class="col-md-6">
+        <div class="form-row">
+            <div class="col">
+                <h1>Inactive Users:</h1>
+            </div>
+        </div>
+        @foreach (var item in Model)
+        {
 
-Inactive Users:
-@foreach (var item in Model)
-{
 
 
-
-   if (item.Active == "No")
-    {
-        <div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-11 col-xl-9">
+            if (item.Active == "No")
+            {
+                <div>
+                    <div class="container">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-11 col-xl-9">
+                                <div class="row">
+                                    <div class="col-md-12">
 
-                                <h1 style="margin-top : 3%;">
+                                        <h1 style="margin-top : 3%;">
 
-                                    @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.Name), "AddRole", new { id = item.Id })
-
-
-                                </h1>
+                                            @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.Name), "AddRole", new { id = item.Id })
 
 
+                                        </h1>
+
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <hr />
+            }
+
+
+
+
+
+
+
+        }
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-md-6">
+        <div class="form-row">
+            <div class="col">
+                <h1>Active Users:</h1>
             </div>
         </div>
-        <hr />
-    }
+        @foreach (var item in Model)
+        {
 
-
-
-
-
-
-
-}
-
-    Active Users:
-@foreach (var item in Model)
-{
-
-    if (item.Active == "Yes")
-    {
-        <div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-11 col-xl-9">
+            if (item.Active == "Yes")
+            {
+                <div>
+                    <div class="container">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-11 col-xl-9">
+                                <div class="row">
+                                    <div class="col-md-12">
 
-                                <h1 style="margin-top : 3%;">
+                                        <h1 style="margin-top : 3%;">
 
-                                    @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.Name), "EditRole", new { id = item.Id })
-
-
-                                </h1>
+                                            @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.Name), "EditRole", new { id = item.Id })
 
 
+                                        </h1>
+
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
 
-        <hr />
+                <hr />
 
-    }
+            }
 
 
-}
+        }
+    </div>
+</div>

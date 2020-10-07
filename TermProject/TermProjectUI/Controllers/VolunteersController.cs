@@ -66,18 +66,23 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VolunteerModel volunteer)
         {
-            try
-            {
-                volunteer.UserPhoto= "/UserImages/default-user-image.png";
-                volunteer.Active = "No";
-                // TODO: Add insert logic here
-                volunteerCollection.InsertOne(volunteer);
-                return RedirectToAction("Details", new { id = volunteer.Id });
-            }
-            catch
-            {
-                return View();
-            }
+           
+                var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email==volunteer.Email);
+                if (vol==null)
+                {
+                    volunteer.UserPhoto = "/UserImages/default-user-image.png";
+                    volunteer.Active = "No";
+                    // TODO: Add insert logic here
+                    volunteerCollection.InsertOne(volunteer);
+                    return RedirectToAction("Details", new { id = volunteer.Id });
+                }
+                else
+                {
+                    ViewBag.Message = "The account with the entered Email Address has already been registered click Forget Password to Recover your password ";
+                    return View();
+                }
+               
+            
         }
 
         // GET: Members/Edit/5
@@ -145,10 +150,12 @@ namespace TermProjectUI.Controllers
         }
         public ActionResult UpdateProfile()
         {
-            return View();
+            
+            var volunteer = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == ObjectId.Parse(Session["UserId"].ToString()));
+            return View(volunteer);
         }
         [HttpPost]
-            public ActionResult UpdateProfile(HttpPostedFileBase file)
+            public ActionResult UpdateProfile(HttpPostedFileBase file,  VolunteerModel volunteer)
         {
 
             if (file != null && file.ContentLength > 0)
@@ -159,7 +166,9 @@ namespace TermProjectUI.Controllers
 
                 var filter = Builders<VolunteerModel>.Filter.Eq("_id", ObjectId.Parse(Session["UserId"].ToString()));
                 var update = Builders<VolunteerModel>.Update
-                    .Set("UserPhoto", "/UserImages/" + file.FileName);
+                    .Set("UserPhoto", "/UserImages/" + file.FileName)
+                    .Set("Password", volunteer.Password)
+                    .Set("ConfirmPassword", volunteer.ConfirmPassword);
                 var result = volunteerCollection.UpdateOne(filter, update);
                 var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == ObjectId.Parse(Session["UserId"].ToString()));
                 Session["Img"] = volunteerName.UserPhoto.ToString();

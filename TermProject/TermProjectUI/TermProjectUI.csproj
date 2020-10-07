@@ -349,6 +349,7 @@
     <Content Include="Views\Volunteers\UpdateProfile.cshtml" />
     <Content Include="Views\Volunteers\AddRole.cshtml" />
     <Content Include="Views\Volunteers\EditRole.cshtml" />
+    <Content Include="Views\LogIn\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

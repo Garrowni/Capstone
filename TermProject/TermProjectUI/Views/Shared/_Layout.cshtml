@@ -4,12 +4,59 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-   
+
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-</head>
 
+    <style>
+        
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: white;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-content a:hover {
+                    color: cornflowerblue;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            
+        }
+        .arrow {
+            border: solid #f1f1f1;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 3px;
+        }
+        .down {
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            
+        }
+    </style>
+</head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <!--  <button name="AddIt"><span class="glyphicon glyphicon-menu-hamburger"></span></button>
@@ -52,12 +99,19 @@
                                     }
 
                                 </ul>
-                        <ul class="nav navbar-nav pull-right">
+                                <ul class="nav navbar-nav pull-right">
+                                    <li class="dropdown">
+                                        <a class="dropbtn">@Session["Username"].ToString() <i class="arrow down" ></i></a>
+                                        <div class="dropdown-content">
+                                            <a>@Html.ActionLink("Uppdate Profile", "UpdateProfile", "Volunteers")</a>
+                                          
+                                            
+                                        </div>
+                                    </li>
+                                    
 
-                             <li>@Html.ActionLink(@Session["Username"].ToString(), "UpdateProfile", "Volunteers")</li>
-
-                            <li>@Html.ActionLink("Log out", "LogOut", "LogIn")</li>
-                         </ul>
+                                    <li>@Html.ActionLink("Log out", "LogOut", "LogIn")</li>
+                                </ul>
     }
 
     }

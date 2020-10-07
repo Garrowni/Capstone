@@ -49,20 +49,21 @@
                                 </div>
                             </div>
                             <br />
+                            @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+                            {
+                                <div class="card">
+                                    <div class="card-body">
+                                        <br />
+                                        <h4>Tools</h4>
+                                        <a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                                            <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Task</button>
+                                        </a>
+                                        
+                                        <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Report</button>
 
-                            <div class="card">
-                                <div class="card-body">
-                                    <br />
-                                    <h4>Tools</h4>
-                                    <a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                                        <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Task</button>
-                                    </a>
-
-                                    <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Report</button>
-
-                                </div>
+                                    </div>
+                                </div>}
                             </div>
-                        </div>
                     </div>
                 </div>
 
