@@ -34,8 +34,15 @@ namespace TermProjectUI.Models
             set;
 
         }
+        [BsonElement("ImportanceLevel")]
+        public int ImportanceLevel { get; set; }
+        [BsonElement("assignees")]
+        public List<string> assignees { get; set; }
         public string AdditionalInfo { get; set; }
         [BsonElement("posterPhoto")]
         public string posterPhoto { get; set; }
+        [BsonElement("state")]
+
+        public string state { get; set; }
     }
 }

@@ -61,7 +61,8 @@ namespace TermProjectUI.Controllers
         {
             otherTask.posterName = Session["Username"].ToString(); ;
             otherTask.TaskRequirements = taskSpecList;
-           
+            otherTask.state = "Unassigned";
+            otherTask.posterPhoto = Session["Img"].ToString();
             try
             {
                 productCollection.InsertOne(otherTask);
@@ -142,10 +143,13 @@ namespace TermProjectUI.Controllers
                 var filter = Builders<OtherTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<OtherTaskModel>.Update
                     .Set("requester", task.requester)
+                    .Set("ImportanceLevel", task.ImportanceLevel)
                     .Set("posterName", task.posterName)
                     .Set("taskTitle", task.taskTitle)
                     .Set("TaskRequirements", task.TaskRequirements)
-                    .Set("AdditionalInfo",task.AdditionalInfo);
+                    .Set("AdditionalInfo",task.AdditionalInfo)
+                    .Set("assignees",task.assignees)
+                    .Set("state", task.state);
                 var result = productCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);
