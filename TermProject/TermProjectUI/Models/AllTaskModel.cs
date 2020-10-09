@@ -24,5 +24,29 @@ namespace TermProjectUI.Models
 
         }
 
+        public List<InventoryTaskModel> InventoryTasks
+        {
+            get;
+            set;
+        }
+
+
+        public List<GroomingTaskModel> GroomingTasks
+        {
+            get;
+            set;
+        }
+
+        public List<PhotographyTaskModel> PhotographyTasks
+        {
+            get;
+            set;
+        }
+
+        public List<VetTaskModel> VetTasks
+        {
+            get;
+            set;
+        }
     }
 }

@@ -13,23 +13,39 @@ namespace TermProjectUI.Controllers
     public class AllTasksController : Controller
     {
         private MongoDBContext dbcontext;
-        private IMongoCollection<TransportationTaskModel> productCollection;
+        private IMongoCollection<TransportationTaskModel> transportationCollection;
+        private IMongoCollection<GroomingTaskModel> groomingCollection;
+        private IMongoCollection<InventoryTaskModel> inventoryCollection;
+        private IMongoCollection<PhotographyTaskModel> photographyCollection;
+        private IMongoCollection<VetTaskModel> vetCollection;
         private IMongoCollection<OtherTaskModel> otherCollection;
         public AllTasksController()
         {
             dbcontext = new MongoDBContext();
-            productCollection = dbcontext.database.GetCollection<TransportationTaskModel>("transportation");
+            transportationCollection = dbcontext.database.GetCollection<TransportationTaskModel>("transportation");
+            groomingCollection = dbcontext.database.GetCollection<GroomingTaskModel>("grooming");
+            photographyCollection = dbcontext.database.GetCollection<PhotographyTaskModel>("photography");
+            inventoryCollection = dbcontext.database.GetCollection<InventoryTaskModel>("inventory");
+            vetCollection = dbcontext.database.GetCollection<VetTaskModel>("vet");
             otherCollection = dbcontext.database.GetCollection<OtherTaskModel>("other");
 
         }
         // GET: AllTasks
         public ActionResult Index()
         {
-            List<TransportationTaskModel> products = productCollection.AsQueryable<TransportationTaskModel>().ToList();
+            List<TransportationTaskModel> transportations = transportationCollection.AsQueryable<TransportationTaskModel>().ToList();
+            List<GroomingTaskModel> grooming = groomingCollection.AsQueryable<GroomingTaskModel>().ToList();
+            List<PhotographyTaskModel> photograhy = photographyCollection.AsQueryable<PhotographyTaskModel>().ToList();
+            List<InventoryTaskModel> inventory = inventoryCollection.AsQueryable<InventoryTaskModel>().ToList();
+            List<VetTaskModel> vet = vetCollection.AsQueryable<VetTaskModel>().ToList();
             List<OtherTaskModel> others = otherCollection.AsQueryable<OtherTaskModel>().ToList();
 
             AllTaskModel mymodel = new AllTaskModel();
-            mymodel.TransportationTasks = products;
+            mymodel.TransportationTasks = transportations;
+            mymodel.GroomingTasks = grooming;
+            mymodel.PhotographyTasks = photograhy;
+            mymodel.InventoryTasks = inventory;
+            mymodel.VetTasks = vet;
             mymodel.OtherTasks = others;
             return View(mymodel);
         }
