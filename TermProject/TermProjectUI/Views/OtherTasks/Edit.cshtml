@@ -1,14 +1,10 @@
 ﻿@model TermProjectUI.Models.OtherTaskModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Create";
 }
-    <style>
-        a {
-            color: white;
-        }
-    </style>
-<h2>Edit</h2>
+
+<h2>Create</h2>
 
 @using (Html.BeginForm())
 {
@@ -20,7 +16,7 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-
+    @Html.HiddenFor(model => model.posterName)
     <div class="form-row">
         <div class="col-md-12">
             <h2>
@@ -41,7 +37,13 @@
         </div>
     </div>
     <div class="form-row">
+        <div class="col-md-3">
+            Importance Level:
+            @Html.DropDownListFor(model => model.ImportanceLevel, Enumerable.Range(1, 3).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+            <!--Html.EditorFor(model => model.importanceLevel, new { htmlAttributes = new { class = "form-control" } })
+        Html.ValidationMessageFor(model => model.importanceLevel, "", new { lass = "text-danger" })-->
 
+        </div>
         <div class="col-md-4">
             <font color="red"><strong>*</strong></font>Title:
             @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control" } })
@@ -54,6 +56,7 @@
             @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
             <font color="red" size="2px"> <p id="req"></p></font>
         </div>
+
     </div>
 
 
@@ -62,8 +65,9 @@
         <table id="tblTaskSpec" class="table" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
-                    <th style="width:150px">Field</th>
-                    <th style="width:150px">Value</th>
+
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Field</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Value</th>
                     <th></th>
                 </tr>
             </thead>
@@ -125,8 +129,8 @@
                     <td><input type="button" id="btnAdd" value="Add" /></td>
                 </tr>
             </tfoot>
-        </table>
-        <br />
+        </table><font color="red" size="2px"> <p id="taskspeci"></p></font>
+
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
@@ -137,6 +141,8 @@
                 //Reference the Name and Country TextBoxes.
                 var txtKey = $("#txtKey");
                 var txtValue = $("#txtValue");
+
+
                 if (txtKey.val() == null || txtKey.val() == "" || txtValue.val() == null || txtValue.val() == "") {
                     alert("Enter Field and Value and press Add"); return false;
 
@@ -151,8 +157,6 @@
 
                     var cell = $(row.insertCell(-1));
                     cell.html(txtKey.val());
-
-
                     cell = $(row.insertCell(-1));
                     cell.html(txtValue.val());
 
@@ -171,6 +175,11 @@
                     txtKey.val("");
                     txtValue.val("");
                 }
+
+
+
+
+
             });
 
             function Remove(button) {
@@ -197,28 +206,29 @@
                     tasksSpec.push(taskSpec);
                     // alert(itemsSpec[0].Key);
 
-                    $('#req').html("");
-                    $('#title').html("");
-                    $('#additionaInfo').html("");
-                    $('#taskspeci').html("");
-                    if ($('#requester').val() === "" || $('#taskTitle').val() === "" || $('#AdditionaInfo').val() === "") {
+                });
+                $('#req').html("");
+                $('#title').html("");
+                $('#additionaInfo').html("");
+                $('#taskspeci').html("");
+                if ($('#requester').val() === "" || $('#taskTitle').val() === "" || $('#AdditionaInfo').val() === "") {
 
-                        if ($('#requester').val() === "") {
-                            $('#req').html("Requester is required");
-                        } if ($('#taskTitle').val() === "") {
-                            $('#title').html("Title is required");
-                        } if ($('#AdditionalInfo').val() === "") {
-                            $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
-                        }
-                        return false;
-                    } else if (!tasksSpec.length) {
-                        $('#taskspeci').html("add more in information"); return false;
+                    if ($('#requester').val() === "") {
+                        $('#req').html("Requester is required");
+                    } if ($('#taskTitle').val() === "") {
+                        $('#title').html("Title is required");
+                    } if ($('#AdditionalInfo').val() === "") {
+                        $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
                     }
+                    return false;
+                } else if (!tasksSpec.length) {
+                    $('#taskspeci').html("add more in information"); return false;
+                }
                 else {
                     //Send the JSON array to Controller using AJAX.
                     $.ajax({
                         type: "POST",
-                        url: "/OtherTasks/UpdateTaskSpecifications",
+                        url: "/OtherTasks/InsertTaskSpecifications",
                         data: JSON.stringify(tasksSpec),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -238,7 +248,7 @@
     </div>
     <div class="form-row">
         <div class="col-md-12">
-            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
             @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
             <font color="red" size="2px"> <p id="additionaInfo"></p></font>
         </div>
@@ -247,7 +257,7 @@
     <!--Blank Space-->
     <div class="form-row">
         <div class="col-md-12">
-            <hr />
+
         </div>
     </div>
     <!--Buttom Buttons-->
@@ -256,7 +266,8 @@
             <div class="form-row">
                 <div class="col-md-6">
                     <button class="btn btn-primary" type="button" style=" width: 15%; float:right; background-color: grey;border-color: black; margin-left: 2px;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
-                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+
+                    <button class="btn btn-primary" type="submit" value="Edit" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
                     <br /><br /><br />
 
 
@@ -282,3 +293,5 @@
     <br />
 </div>
 }
+
+

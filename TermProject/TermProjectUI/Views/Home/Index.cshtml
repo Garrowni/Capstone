@@ -8,59 +8,64 @@
     <div class="container">
         <div class="row">
             <div class="col-md-2 col-xl-3">
-                <img src="~/Images/nicole.jpg" style="margin-left: 2%;width: 70%;height:100%;">
-                <div class="card" style="border-right: solid grey 1px; width: 80%;">
-                    <div class="card-body">
-                        <h3 class="card-title">Nicole Garrow</h3>
-                        <div class="card">
-                            <div class="card-body">
-                                <h4>Unassigned</h4>
-                                <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
-                                    <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Urgent</button>
-                                </a>
-                                <p style="margin-top: 4%;margin-left: 4%;float: left;">3</p>
+                
+                    <img src="@Session["Img"]" style="margin-left: 2%;width: 100px;height:100px;">
+                    
+                
 
+                    <div class="card" style="border-right: solid grey 1px; width: 80%;">
+                        <div class="card-body">
+                            <h3 class="card-title">@Session["Username"].ToString()</h3>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4>Unassigned</h4>
+                                    <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
+                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Urgent</button>
+                                    </a>
+                                    <p style="margin-top: 4%;margin-left: 4%;float: left;">3</p>
+
+                                    <br />
+                                    <br />
+                                    <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
+                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Normal</button>
+                                    </a>
+                                    <p style="margin-top: 4%; margin-left: 4%;float: left;">3</p>
+                                </div>
                                 <br />
                                 <br />
-                                <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
-                                    <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Normal</button>
-                                </a>
-                                <p style="margin-top: 4%; margin-left: 4%;float: left;">3</p>
+                                <div class="card-body">
+                                    <h4>Assigned</h4>
+                                    <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
+                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Urgent</button>
+                                    </a>
+                                    <p style="margin-top: 4%;margin-left: 4%;float: left;">3</p>
+
+                                    <br />
+                                    <br />
+                                    <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
+                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Normal</button>
+                                    </a>
+                                    <p style="margin-top: 4%; margin-left: 4%;float: left;">3</p>
+                                </div>
                             </div>
                             <br />
-                            <br />
-                            <div class="card-body">
-                                <h4>Assigned</h4>
-                                <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
-                                    <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Urgent</button>
-                                </a>
-                                <p style="margin-top: 4%;margin-left: 4%;float: left;">3</p>
+                            @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+                            {
+                                <div class="card">
+                                    <div class="card-body">
+                                        <br />
+                                        <h4>Tools</h4>
+                                        <a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                                            <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Task</button>
+                                        </a>
+                                        
+                                        <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Report</button>
 
-                                <br />
-                                <br />
-                                <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
-                                    <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Normal</button>
-                                </a>
-                                <p style="margin-top: 4%; margin-left: 4%;float: left;">3</p>
+                                    </div>
+                                </div>}
                             </div>
-                        </div>
-                        <br />
-
-                        <div class="card">
-                            <div class="card-body">
-                                <br />
-                                <h4>Tools</h4>
-                                <a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                                    <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Task</button>
-                                </a>
-
-                                <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Report</button>
-
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </div>
 
 
 

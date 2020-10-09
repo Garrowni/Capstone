@@ -59,9 +59,10 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OtherTaskModel otherTask)
         {
-            otherTask.posterName = "Nicole Garrow";
+            otherTask.posterName = Session["Username"].ToString(); ;
             otherTask.TaskRequirements = taskSpecList;
-           
+            otherTask.state = "Unassigned";
+            otherTask.posterPhoto = Session["Img"].ToString();
             try
             {
                 productCollection.InsertOne(otherTask);
@@ -136,15 +137,19 @@ namespace TermProjectUI.Controllers
         public ActionResult Edit(string id, OtherTaskModel task)
         {
             task.TaskRequirements = taskSpecList;
-            task.posterName = "Nicole Garrow";
+            //task.posterName = "Nicole Garrow";
             try
             {
                 var filter = Builders<OtherTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<OtherTaskModel>.Update
                     .Set("requester", task.requester)
+                    .Set("ImportanceLevel", task.ImportanceLevel)
                     .Set("posterName", task.posterName)
                     .Set("taskTitle", task.taskTitle)
-                    .Set("TaskRequirements", task.TaskRequirements);
+                    .Set("TaskRequirements", task.TaskRequirements)
+                    .Set("AdditionalInfo",task.AdditionalInfo)
+                    .Set("assignees",task.assignees)
+                    .Set("state", task.state);
                 var result = productCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);
