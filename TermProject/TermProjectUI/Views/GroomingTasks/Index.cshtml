@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TermProjectUI.Models.OtherTaskModel>
+﻿@model IEnumerable<TermProjectUI.Models.GroomingTaskModel>
 @{
     ViewBag.Title = "Index";
 }
@@ -8,7 +8,7 @@
         color: black;
     }
 </style>
-<h2>Other Tasks</h2>
+<h2>Grooming Tasks</h2>
 
 
 <link href="@Url.Content("https://fonts.googleapis.com/css?family=Playfair+Display:400,700")" rel="stylesheet" type="text/css" />
@@ -31,10 +31,10 @@
                 <div class="col-md-11 col-xl-9">
                     <div class="row">
                         <div class="col-md-12">
-                            <img src="~/Images/other_Nav.JPG" style="float: left; margin-left: -2%;height: 15%; width: 15%;">
+                            <img src="~/Images/grooming_Nav.JPG" style="float: left; margin-left: -2%;height: 15%; width: 15%;">
                             <h1 style="margin-top : 3%;">
 
-                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskTitle), "Details", new { id = item.Id })
+                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskTitle), "../GroomingTasks/Details", new { id = item.Id })
                             </h1>
 
 
