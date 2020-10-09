@@ -14,9 +14,10 @@ namespace TermProjectUI.Models
         [BsonId]
         public ObjectId Id { get; set; }
 
-        
-       
-  
+
+
+        [BsonElement("posterPhoto")]
+        public string posterPhoto { get; set; }
 
         [BsonElement("taskID")]
         //auto generate

@@ -59,7 +59,7 @@
             <div class="col-md-4 col-xl-3">
                 <div class="row">
                     <div class="col">
-                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;    />
+                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;     />
                     </div>
                 </div>
 
@@ -79,9 +79,10 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/tsoler.jpg" /></div><small style="margin-left: 2px">   @Html.DisplayFor(model => model.posterName)</small>
+                        <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="@Html.DisplayFor(model=>model.posterPhoto)" /></div><small style="margin-left: 2px">   @Html.DisplayFor(model => model.posterName)</small>
                     </div>
                 </div>
+
 
                 <div class="row">
                     <div class="col">

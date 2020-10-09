@@ -14,9 +14,10 @@ namespace TermProjectUI.Models
         [BsonId]
         public ObjectId Id { get; set; }
 
-        
-       
-      
+        [BsonElement("posterPhoto")]
+        public string posterPhoto { get; set; }
+
+
         [BsonElement("taskID")]
         //auto generate
         public int taskID { get; set; }
@@ -40,10 +41,10 @@ namespace TermProjectUI.Models
 
         [BsonElement("address")]
         public string address { get; set; }
-        [BsonElement("date")]
-        public DateTime date { get; set; }
-        [BsonElement("time")]
-        public DateTime time { get; set; }
+        [BsonElement("taskDate"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true), DataType(DataType.Date, ErrorMessage = "Date only")]
+        public DateTime taskDate { get; set; }
+        [BsonElement("taskTime")]
+        public TimeSpan taskTime { get; set; }
 
 
         public string AdditionalInfo { get; set; }

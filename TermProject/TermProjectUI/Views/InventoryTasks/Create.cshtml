@@ -45,18 +45,8 @@
             @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
             <font color="red" size="2px"> <p id="taskAddress"></p></font>
         </div>
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Date:
-            @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="taskDate"></p></font>
-        </div>
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Time:
-            @Html.EditorFor(model => model.time, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.time, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="taskTime"></p></font>
-        </div>
+
+        
     </div>
     <div class="form-row">
         <div class="col-md-12">
@@ -141,12 +131,8 @@
                     txtDes.val("");
                 }
 
-
-
-
-
             });
-
+          
             function Remove(button) {
                 //Determine the reference of the Row using the Button.
                 var row = $(button).closest("TR");
@@ -173,23 +159,23 @@
 
                 });
                 $('#taskAddress').html("");
-                $('#taskDate').html("");
-                $('#taskTime').html("");
+                $('#taskDateError').html("");
+                $('#taskTimeError').html("");
                 $('#additionaInfo').html("");
                 $('#taskspeci').html("");
-                if ($('#address').val() === "" || $('#time').val() === "" || $('#date').val() === "" || $('#AdditionaInfo').val() === "") {
+                if ($('#address').val() === "" || $('#taskTime').val() === "" || $('#taskDate').val() === "" || $('#AdditionaInfo').val() === "") {
 
                     if ($('#address').val() === "") {
                         $('#taskAddress').html("Address is required");
-                    } if ($('#date').val() === "") {
-                        $('#taskDate').html("Date is required");
-                    } if ($('#time').val() === "") {
-                        $('#taskTime').html("Time is required");
+                    } if ($('#taskDate').val() === "") {
+                        $('#taskDateError').html("Date is required");
+                    } if ($('#taskTime').val() === "") {
+                        $('#taskTimeError').html("Time is required");
                     } if ($('#AdditionalInfo').val() === "") {
                         $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
                     }
                     return false;
-                }else if (!tasksSpec.length) {
+                } else if (!tasksSpec.length) {
                     $('#taskspeci').html("Add a document and description!"); return false;
                 }
                 else {
@@ -217,53 +203,106 @@
     </div>
 
 
+
+
+
+
     <div class="form-row">
-        <div class="col-md-12">
-            <hr />
-            <h2>Additional Information</h2>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col-md-12">
-            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
-            @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="additionaInfo"></p></font>
-        </div>
-    </div>
-
-
-
-
-
-    <!--Blank Space-->
-    <div class="form-row">
-        <div class="col-md-12">
-
-        </div>
-    </div>
-    <!--Buttom Buttons-->
-    <div class="form-row">
-        <div class="col-md-12">
+        <div class="col-md-5">
             <div class="form-row">
-                <div class="col-md-6">
-                    <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
-
-                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
-                    <br /><br /><br />
-
+                <div class="col">
+                    <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>-->
+                    <input type="date" id="taskDate" name="taskDate" class="form-control" required>
 
                 </div>
             </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
 
+                    <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
+                    <input type="time" id="taskTime" name="taskTime" class="form-control" style="width: 112%;" required>
+
+                </div>
+            </div>
         </div>
     </div>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-</div>
-}
+
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="taskDateError">.</p></font>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="taskTimeError">.</p></font>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h2>Additional Information</h2>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
+                @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="additionaInfo"></p></font>
+            </div>
+        </div>
+       
+
+
+
+
+
+
+            <!--Blank Space-->
+            <div class="form-row">
+                <div class="col-md-12">
+
+                </div>
+            </div>
+            <!--Buttom Buttons-->
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+
+                            <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                            <br /><br /><br />
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+        <script>
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementsByName("taskDate")[0].setAttribute('min', today);
+        </script>
+    }    

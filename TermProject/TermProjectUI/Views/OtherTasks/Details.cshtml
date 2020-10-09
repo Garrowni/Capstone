@@ -22,40 +22,52 @@
                         <br />
                         <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskTitle)</h1>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
-                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
-
-
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
-                        <div class="row">
-
-
-                            Task Information:
-                            @foreach (var item in Model.TaskRequirements)
-                            {
-                                <ul>
-                                    <li> @Html.DisplayFor(model => item.Key) : @Html.DisplayFor(model => item.Value) </li>
-
-                                </ul>
-
-                            }
+                </div>@if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+                {
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
+                            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
 
 
 
                         </div>
+                    </div>}
+                    <div class="row">
+                        <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
+                            <div class="row">
 
+
+                                Task Information:
+                                @foreach (var item in Model.TaskRequirements)
+                                {
+                                    <ul>
+                                        <li> @Html.DisplayFor(model => item.Key) : @Html.DisplayFor(model => item.Value) </li>
+
+                                    </ul>
+
+                                }
+
+
+
+                            </div>
+
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
+                            <div class="row">
+
+
+                                Additionl Information:
+                                @Html.DisplayFor(model => model.AdditionalInfo)
+
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
-               
-                
-            </div>
             <div class="col-md-4 col-xl-3">
                 <div class="row">
                     <div class="col">
@@ -79,7 +91,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/tsoler.jpg" /></div><small style="margin-left: 2px">   @Html.DisplayFor(model => model.posterName)</small>
+                        <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="@Html.DisplayFor(model=>model.posterPhoto)" /></div><small style="margin-left: 2px">   @Html.DisplayFor(model => model.posterName)</small>
                     </div>
                 </div>
 

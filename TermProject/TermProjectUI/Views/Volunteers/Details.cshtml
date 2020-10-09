@@ -1,0 +1,63 @@
+﻿@model TermProjectUI.Models.VolunteerModel
+
+@{
+    ViewBag.Title = "Details";
+}
+    <style>
+        a {
+            color: black;
+        }
+    </style>
+<h2>User Details</h2>
+
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
+
+        </dt>
+        <dd>
+            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
+
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <!--<dt>
+           @* @Html.DisplayNameFor(model => model.Role)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Role)*@
+        </dd>-->
+
+    </dl>
+    @if (Session["UserId"] == null)
+    {
+        <font color="red" size="3px"> Waiting for Admin's Approval you will get an Email when approved!!!</font>
+    }
+</div>
+

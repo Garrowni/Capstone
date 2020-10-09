@@ -17,41 +17,47 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            Requester: 
+            Address: 
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.requester)
+            @Html.DisplayFor(model => model.address)
         </dd>
 
         <dt>
-            Task Title: 
+            Date: 
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.taskTitle)
+            @Html.DisplayFor(model => model.date)
         </dd>
 
         <dt>
-            Poster Name: 
+            Time: 
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.posterName)
+            @Html.DisplayFor(model => model.time)
         </dd>
         <dt>
-            Task Specifications:
+            Documents:
         </dt>
 
         <dd>
-            @foreach (var item in Model.TaskRequirements)
+            @foreach (var item in Model.Documents)
             {
 
-                <p> @Html.DisplayFor(model => item.Key) : @Html.DisplayFor(model => item.Value)</p>
+                <p> @Html.DisplayFor(model => item.Document) : @Html.DisplayFor(model => item.Description)</p>
 
 
 
             }
+        </dd>
+        <dt>
+            Additional Information:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AdditionalInfo)
         </dd>
     </dl>
 

@@ -69,7 +69,8 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(PhotographyTaskModel photographyTask)
         {
-            photographyTask.posterName = "Nicole Garrow";
+            photographyTask.posterName = Session["Username"].ToString();
+            photographyTask.posterPhoto = Session["Img"].ToString();
             photographyTask.taskType = "Photography Task";
             photographyTask.taskName = "PhotographyTaskTest";
           

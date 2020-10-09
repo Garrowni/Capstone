@@ -58,6 +58,9 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Bson, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Bson.2.10.4\lib\net452\MongoDB.Bson.dll</HintPath>
     </Reference>
@@ -70,6 +73,10 @@
     <Reference Include="MongoDB.Libmongocrypt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Libmongocrypt.1.0.0\lib\net452\MongoDB.Libmongocrypt.dll</HintPath>
     </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="SharpCompress, Version=0.23.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpCompress.0.23.0\lib\net45\SharpCompress.dll</HintPath>
     </Reference>
@@ -195,12 +202,14 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AllTasksController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PhotographyTasksController.cs" />
     <Compile Include="Controllers\GroomingTasksController.cs" />
-    <Compile Include="Controllers\VetTasksController.cs" />
-    <Compile Include="Controllers\OtherTasksController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryTasksController.cs" />
+    <Compile Include="Controllers\LogInController.cs" />
+    <Compile Include="Controllers\PhotographyTasksController.cs" />
+    <Compile Include="Controllers\VetTasksController.cs" />
+    <Compile Include="Controllers\VolunteersController.cs" />
+    <Compile Include="Controllers\OtherTasksController.cs" />
     <Compile Include="Controllers\TransportationTasksController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -208,14 +217,18 @@
     </Compile>
     <Compile Include="Models\AllTaskModel.cs" />
     <Compile Include="Models\DeletedTaskModel.cs" />
-    <Compile Include="Models\VetTaskModel.cs" />
-    <Compile Include="Models\PhotographyTaskModel.cs" />
     <Compile Include="Models\GroomingTaskModel.cs" />
-    <Compile Include="Models\Item.cs" />
-    <Compile Include="Models\OtherTaskModel.cs" />
     <Compile Include="Models\InventoryTaskModel.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\LogInModel.cs" />
+    <Compile Include="Models\MailAddressModel.cs" />
+    <Compile Include="Models\OtherTaskModel.cs" />
+    <Compile Include="Models\PhotographyTaskModel.cs" />
     <Compile Include="Models\TransportationTaskModel.cs" />
+    <Compile Include="Models\VetTaskModel.cs" />
+    <Compile Include="Models\VolunteerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -244,6 +257,7 @@
     <Content Include="Global.asax" />
     <Content Include="Images\cal.png" />
     <Content Include="Images\documentation_Nav.JPG" />
+    <Content Include="Images\donations_Nav.JPG" />
     <Content Include="Images\ellie.jpg" />
     <Content Include="Images\grooming_Nav.JPG" />
     <Content Include="Images\inventory_Nav.JPG" />
@@ -299,7 +313,13 @@
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="UserImages\default-user-image.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -331,11 +351,16 @@
     <Content Include="Views\AllTasks\Index.cshtml" />
     <Content Include="Views\OtherTasks\Edit.cshtml" />
     <Content Include="Views\OtherTasks\Delete.cshtml" />
-    <Content Include="Views\InventoryTasks\Create.cshtml" />
-    <Content Include="Views\InventoryTasks\Delete.cshtml" />
-    <Content Include="Views\InventoryTasks\Details.cshtml" />
-    <Content Include="Views\InventoryTasks\Edit.cshtml" />
-    <Content Include="Views\InventoryTasks\Index.cshtml" />
+    <Content Include="Views\Volunteers\Create.cshtml" />
+    <Content Include="Views\Volunteers\Details.cshtml" />
+    <Content Include="Views\LogIn\LogIn.cshtml" />
+    <Content Include="Views\Volunteers\Edit.cshtml" />
+    <Content Include="Views\Volunteers\Index.cshtml" />
+    <Content Include="Views\Volunteers\Delete.cshtml" />
+    <Content Include="Views\Volunteers\UpdateProfile.cshtml" />
+    <Content Include="Views\Volunteers\AddRole.cshtml" />
+    <Content Include="Views\Volunteers\EditRole.cshtml" />
+    <Content Include="Views\LogIn\ForgotPassword.cshtml" />
     <Content Include="Views\VetTasks\Create.cshtml" />
     <Content Include="Views\VetTasks\Delete.cshtml" />
     <Content Include="Views\VetTasks\Details.cshtml" />
@@ -346,6 +371,11 @@
     <Content Include="Views\PhotographyTasks\Details.cshtml" />
     <Content Include="Views\PhotographyTasks\Edit.cshtml" />
     <Content Include="Views\PhotographyTasks\Index.cshtml" />
+    <Content Include="Views\InventoryTasks\Create.cshtml" />
+    <Content Include="Views\InventoryTasks\Delete.cshtml" />
+    <Content Include="Views\InventoryTasks\Details.cshtml" />
+    <Content Include="Views\InventoryTasks\Edit.cshtml" />
+    <Content Include="Views\InventoryTasks\Index.cshtml" />
     <Content Include="Views\GroomingTasks\Create.cshtml" />
     <Content Include="Views\GroomingTasks\Delete.cshtml" />
     <Content Include="Views\GroomingTasks\Details.cshtml" />

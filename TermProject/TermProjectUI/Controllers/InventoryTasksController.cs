@@ -70,9 +70,10 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(InventoryTaskModel inventoryTask)
         {
-            inventoryTask.posterName = "Nicole Garrow";
+            inventoryTask.posterName = Session["Username"].ToString();
+            inventoryTask.posterPhoto = Session["Img"].ToString();
             inventoryTask.taskType = "Inventory Task";
-            inventoryTask.taskName = "InventoryTaskTest";
+            inventoryTask.taskName = inventoryTask.taskType + " - " + inventoryTask.address;
             inventoryTask.requester = "Ellie";
           
             inventoryTask.state = "Unassigned";
@@ -170,8 +171,8 @@ namespace TermProjectUI.Controllers
                     .Set("creationDate", task.creationDate)
                     .Set("state", task.state)
                     .Set("address", task.address)
-                    .Set("date", task.date)
-                    .Set("time", task.time)
+                    .Set("taskDate", task.taskDate)
+                    .Set("taskTime", task.taskTime)
                     .Set("AdditionalInfo", task.AdditionalInfo)
                     .Set("Documents", task.Documents);                    ;
                 var result = productCollection.UpdateOne(filter, update);

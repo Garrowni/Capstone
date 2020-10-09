@@ -71,7 +71,8 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(GroomingTaskModel groomingTask)
         {
-            groomingTask.posterName = "Nicole Garrow";
+            groomingTask.posterName = Session["Username"].ToString();
+            groomingTask.posterPhoto = Session["Img"].ToString();
             groomingTask.taskType = "Grooming Task";
             groomingTask.taskName = "GroomingTaskTest";
           

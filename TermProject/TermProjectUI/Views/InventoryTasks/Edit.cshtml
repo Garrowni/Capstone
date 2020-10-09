@@ -3,12 +3,8 @@
 @{
     ViewBag.Title = "Edit";
 }
-    <style>
-        a {
-            color: white;
-        }
-    </style>
-<h2>Edit</h2>
+
+<h2>Create</h2>
 
 @using (Html.BeginForm())
 {
@@ -20,12 +16,12 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-
+    @Html.HiddenFor(model => model.posterName)
     <div class="form-row">
         <div class="col-md-12">
             <h2>
 
-                Other Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                Inventory Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </a>
             </h2>
@@ -40,78 +36,49 @@
             </h1>
         </div>
     </div>
+
     <div class="form-row">
 
-        <div class="col-md-4">
-            <font color="red"><strong>*</strong></font>Title:
-            @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.taskTitle, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="title"></p></font>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Address:
+            @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="taskAddress"></p></font>
         </div>
-        <div class="col-md-4">
-            <font color="red"><strong>*</strong></font>Requester:
-            @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="req"></p></font>
+
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>
+                Instructions and Templates
+            </h1>
         </div>
     </div>
 
+
+
+    <!--replace once figureout documents!!!!-->
 
     <body>
 
         <table id="tblTaskSpec" class="table" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
-                    <th style="width:150px">Field</th>
-                    <th style="width:150px">Value</th>
+
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Document</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Description</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.TaskRequirements)
+                @foreach (var item in Model.Documents)
                 {
 
 
                     <tr>
-                        <td><input type="text" id="txtKey" /></td>
-                        <td><input type="text" id="txtValue" /></td>
-                        <td><input type="button" id="btnAdd" value="Add" /></td>
-                    </tr>
-                </tfoot>
-            </table>
-            <br />
-
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-
-
-            <script type="text/javascript">
-                $("body").on("click", "#btnAdd", function () {
-                    //Reference the Name and Country TextBoxes.
-                    var txtKey = $("#txtKey");
-                    var txtValue = $("#txtValue");
-                    if (txtKey.val() == null || txtKey.val() == "" || txtValue.val() == null || txtValue.val() == "") {
-                        alert("Enter Field and Value and press Add"); return false;
-
-                    }
-                    else {
-                        //Get the reference of the Table's TBODY element.
-                        var tBody = $("#tblTaskSpec > TBODY")[0];
-
-                        //Add Row.
-                        var row = tBody.insertRow(-1);
-
-
-                        var cell = $(row.insertCell(-1));
-                        cell.html(txtKey.val());
-
-
-                        cell = $(row.insertCell(-1));
-                        cell.html(txtValue.val());
-
-
-                        <td>@item.Key</td>
-                        <td>@item.Value</td>
+                        <td>@item.Document</td>
+                        <td>@item.Description</td>
 
                         <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
                     </tr>
@@ -120,13 +87,15 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td><input type="text" id="txtKey" /></td>
-                    <td><input type="text" id="txtValue" /></td>
+                    <td><input type="text" id="txtDoc" /></td>
+                    <td><input type="text" id="txtDes" /></td>
                     <td><input type="button" id="btnAdd" value="Add" /></td>
                 </tr>
             </tfoot>
-        </table>
-        <br />
+        </table><font color="red" size="2px"> <p id="taskspeci"></p></font>
+
+
+
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
@@ -135,10 +104,12 @@
         <script type="text/javascript">
             $("body").on("click", "#btnAdd", function () {
                 //Reference the Name and Country TextBoxes.
-                var txtKey = $("#txtKey");
-                var txtValue = $("#txtValue");
-                if (txtKey.val() == null || txtKey.val() == "" || txtValue.val() == null || txtValue.val() == "") {
-                    alert("Enter Field and Value and press Add"); return false;
+                var txtDoc = $("#txtDoc");
+                var txtDes = $("#txtDes");
+
+
+                if (txtDoc.val() == null || txtDoc.val() == "" || txtDes.val() == null || txtDes.val() == "") {
+                    alert("Enter a document and description then press Add"); return false;
 
                 }
                 else {
@@ -150,11 +121,9 @@
 
 
                     var cell = $(row.insertCell(-1));
-                    cell.html(txtKey.val());
-
-
+                    cell.html(txtDoc.val());
                     cell = $(row.insertCell(-1));
-                    cell.html(txtValue.val());
+                    cell.html(txtDoc.val());
 
 
 
@@ -168,9 +137,10 @@
                     cell.append(btnRemove);
 
                     //Clear the TextBoxes.
-                    txtKey.val("");
-                    txtValue.val("");
+                    txtDoc.val("");
+                    txtDes.val("");
                 }
+
             });
 
             function Remove(button) {
@@ -185,6 +155,7 @@
                     table.deleteRow(row[0].rowIndex);
                 }
             };
+         
 
             $("body").on("click", "#btnSave", function () {
                 //Loop through the Table rows and build a JSON array.
@@ -192,33 +163,37 @@
                 $("#tblTaskSpec TBODY TR").each(function () {
                     var row = $(this);
                     var taskSpec = {};
-                    taskSpec.Key = row.find("TD").eq(0).html();
-                    taskSpec.Value = row.find("TD").eq(1).html();
+                    taskSpec.Document = row.find("TD").eq(0).html();
+                    taskSpec.Description = row.find("TD").eq(1).html();
                     tasksSpec.push(taskSpec);
                     // alert(itemsSpec[0].Key);
 
-                    $('#req').html("");
-                    $('#title').html("");
-                    $('#additionaInfo').html("");
-                    $('#taskspeci').html("");
-                    if ($('#requester').val() === "" || $('#taskTitle').val() === "" || $('#AdditionaInfo').val() === "") {
+                });
+                $('#taskAddress').html("");
+                $('#taskDate').html("");
+                $('#taskTime').html("");
+                $('#additionaInfo').html("");
+                $('#taskspeci').html("");
+                if ($('#address').val() === "" || $('#time').val() === "" || $('#date').val() === "" || $('#AdditionaInfo').val() === "") {
 
-                        if ($('#requester').val() === "") {
-                            $('#req').html("Requester is required");
-                        } if ($('#taskTitle').val() === "") {
-                            $('#title').html("Title is required");
-                        } if ($('#AdditionalInfo').val() === "") {
-                            $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
-                        }
-                        return false;
-                    } else if (!tasksSpec.length) {
-                        $('#taskspeci').html("add more in information"); return false;
+                    if ($('#address').val() === "") {
+                        $('#taskAddress').html("Address is required");
+                    } if ($('#date').val() === "") {
+                        $('#taskDate').html("Date is required");
+                    } if ($('#time').val() === "") {
+                        $('#taskTime').html("Time is required");
+                    } if ($('#AdditionalInfo').val() === "") {
+                        $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
                     }
+                    return false;
+                } else if (!tasksSpec.length) {
+                    $('#taskspeci').html("Add a document and description!"); return false;
+                }
                 else {
                     //Send the JSON array to Controller using AJAX.
                     $.ajax({
                         type: "POST",
-                        url: "/OtherTasks/UpdateTaskSpecifications",
+                        url: "/InventoryTasks/InsertDocuments",
                         data: JSON.stringify(tasksSpec),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -230,6 +205,15 @@
             });
         </script>
     </body>
+
+
+    <div class="form-row">
+        <div class="col-md-10">
+            //to be replacedPlace Holder for documents.
+        </div>
+    </div>
+
+
     <div class="form-row">
         <div class="col-md-12">
             <hr />
@@ -238,25 +222,68 @@
     </div>
     <div class="form-row">
         <div class="col-md-12">
-            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
             @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
             <font color="red" size="2px"> <p id="additionaInfo"></p></font>
         </div>
     </div>
 
+
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>-->
+                    @Html.TextBoxFor(model => model.taskDate, new { @type = "date", @class = "form-​control datepicker", @Value = Model.taskDate.ToString("yyyy-MM-dd") })
+                    @Html.ValidationMessageFor(model => model.taskDate.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+
+                    <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
+                    @Html.EditorFor(model => model.taskTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.taskTime, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="taskDateError">.</p></font>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="taskTimeError">.</p></font>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--Blank Space-->
     <div class="form-row">
         <div class="col-md-12">
-            <hr />
+
         </div>
     </div>
+    <!--Buttom Buttons-->
     <!--Buttom Buttons-->
     <div class="form-row">
         <div class="col-md-12">
             <div class="form-row">
                 <div class="col-md-6">
                     <button class="btn btn-primary" type="button" style=" width: 15%; float:right; background-color: grey;border-color: black; margin-left: 2px;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
-                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+
+                    <button class="btn btn-primary" type="submit" value="Edit" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
                     <br /><br /><br />
 
 
@@ -265,13 +292,6 @@
 
         </div>
     </div>
-
-
-    <div>
-        <div id="listSectionTEST"><ul></ul></div>
-
-    </div>
-
     <br />
     <br />
     <br />
@@ -281,4 +301,10 @@
     <br />
     <br />
 </div>
+
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("taskDate")[0].setAttribute('min', today);
+        
+    </script>
 }

@@ -19,8 +19,6 @@ namespace TermProjectUI.Models
         
         public string Requester { get; set; }
         [BsonElement("PUAddress")]
-
-
         public string PUAddress { get; set; }//startLocation
         [BsonElement("PUCity")]
         public string PUCity { get; set; }
@@ -88,6 +86,8 @@ namespace TermProjectUI.Models
         public string taskType { get; set; }
         [BsonElement("posterName")]
         public string posterName { get; set; }
+        [BsonElement("posterPhoto")]
+        public string posterPhoto { get; set; }
         [BsonElement("assignees")]
         public List<string> assignees { get; set; }
         [BsonElement("creationDate")]

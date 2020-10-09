@@ -45,7 +45,8 @@
 
 
 
-}@foreach (var item in Model.InventoryTasks)
+}
+@foreach (var item in Model.InventoryTasks)
 {
 
 
@@ -58,7 +59,7 @@
                             <img src="~/Images/inventory_Nav.JPG" style="float: left; margin-left: -2%;height: 15%; width: 15%;">
                             <h1 style="margin-top : 3%;">
 
-                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskName), "../TransportationTasks/Details", new { id = item.Id })
+                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskName), "../InventoryTasks/Details", new { id = item.Id })
                             </h1>
 
 
@@ -74,7 +75,8 @@
 
 
 
-}@foreach (var item in Model.OtherTasks)
+}
+@foreach (var item in Model.OtherTasks)
 {
 
 
