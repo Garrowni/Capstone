@@ -1,0 +1,159 @@
+﻿@model TermProjectUI.Models.InventoryTaskModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<style>
+    a {
+        color: white;
+    }
+</style>
+
+<br />
+<br />
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-xl-9">
+                <div class="row">
+                    <div class="col">
+                        <img src="~/Images/inventory_Nav.JPG" style="float: left; height: 15%; width: 15%;">
+                        <br />
+                        <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskName)</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
+                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
+
+
+
+                    </div>
+                </div>
+
+
+
+            
+
+
+            <div class="row">
+                <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
+                    <div class="row">Address:  @Html.DisplayFor(model => model.address)</div>
+                    <div class="row">Date:  @Html.DisplayFor(model => model.date)</div>
+                    <div class="row">Time:  @Html.DisplayFor(model => model.time)</div>
+                    
+                    <div class="row">
+
+
+                        Documents:
+                        @foreach (var item in Model.Documents)
+                        {
+                            <ul>
+                                <li> @Html.DisplayFor(model => item.Document) : @Html.DisplayFor(model => item.Description) </li>
+
+                            </ul>
+
+                        }
+
+
+
+                    </div>
+                    <div class="row">Additional InformatioN: @Html.DisplayFor(model => model.AdditionalInfo)</div>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-4 col-xl-3">
+                <div class="row">
+                    <div class="col">
+                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;     />
+                    </div>
+                </div>
+
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            Poster
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/tsoler.jpg" /></div><small style="margin-left: 2px">   @Html.DisplayFor(model => model.posterName)</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            Requester
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/ellie.jpg" /></div><small style="margin-left: 2px"> @Html.DisplayFor(model => model.requester)</small>
+                </div><br />
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            Assigned Volunteers
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <small style="float: left">0 Volunteers Assigned</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-primary" type="button" style="float:left;margin-top: 5%;background-color: grey;border-color: black;">Join Task</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<hr />
+
+
+
+<!-- <div>
+   <strong>Admin Area</strong>
+     <br />
+
+     TaskType:          Html.DisplayFor(model => model.taskType)
+     <br />
+     Importance Level:   Html.DisplayFor(model => model.importanceLevel)
+     <br />
+     Creation Date:            Html.DisplayFor(model => model.creationDate)
+     <br />State:  Html.DisplayFor(model => model.state)
+     <br />
+     Not set up yet:
+     Html.DisplayFor(model => model.items)
+     <br />
+     Assignees:  Html.DisplayFor(model => model.assignees)
+     <br />
+
+ </div>-->
+<p>
+
+
+</p>

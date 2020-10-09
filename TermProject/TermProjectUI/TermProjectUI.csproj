@@ -196,7 +196,11 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AllTasksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PhotographyTasksController.cs" />
+    <Compile Include="Controllers\GroomingTasksController.cs" />
+    <Compile Include="Controllers\VetTasksController.cs" />
     <Compile Include="Controllers\OtherTasksController.cs" />
+    <Compile Include="Controllers\InventoryTasksController.cs" />
     <Compile Include="Controllers\TransportationTasksController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -204,8 +208,12 @@
     </Compile>
     <Compile Include="Models\AllTaskModel.cs" />
     <Compile Include="Models\DeletedTaskModel.cs" />
+    <Compile Include="Models\VetTaskModel.cs" />
+    <Compile Include="Models\PhotographyTaskModel.cs" />
+    <Compile Include="Models\GroomingTaskModel.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\OtherTaskModel.cs" />
+    <Compile Include="Models\InventoryTaskModel.cs" />
     <Compile Include="Models\TransportationTaskModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -236,13 +244,15 @@
     <Content Include="Global.asax" />
     <Content Include="Images\cal.png" />
     <Content Include="Images\documentation_Nav.JPG" />
-    <Content Include="Images\donations_Nav.JPG" />
     <Content Include="Images\ellie.jpg" />
+    <Content Include="Images\grooming_Nav.JPG" />
+    <Content Include="Images\inventory_Nav.JPG" />
     <Content Include="Images\maintenance_Nav.JPG" />
     <Content Include="Images\map.png" />
     <Content Include="Images\nicole.jpg" />
     <Content Include="Images\other_Nav.JPG" />
     <Content Include="Images\person.png" />
+    <Content Include="Images\photography_Nav.JPG" />
     <Content Include="Images\transportation_Nav.JPG" />
     <Content Include="Images\tsoler.jpg" />
     <Content Include="Images\vet_Nav.JPG" />
@@ -321,6 +331,26 @@
     <Content Include="Views\AllTasks\Index.cshtml" />
     <Content Include="Views\OtherTasks\Edit.cshtml" />
     <Content Include="Views\OtherTasks\Delete.cshtml" />
+    <Content Include="Views\InventoryTasks\Create.cshtml" />
+    <Content Include="Views\InventoryTasks\Delete.cshtml" />
+    <Content Include="Views\InventoryTasks\Details.cshtml" />
+    <Content Include="Views\InventoryTasks\Edit.cshtml" />
+    <Content Include="Views\InventoryTasks\Index.cshtml" />
+    <Content Include="Views\VetTasks\Create.cshtml" />
+    <Content Include="Views\VetTasks\Delete.cshtml" />
+    <Content Include="Views\VetTasks\Details.cshtml" />
+    <Content Include="Views\VetTasks\Edit.cshtml" />
+    <Content Include="Views\VetTasks\Index.cshtml" />
+    <Content Include="Views\PhotographyTasks\Create.cshtml" />
+    <Content Include="Views\PhotographyTasks\Delete.cshtml" />
+    <Content Include="Views\PhotographyTasks\Details.cshtml" />
+    <Content Include="Views\PhotographyTasks\Edit.cshtml" />
+    <Content Include="Views\PhotographyTasks\Index.cshtml" />
+    <Content Include="Views\GroomingTasks\Create.cshtml" />
+    <Content Include="Views\GroomingTasks\Delete.cshtml" />
+    <Content Include="Views\GroomingTasks\Details.cshtml" />
+    <Content Include="Views\GroomingTasks\Edit.cshtml" />
+    <Content Include="Views\GroomingTasks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

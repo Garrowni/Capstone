@@ -1,0 +1,71 @@
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace TermProjectUI.Models
+{
+    public class InventoryTaskModel
+    {
+        [BsonId]
+        public ObjectId Id { get; set; }
+
+        
+       
+      
+        [BsonElement("taskID")]
+        //auto generate
+        public int taskID { get; set; }
+        [BsonElement("taskName")]
+        public string taskName { get; set; }
+        [BsonElement("taskType")]
+        public string taskType { get; set; }
+        [BsonElement("posterName")]
+        public string posterName { get; set; }
+        [BsonElement("assignees")]
+        public List<string> assignees { get; set; }
+        [BsonElement("creationDate")]
+        public DateTime creationDate { get; set; }
+        [BsonElement("state")]
+        public string state { get; set; }
+
+        [BsonElement("requester")]
+        public string requester { get; set; }
+
+
+
+        [BsonElement("address")]
+        public string address { get; set; }
+        [BsonElement("date")]
+        public DateTime date { get; set; }
+        [BsonElement("time")]
+        public DateTime time { get; set; }
+
+
+        public string AdditionalInfo { get; set; }
+
+
+
+        public class documents
+        {
+            public string Document { get; set; }  //not sure how to do this yet
+            public string Description { get; set; }
+
+        }
+
+
+
+
+        public List<documents> Documents
+        {
+            get;
+            set;
+
+        }
+
+    }
+}

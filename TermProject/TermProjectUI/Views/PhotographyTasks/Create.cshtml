@@ -1,0 +1,38 @@
+﻿@model TermProjectUI.Models.PhotographyTaskModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="form-row">
+        <div class="col-md-12">
+            <h2>
+
+                Photography Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </a>
+            </h2>
+        </div>
+    </div>
+    <!--Task Specification-->
+  
+   
+    
+    <body>
+      <p>Photography Task - Create </p>
+       </body>
+</div>
+}

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TermProjectUI.Models.InventoryTaskModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    a {
+        color: black;
+    }
+</style>
+<h2>Other Tasks</h2>
+
+
+<link href="@Url.Content("https://fonts.googleapis.com/css?family=Playfair+Display:400,700")" rel="stylesheet" type="text/css" />
+
+<link href="@Url.Content("~/assets/fonts/font-awesome.min.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/assets/css/Comment.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/assets/css/Community-ChatComments.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/assets/css/Map-Clean.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/assets/css/styles.css")" rel="stylesheet" type="text/css" />
+
+
+
+@foreach (var item in Model)
+{
+
+
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-11 col-xl-9">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="~/Images/other_Nav.JPG" style="float: left; margin-left: -2%;height: 15%; width: 15%;">
+                            <h1 style="margin-top : 3%;">
+
+                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskTitle), "Details", new { id = item.Id })
+                            </h1>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <hr />
+
+
+
+}
