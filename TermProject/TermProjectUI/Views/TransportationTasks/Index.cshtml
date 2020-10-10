@@ -10,7 +10,7 @@
         color: black;
     }
 </style>
-<h2>Tasks</h2>
+<h2>Transportation Tasks</h2>
 <!--
 <p>
    Html.ActionLink("Create New", "Create")
@@ -55,7 +55,7 @@
                             <img src="~/Images/transportation_Nav.JPG" style="float: left; margin-left: -2%;height: 15%; width: 15%;">
                             <h1 style="margin-top : 3%;">
 
-                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskName), "Details", new { id = item.Id })
+                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskName), "../TransportationTasks/Details", new { id = item.Id })
                             </h1>
 
 

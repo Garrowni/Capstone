@@ -72,8 +72,8 @@ namespace TermProjectUI.Controllers
             photographyTask.posterName = Session["Username"].ToString();
             photographyTask.posterPhoto = Session["Img"].ToString();
             photographyTask.taskType = "Photography Task";
-            photographyTask.taskName = "PhotographyTaskTest";
-          
+            photographyTask.taskName = photographyTask.taskType + " - " + photographyTask.photographerName;
+
             photographyTask.state = "Unassigned";
 
             photographyTask.Dogs = dogsList;
@@ -170,8 +170,8 @@ namespace TermProjectUI.Controllers
                     .Set("state", task.state)
                     .Set("location", task.location)
                     .Set("photographerName", task.photographerName)
-                    .Set("date", task.date)
-                    .Set("time", task.time)
+                    .Set("taskDate", task.taskDate)
+                    .Set("taskTime", task.taskTime)
                     .Set("Dogs", task.Dogs)
                     .Set("AdditionalInfo", task.AdditionalInfo);
                 var result = productCollection.UpdateOne(filter, update);

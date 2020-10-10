@@ -36,26 +36,28 @@ namespace TermProjectUI.Models
         public string state { get; set; }
 
 
+        [BsonElement("requester")]
+        public string requester { get; set; }
+
 
         [BsonElement("location")]
         public string location { get; set; }
         [BsonElement("photographerName")]
         public string photographerName { get; set; }
-        [BsonElement("date")]
-        public DateTime date { get; set; }
-        [BsonElement("time")]
-        public DateTime time{ get; set; }
+        [BsonElement("taskDate"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true), DataType(DataType.Date, ErrorMessage = "Date only")]
+        public DateTime taskDate { get; set; }
+        [BsonElement("taskTime")]
+        public TimeSpan taskTime{ get; set; }
 
 
 
         public class dog
         {
-            public string Name { get; set; }
-            public string Breed { get; set; }
-            public string Size { get; set; }
-            public string Transportation { get; set; }
-            public string transporter { get; set; }
-            public string notes { get; set; }
+            public string txtName { get; set; }
+            public string txtBreed { get; set; }
+            public string txtSize { get; set; }
+
+            public string txtNotes { get; set; }
         }
 
         public List<dog> Dogs

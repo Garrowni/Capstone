@@ -76,6 +76,36 @@
 
 
 }
+@foreach (var item in Model.PhotographyTasks)
+{
+
+
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-11 col-xl-9">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="~/Images/other_Nav.JPG" style="float: left; margin-left: -2%;height: 15%; width: 15%;">
+                            <h1 style="margin-top : 3%;">
+
+                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskName), "../PhotographyTasks/Details", new { id = item.Id })
+                            </h1>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <hr />
+
+
+
+}
 @foreach (var item in Model.OtherTasks)
 {
 
