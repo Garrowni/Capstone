@@ -61,52 +61,15 @@
             <br />
         </div>
     </div>
-    <!--Appointment Details-->
-    <!--
-
-    This section should only show if booked is not checked. if it is checked it should be blank/disabled
-
-        -->
-    <div class="form-row">
 
 
-        <div class="col-md-12">
-            Prefered
-            <br />
-        </div>
-    </div>
-    <div class="form-row">
-  
-
-        <div class="col-md-12">
-            <br />
-        </div>
-    </div>
-    <div class="form-row">
-
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Groomer/Store
-            @Html.EditorFor(model => model.prefStore, new { htmlAttributes = new { @class = "form-control" } })
-
-        </div>
-
-        <div class="col-md-2">
-            <font color="red"><strong>*</strong></font>Address:
-            @Html.EditorFor(model => model.prefAddress, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Date:
-            @Html.EditorFor(model => model.prefDate, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-
-    </div>
+    <!--services-->
     <div class="form-row">
         <div class="col-md-12">
             <br />
             Services:
         </div>
     </div>
-    <!--services-->
     <div class="form-row">
         <div class="col-md-4">
             <div class="form-row">
@@ -136,5 +99,199 @@
         </div>
     </div>
 
+
+
+    <!--Appointment-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <br />
+            Appointment Details:
+        </div>
+    </div>
+
+    <!--booked-->
+
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <input type="checkbox" value="appointmentBooked" name="bookedID" id="bookedID" /> Booked
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <!--Appointment Details Prefered-->
+    <!--
+
+    This section should only show if booked is not checked. if it is checked it should be blank/disabled
+
+        -->
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            Prefered
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+        <!--style="display: none" id="prefRow">-->
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Groomer/Store
+            @Html.EditorFor(model => model.prefStore, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+
+        <div class="col-md-2">
+            <font color="red"><strong>*</strong></font>Address:
+            @Html.EditorFor(model => model.prefAddress, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Date:
+            @Html.EditorFor(model => model.prefDate, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+    </div>
+
+
+
+
+    <!--Appointment Details Booked-->
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            Booking Details
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Groomer/Store
+            @Html.EditorFor(model => model.bookedStore, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Address:
+            @Html.EditorFor(model => model.bookedAddress, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Date:
+            @Html.EditorFor(model => model.bookedDate, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Time:
+            @Html.EditorFor(model => model.bookedTime, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+    </div>
+
+
+    <!--Payed-->
+
+    <div class="form-row">
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+                Payment
+                <br />
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <input type="checkbox" value="appointmentPayed" /> Payed
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+
+
+    <!--Pay Details-->
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            Payment Details
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Payer
+            @Html.EditorFor(model => model.payer, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Receipt:
+            @Html.EditorFor(model => model.receipt, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+
+    </div>
+
+    <!--additional information-->
+
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-3">
+            Additional Information
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+
+
+
+
+    </div>
+  
 </div>
+
+
+
 }
