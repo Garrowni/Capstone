@@ -1,0 +1,297 @@
+﻿@model TermProjectUI.Models.GroomingTaskModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="form-row">
+        <div class="col-md-12">
+            <h2>
+
+                Grooming Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </a>
+            </h2>
+        </div>
+    </div>
+    <!--Task Specification-->
+    <div class="form-row">
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Dogs Name:
+            @Html.EditorFor(model => model.dogName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.dogName, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="taskDogName"></p></font>
+        </div>
+
+        <div class="col-md-2">
+            <font color="red"><strong>*</strong></font>Age
+            @Html.EditorFor(model => model.dogAge, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.dogAge, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="taskDogAge"></p></font>
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Size:
+            @Html.EditorFor(model => model.dogSize, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.dogSize, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="taskDogSize"></p></font>
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Dogs Breed:
+            @Html.EditorFor(model => model.dogBreed, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.dogBreed, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="taskDogBreed"></p></font>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+
+
+    <!--services-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <br />
+            Services:
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-4">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <input type="checkbox" value="Wash/Shampoo" /> Wash/Shampoo
+                </div>
+                <div class="col-md-6">
+                    <input type="checkbox" value="nails" /> Nails
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <input type="checkbox" value="Cut" /> Cut
+                </div>
+                <div class="col-md-6">
+                    <input type="checkbox" value="Ear Cleaning" /> Ear Cleaning
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <input type="checkbox" value="Trim" /> Trim
+                </div>
+                <div class="col-md-6">
+                    <input type="checkbox" value="TeethCleaning" /> Teeth Cleaning
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--Appointment-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <br />
+            Appointment Details:
+        </div>
+    </div>
+
+    <!--booked-->
+
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <input type="checkbox" value="appointmentBooked" name="bookedID" id="bookedID" /> Booked
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <!--Appointment Details Prefered-->
+    <!--
+
+    This section should only show if booked is not checked. if it is checked it should be blank/disabled
+
+        -->
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            Prefered
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+        <!--style="display: none" id="prefRow">-->
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Groomer/Store
+            @Html.EditorFor(model => model.prefStore, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+
+        <div class="col-md-2">
+            <font color="red"><strong>*</strong></font>Address:
+            @Html.EditorFor(model => model.prefAddress, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Date:
+            @Html.EditorFor(model => model.prefDate, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+    </div>
+
+
+
+
+    <!--Appointment Details Booked-->
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            Booking Details
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Groomer/Store
+            @Html.EditorFor(model => model.bookedStore, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Address:
+            @Html.EditorFor(model => model.bookedAddress, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Date:
+            @Html.EditorFor(model => model.bookedDate, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Time:
+            @Html.EditorFor(model => model.bookedTime, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+    </div>
+
+
+    <!--Payed-->
+
+    <div class="form-row">
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+                Payment
+                <br />
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <input type="checkbox" value="appointmentPayed" /> Payed
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+
+
+    <!--Pay Details-->
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            Payment Details
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Payer
+            @Html.EditorFor(model => model.payer, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Receipt:
+            @Html.EditorFor(model => model.receipt, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+
+    </div>
+
+    <!--additional information-->
+
+    <div class="form-row">
+
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-3">
+            Additional Information
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+
+
+
+
+    </div>
+  
+</div>
+
+
+
+}

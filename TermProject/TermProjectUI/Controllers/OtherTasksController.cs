@@ -59,7 +59,8 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OtherTaskModel otherTask)
         {
-            otherTask.posterName = Session["Username"].ToString(); ;
+            otherTask.posterName = Session["Username"].ToString();
+            otherTask.posterPhoto = Session["Img"].ToString();
             otherTask.TaskRequirements = taskSpecList;
             otherTask.state = "Unassigned";
             otherTask.posterPhoto = Session["Img"].ToString();

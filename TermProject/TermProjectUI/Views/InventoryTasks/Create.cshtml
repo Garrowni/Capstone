@@ -1,0 +1,274 @@
+﻿<!--Documents section will be replaced so we can upload and download docs.-->
+
+@model TermProjectUI.Models.InventoryTaskModel
+@{ ViewBag.Title = "Create"; }
+
+<h2>Create</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-row">
+            <div class="col-md-12">
+                <h2>
+                    Inventory Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </a>
+                </h2>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h1>
+                    Task Specification
+                </h1>
+            </div>
+        </div>
+        <div class="form-row">
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Address:
+                @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskAddress"></p></font>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h1>
+                    Instructions and Templates
+                </h1>
+            </div>
+        </div>
+        <body>
+
+            <table id="tblTaskSpec" class="table" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+
+                        <th style="width:150px"> <font color="red"><strong>*</strong></font>Document</th>
+                        <th style="width:150px"> <font color="red"><strong>*</strong></font>Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><input type="file" name="file" id="txtDoc" accept=".doc, .docx, .txt, .pdf" /></td>
+                        <td><input type="text" id="txtDes" /></td>
+                        <td><input type="button" id="btnAdd" value="Add" /></td>
+                    </tr>
+                </tfoot>
+            </table><font color="red" size="2px"> <p id="taskspeci"></p></font>
+
+            <br />
+
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+            <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
+            <!--List Script-->
+            <script type="text/javascript">
+
+
+                $("body").on("click", "#btnAdd", function () {
+                    //Reference the Name and Country TextBoxes.
+                    var txtDoc = $("#txtDoc");
+                    var txtDes = $("#txtDes");
+
+
+                    if (txtDoc.val() == null || txtDoc.val() == "" || txtDes.val() == null || txtDes.val() == "") {
+                        alert("Enter a document and description then press Add"); return false;
+
+                    }
+                    else {
+                        //Get the reference of the Table's TBODY element.
+                        var tBody = $("#tblTaskSpec > TBODY")[0];
+
+                        //Add Row.
+                        var row = tBody.insertRow(-1);
+
+
+                        var cell = $(row.insertCell(-1));
+                        cell.html(txtDoc.val());
+                        cell = $(row.insertCell(-1));
+                        cell.html(txtDes.val());
+
+
+
+
+                        //Add Button cell.
+                        cell = $(row.insertCell(-1));
+                        var btnRemove = $("<input />");
+                        btnRemove.attr("type", "button");
+                        btnRemove.attr("onclick", "Remove(this);");
+                        btnRemove.val("Remove");
+                        cell.append(btnRemove);
+
+                        //Clear the TextBoxes.
+                        txtDoc.val("");
+                        txtDes.val("");
+                    }
+
+                });
+
+                function Remove(button) {
+                    //Determine the reference of the Row using the Button.
+                    var row = $(button).closest("TR");
+                    var name = $("TD", row).eq(0).html();
+                    if (confirm("Do you want to delete: " + name)) {
+                        //Get the reference of the Table.
+                        var table = $("#tblTaskSpec")[0];
+
+                        //Delete the Table row using it's Index.
+                        table.deleteRow(row[0].rowIndex);
+                    }
+                };
+
+                $("body").on("click", "#btnSave", function () {
+                    //Loop through the Table rows and build a JSON array.
+                    var tasksSpec = new Array();
+                    $("#tblTaskSpec TBODY TR").each(function () {
+                        var row = $(this);
+                        var taskSpec = {};
+                        taskSpec.Document = row.find("TD").eq(0).html();
+                        taskSpec.Description = row.find("TD").eq(1).html();
+                        tasksSpec.push(taskSpec);
+                        // alert(itemsSpec[0].Key);
+
+                    });
+                    $('#taskAddress').html("");
+                    $('#taskDateError').html("");
+                    $('#taskTimeError').html("");
+                    $('#additionaInfo').html("");
+                    $('#taskspeci').html("");
+                    if ($('#address').val() === "" || $('#taskTime').val() === "" || $('#taskDate').val() === "" || $('#AdditionaInfo').val() === "") {
+
+                        if ($('#address').val() === "") {
+                            $('#taskAddress').html("Address is required");
+                        } if ($('#taskDate').val() === "") {
+                            $('#taskDateError').html("Date is required");
+                        } if ($('#taskTime').val() === "") {
+                            $('#taskTimeError').html("Time is required");
+                        } if ($('#AdditionalInfo').val() === "") {
+                            $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
+                        }
+                        return false;
+                    } else if (!tasksSpec.length) {
+                        $('#taskspeci').html("Add a document and description!"); return false;
+                    }
+                    else {
+                        //Send the JSON array to Controller using AJAX.
+                        $.ajax({
+                            type: "POST",
+                            url: "/InventoryTasks/InsertDocuments",
+                            data: JSON.stringify(tasksSpec),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (r) {
+                                //alert(r + " record(s) inserted.");
+                            }
+                        });
+                    }
+                });
+            </script>
+        </body>
+
+        <!--Date/Time-->
+        <div class="form-row">
+            <div class="col-md-5">
+                <div class="form-row">
+                    <div class="col">
+                        <font color="red"><strong>*</strong></font>Date:
+                        <input type="date" id="taskDate" name="taskDate" class="form-control" required>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-row">
+                    <div class="col">
+
+                        <font color="red"><strong>*</strong></font>Time:
+                        <input type="time" id="taskTime" name="taskTime" class="form-control" style="width: 112%;" required>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-5">
+                <div class="form-row">
+                    <div class="col">
+                        <font color="red" size="2px"> <p id="taskDateError">.</p></font>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-row">
+                    <div class="col">
+                        <font color="red" size="2px"> <p id="taskTimeError">.</p></font>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Additional Information -->
+
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h2>Additional Information</h2>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
+                @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="additionaInfo"></p></font>
+            </div>
+        </div>
+
+        <!--Blank Space-->
+        <div class="form-row">
+            <div class="col-md-12">
+
+            </div>
+        </div>
+        <!--Buttom Buttons-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+
+                        <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                        <br /><br /><br />
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("taskDate")[0].setAttribute('min', today);
+    </script>
+}

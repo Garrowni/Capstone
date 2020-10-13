@@ -1,16 +1,21 @@
-﻿@model TermProjectUI.Models.OtherTaskModel
+﻿<!--Documents section will be replaced so we can upload and download docs.-->
+@model TermProjectUI.Models.InventoryTaskModel
 
-@{ ViewBag.Title = "Create";}
+@{
+    ViewBag.Title = "Edit";
+}
+
+
 <style>
     a {
         color: white;
     }
-</style>
+    </style>
 <h2>Create</h2>
 
 @using (Html.BeginForm())
 {
-@Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
 
@@ -19,12 +24,12 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     @Html.HiddenFor(model => model.posterName)
-
+    @Html.HiddenFor(model => model.taskName)
     <div class="form-row">
         <div class="col-md-12">
             <h2>
 
-                Other Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                Inventory Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
                     <span class="glyphicon glyphicon-remove-circle"></span>
                 </a>
             </h2>
@@ -39,29 +44,29 @@
             </h1>
         </div>
     </div>
-    <div class="form-row">
-        <div class="col-md-3">
-            Importance Level:
-            @Html.DropDownListFor(model => model.ImportanceLevel, Enumerable.Range(1, 3).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-            <!--Html.EditorFor(model => model.importanceLevel, new { htmlAttributes = new { class = "form-control" } })
-        Html.ValidationMessageFor(model => model.importanceLevel, "", new { lass = "text-danger" })-->
 
-        </div>
-        <div class="col-md-4">
-            <font color="red"><strong>*</strong></font>Title:
-            @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.taskTitle, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="title"></p></font>
-        </div>
-        <div class="col-md-4">
-            <font color="red"><strong>*</strong></font>Requester:
-            @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="req"></p></font>
+    <div class="form-row">
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Address:
+            @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="taskAddress"></p></font>
         </div>
 
     </div>
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>
+                Instructions and Templates
+            </h1>
+        </div>
+    </div>
 
+
+
+    <!--replace once figureout documents!!!!-->
 
     <body>
 
@@ -69,48 +74,48 @@
             <thead>
                 <tr>
 
-                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Field</th>
-                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Value</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Document</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Description</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.TaskRequirements)
-                 {
+                @foreach (var item in Model.Documents)
+                {
 
-                    <tr>
-                        <td>@item.Key</td>
-                        <td>@item.Value</td>
-                        
-                        <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
-                    </tr>
-                 }
+
+<tr>
+    <td>@item.Document</td>
+    <td>@item.Description</td>
+
+    <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
+</tr>                }
             </tbody>
             <tfoot>
                 <tr>
-                    <td><input type="text" id="txtKey" /></td>
-                    <td><input type="text" id="txtValue" /></td>
+                    <td><input type="text" id="txtDoc" /></td>
+                    <td><input type="text" id="txtDes" /></td>
                     <td><input type="button" id="btnAdd" value="Add" /></td>
                 </tr>
             </tfoot>
-        </table>
-            <br />
-
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+        </table><font color="red" size="2px"> <p id="taskspeci"></p></font>
 
 
-     
+
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
 
         <script type="text/javascript">
             $("body").on("click", "#btnAdd", function () {
                 //Reference the Name and Country TextBoxes.
-                var txtKey = $("#txtKey");
-                var txtValue = $("#txtValue");
+                var txtDoc = $("#txtDoc");
+                var txtDes = $("#txtDes");
 
 
-                if (txtKey.val() == null || txtKey.val() == "" || txtValue.val() == null || txtValue.val() == "") {
-                    alert("Enter Field and Value and press Add"); return false;
+                if (txtDoc.val() == null || txtDoc.val() == "" || txtDes.val() == null || txtDes.val() == "") {
+                    alert("Enter a document and description then press Add"); return false;
 
                 }
                 else {
@@ -122,9 +127,9 @@
 
 
                     var cell = $(row.insertCell(-1));
-                    cell.html(txtKey.val());
+                    cell.html(txtDoc.val());
                     cell = $(row.insertCell(-1));
-                    cell.html(txtValue.val());
+                    cell.html(txtDoc.val());
 
 
 
@@ -138,13 +143,9 @@
                     cell.append(btnRemove);
 
                     //Clear the TextBoxes.
-                    txtKey.val("");
-                    txtValue.val("");
+                    txtDoc.val("");
+                    txtDes.val("");
                 }
-
-
-
-
 
             });
 
@@ -161,40 +162,44 @@
                 }
             };
 
+
             $("body").on("click", "#btnSave", function () {
                 //Loop through the Table rows and build a JSON array.
                 var tasksSpec = new Array();
                 $("#tblTaskSpec TBODY TR").each(function () {
                     var row = $(this);
                     var taskSpec = {};
-                    taskSpec.Key = row.find("TD").eq(0).html();
-                    taskSpec.Value = row.find("TD").eq(1).html();
+                    taskSpec.Document = row.find("TD").eq(0).html();
+                    taskSpec.Description = row.find("TD").eq(1).html();
                     tasksSpec.push(taskSpec);
                     // alert(itemsSpec[0].Key);
 
                 });
-                $('#req').html("");
-                $('#title').html("");
+                $('#taskAddress').html("");
+                $('#taskDate').html("");
+                $('#taskTime').html("");
                 $('#additionaInfo').html("");
                 $('#taskspeci').html("");
-                if ($('#requester').val() === "" || $('#taskTitle').val() === "" || $('#AdditionaInfo').val() === "") {
+                if ($('#address').val() === "" || $('#time').val() === "" || $('#date').val() === "" || $('#AdditionaInfo').val() === "") {
 
-                    if ($('#requester').val() === "") {
-                        $('#req').html("Requester is required");
-                    } if ($('#taskTitle').val() === "") {
-                        $('#title').html("Title is required");
+                    if ($('#address').val() === "") {
+                        $('#taskAddress').html("Address is required");
+                    } if ($('#date').val() === "") {
+                        $('#taskDate').html("Date is required");
+                    } if ($('#time').val() === "") {
+                        $('#taskTime').html("Time is required");
                     } if ($('#AdditionalInfo').val() === "") {
                         $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
                     }
                     return false;
                 } else if (!tasksSpec.length) {
-                    $('#taskspeci').html("add more in information"); return false;
+                    $('#taskspeci').html("Add a document and description!"); return false;
                 }
                 else {
                     //Send the JSON array to Controller using AJAX.
                     $.ajax({
                         type: "POST",
-                        url: "/OtherTasks/InsertTaskSpecifications",
+                        url: "/InventoryTasks/InsertDocuments",
                         data: JSON.stringify(tasksSpec),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -206,6 +211,11 @@
             });
         </script>
     </body>
+
+
+
+
+
     <div class="form-row">
         <div class="col-md-12">
             <hr />
@@ -220,12 +230,54 @@
         </div>
     </div>
 
+
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>-->
+                    @Html.TextBoxFor(model => model.taskDate, new { @type = "date", @class = "form-​control datepicker", @Value = Model.taskDate.ToString("yyyy-MM-dd") })
+                    @Html.ValidationMessageFor(model => model.taskDate.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+
+                    <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
+                    @Html.EditorFor(model => model.taskTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.taskTime, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="taskDateError">.</p></font>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="taskTimeError">.</p></font>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--Blank Space-->
     <div class="form-row">
         <div class="col-md-12">
 
         </div>
     </div>
+    <!--Buttom Buttons-->
     <!--Buttom Buttons-->
     <div class="form-row">
         <div class="col-md-12">
@@ -242,13 +294,6 @@
 
         </div>
     </div>
-
-
-    <div>
-        <div id="listSectionTEST"><ul></ul></div>
-
-    </div>
-
     <br />
     <br />
     <br />
@@ -258,6 +303,10 @@
     <br />
     <br />
 </div>
+
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("taskDate")[0].setAttribute('min', today);
+
+    </script>
 }
-
-

@@ -103,9 +103,7 @@ namespace TermProjectUI.Controllers
                 var filter = Builders<VolunteerModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<VolunteerModel>.Update
                     .Set("Name", volunteer.Name)
-                    .Set("Email", volunteer.Email)
-                    .Set("Password", volunteer.Password)
-                    .Set("ConfirmPassword", volunteer.ConfirmPassword);
+                    .Set("Email", volunteer.Email);
                     
                 var result = volunteerCollection.UpdateOne(filter, update);
                 return RedirectToAction("Details", new { id = id });
@@ -166,9 +164,7 @@ namespace TermProjectUI.Controllers
 
                 var filter = Builders<VolunteerModel>.Filter.Eq("_id", ObjectId.Parse(Session["UserId"].ToString()));
                 var update = Builders<VolunteerModel>.Update
-                    .Set("UserPhoto", "/UserImages/" + file.FileName)
-                    .Set("Password", volunteer.Password)
-                    .Set("ConfirmPassword", volunteer.ConfirmPassword);
+                    .Set("UserPhoto", "/UserImages/" + file.FileName);
                 var result = volunteerCollection.UpdateOne(filter, update);
                 var volunteerName = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == ObjectId.Parse(Session["UserId"].ToString()));
                 Session["Img"] = volunteerName.UserPhoto.ToString();

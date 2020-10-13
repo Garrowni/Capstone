@@ -1,6 +1,4 @@
-﻿@model IEnumerable<TermProjectUI.Models.TransportationTaskModel>
-
-
+﻿@model IEnumerable<TermProjectUI.Models.PhotographyTaskModel>
 @{
     ViewBag.Title = "Index";
 }
@@ -10,26 +8,7 @@
         color: black;
     }
 </style>
-<h2>Transportation Tasks</h2>
-<!--
-<p>
-   Html.ActionLink("Create New", "Create")
-</p>
-
-
-         <td>
-           Html.ActionLink("Edit", "Edit", new { id = item.taskID }) |
-             Html.ActionLink("Details", "Details", new { id = item.taskID }) |
-             Html.ActionLink("Delete", "Delete", new { id = item.taskID })
-            </td> -->
-
-
-
-
-
-
-
-
+<h2>Photography Tasks</h2>
 
 
 <link href="@Url.Content("https://fonts.googleapis.com/css?family=Playfair+Display:400,700")" rel="stylesheet" type="text/css" />
@@ -52,10 +31,10 @@
                 <div class="col-md-11 col-xl-9">
                     <div class="row">
                         <div class="col-md-12">
-                            <img src="~/Images/transportation_Nav.JPG" style="float: left; margin-left: -2%;height: 15%; width: 15%;">
+                            <img src="~/Images/photography_Nav.JPG" style="float: left; margin-left: -2%;height: 15%; width: 15%;">
                             <h1 style="margin-top : 3%;">
 
-                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskName), "../TransportationTasks/Details", new { id = item.Id })
+                                @Html.ActionLink("" + @Html.DisplayFor(modelItem => item.taskName), "../PhotograhyTasks/Details", new { id = item.Id })
                             </h1>
 
 

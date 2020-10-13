@@ -82,7 +82,7 @@ namespace TermProjectUI.Controllers
                         Session["Username"] = volunteerName.Name;
 
                         Session["UserId"] = volunteerName.Id;
-                        Session["Pass"] = volunteerName.Password;
+                      //  Session["Pass"] = volunteerName.Password;
                         Session["Email"] = volunteerName.Email;
                         Session["Img"] = volunteerName.UserPhoto.ToString();
                         Session["Role"] = volunteerName.Role;

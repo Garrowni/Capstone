@@ -81,17 +81,7 @@ namespace TermProjectUI.Controllers
             transportationTask.creationDate = DateTime.Today;
             //transportationTask.assignees = "0";
             transportationTask.state = "Unassigned";
-           /** if (ModelState.IsValid)
-            {
-                //  db.TransportationTasks.Add(transportationTask);
-                //db.SaveChanges();
 
-                ttr.Add(transportationTask);
-              //  return RedirectToAction("Index");
-                return RedirectToAction("Details", new { id = transportationTask.taskID });
-            }
-
-            return View(transportationTask);*/
 
 
             try

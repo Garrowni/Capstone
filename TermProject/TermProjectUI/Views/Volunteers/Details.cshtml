@@ -14,14 +14,8 @@
 
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
 
-        </dt>
-        <dd>
-            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
 
-        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -38,13 +32,7 @@
         <dd>
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
 
         <!--<dt>
            @* @Html.DisplayNameFor(model => model.Role)
@@ -54,10 +42,19 @@
             @Html.DisplayFor(model => model.Role)*@
         </dd>-->
 
+
     </dl>
+
+
+    <dd>
+        @if (Session["UserId"] == null)
+        {
+            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Return", "../Login") </button>
+        }
+       
+                </dd>
     @if (Session["UserId"] == null)
     {
-        <font color="red" size="3px"> Waiting for Admin's Approval you will get an Email when approved!!!</font>
-    }
+<font color="red" size="3px"> Waiting for Admin's Approval you will get an Email when approved!!!</font>}
 </div>
 
