@@ -4,11 +4,8 @@
     ViewBag.Title = "Details";
 }
 
-<style>
-    a {
-        color: white;
-    }
-</style>
+
+
 
 <br />
 <br />
@@ -21,12 +18,13 @@
                         <img src="~/Images/inventory_Nav.JPG" style="float: left; height: 15%; width: 15%;">
                         <br />
                         <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskName)</h1>
+
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
-                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
+                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id}, new { @style = "color:white;" } ) </button>
+                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @style = "color:white;" }) </button>
 
 
 
@@ -48,12 +46,14 @@
 
 
                         Documents:
-                        @foreach (var item in Model.Documents)
+                        @foreach (var item in Model.FileList)
                         {
-                            <ul>
-                                <li> @Html.DisplayFor(model => item.Document) : @Html.DisplayFor(model => item.Description) </li>
-
-                            </ul>
+                        <ul>
+                            <li>
+                                @Html.ActionLink("Downlaod", "Downlaod", new { FileName = item.ToString(), style = "color:blue" })
+                                @Html.DisplayFor(model => item)
+                            </li>
+                        </ul>
 
                         }
 
