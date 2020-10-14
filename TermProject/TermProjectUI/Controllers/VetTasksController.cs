@@ -22,7 +22,6 @@ namespace TermProjectUI.Controllers
         static List<VetTaskModel.documents> documentsList = new List<VetTaskModel.documents>();
 
 
-
         static List<Object> deletedTask = new List<Object>();
 
         private MongoDBContext dbcontext;
@@ -60,11 +59,11 @@ namespace TermProjectUI.Controllers
             return View();
         }
 
-      
-            // POST: TransportationTasks/Create
-            // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-            // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
+
+        // POST: TransportationTasks/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(VetTaskModel vetTask)
         {
@@ -72,7 +71,8 @@ namespace TermProjectUI.Controllers
             vetTask.posterPhoto = Session["Img"].ToString();
             vetTask.taskType = "Vet Task";
             vetTask.taskName = "VetTaskTest";
-          
+            vetTask.requester = "Ellie";
+
             vetTask.state = "Unassigned";
 
             vetTask.Documents = documentsList;
@@ -83,10 +83,10 @@ namespace TermProjectUI.Controllers
                 documentsList = new List<VetTaskModel.documents>();
                 deletedTask = new List<object>();
                 deletedTask.Add(vetTask);
-                
-             
+
+
                 return RedirectToAction("Details", new { id = vetTask.Id });
-                
+
             }
             catch
             {
@@ -153,13 +153,13 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(string id, VetTaskModel task)
         {
-            
+
             try
             {
                 var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<VetTaskModel>.Update
-                   
-                    
+
+
                     .Set("taskID", task.taskID)
                     .Set("taskName", task.taskName)
                     .Set("taskType", task.taskType)
@@ -169,18 +169,16 @@ namespace TermProjectUI.Controllers
                     .Set("AdditionalInfo", task.AdditionalInfo)
                     .Set("pickupLocation", task.pickupLocation)
                     .Set("pickupVolunteer", task.pickupVolunteer)
-                    .Set("pickupDate", task.pickupDate)
-                    .Set("pickupTime", task.pickupTime)
+
                     .Set("appointmentAddress", task.appointmentAddress)
-                    .Set("appointmentDate", task.appointmentDate)
-                    .Set("appointmentTime", task.appointmentTime)
+
                     .Set("vet", task.vetName)
                     .Set("appointmentReason", task.appointmentReason)
                     .Set("appointmentNotes", task.appointmentNotes)
                     .Set("dropoffLocation", task.dropoffLocation)
                     .Set("dropoffVolunteer", task.dropoffVolunteer)
-                    .Set("dropoffDate", task.dropoffDate)
-                    .Set("dropoffTime", task.dropoffTime)
+                    .Set("DODate", task.DODate)
+                    .Set("DOTime", task.DOTime)
                     .Set("dogName", task.dogName)
                     .Set("dogBreed", task.dogBreed)
                     .Set("dogSize", task.dogSize)
@@ -222,13 +220,13 @@ namespace TermProjectUI.Controllers
             try
             {
 
-                
+
                 taskDelete.deletedTask = deletedTask;
                 taskDelete.tasksType = "Vet";
                 deletedCollection.InsertOne(taskDelete);
                 deletedTask = new List<Object>();
                 productCollection.DeleteOne(Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
-                
+
                 return RedirectToAction("../AllTasks/Index");
             }
             catch
@@ -237,6 +235,6 @@ namespace TermProjectUI.Controllers
             }
         }
 
-       
+
     }
 }

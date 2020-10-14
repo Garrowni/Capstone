@@ -14,6 +14,8 @@ namespace TermProjectUI.Models
         [BsonId]
         public ObjectId Id { get; set; }
 
+        [BsonElement("requester")]
+        public string requester { get; set; }
 
         [BsonElement("posterPhoto")]
         public string posterPhoto { get; set; }
@@ -37,23 +39,26 @@ namespace TermProjectUI.Models
 
 
 
+
         //pickup
         [BsonElement("pickupLocation")]
         public string pickupLocation { get; set; }
         [BsonElement("pickupVolunteer")]
         public string pickupVolunteer { get; set; }
-        [BsonElement("pickupDate")]
-        public DateTime pickupDate { get; set; }
-        [BsonElement("pickupTime")]
-        public DateTime pickupTime { get; set; }
+        [BsonElement("PUDate"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true), DataType(DataType.Date, ErrorMessage = "Date only")]
+        public DateTime PUDate { get; set; }
+        [BsonElement("PUTime")]
+        public TimeSpan PUTime { get; set; }
 
         //appointment
         [BsonElement("appointmentAddress")]
         public string appointmentAddress { get; set; }
-        [BsonElement("appointmentDate")]
-        public DateTime appointmentDate { get; set; }
-        [BsonElement("appointmentTime")]
-        public DateTime appointmentTime{ get; set; }
+        [BsonElement("APDate"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true), DataType(DataType.Date, ErrorMessage = "Date only")]
+        public DateTime APDate { get; set; }
+        [BsonElement("APTime")]
+        public TimeSpan APTime { get; set; }
+
+
         [BsonElement("vetName")]
         public string vetName { get; set; }
         [BsonElement("appointmentReason")]
@@ -67,12 +72,10 @@ namespace TermProjectUI.Models
         public string dropoffLocation { get; set; }
         [BsonElement("dropoffVolunteer")]
         public string dropoffVolunteer { get; set; }
-        [BsonElement("dropoffDate")]
-        public DateTime dropoffDate { get; set; }
-        [BsonElement("dropoffTime")]
-        public DateTime dropoffTime { get; set; }
-
-
+        [BsonElement("DODate"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true), DataType(DataType.Date, ErrorMessage = "Date only")]
+        public DateTime DODate { get; set; }
+        [BsonElement("DOTime")]
+        public TimeSpan DOTime { get; set; }
 
         //dog
         [BsonElement("dogName")]

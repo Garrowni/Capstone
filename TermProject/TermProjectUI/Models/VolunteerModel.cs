@@ -25,16 +25,19 @@ namespace TermProjectUI.Models
         [BsonElement("Password"), DataType(DataType.Password)]
         [Required(ErrorMessage = "Password is Required")]
         public string Password { get; set; }
+        [BsonElement("NewPassword"), DataType(DataType.Password)]
+        [Required(ErrorMessage = "Password is Required")]
+        public string newPassword { get; set; }
         [BsonElement("ConfirmPassword"), DataType(DataType.Password)]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again !")]
         [Required(ErrorMessage = "Confirm Password is Required")]
         public string ConfirmPassword { get; set; }
         [Display(Name = "UserPhoto")]
-        
+
         public string UserPhoto { get; set; }
 
         [BsonElement("Role")]
-        
+
         public string Role { get; set; }
         [Display(Name = "Active")]
 

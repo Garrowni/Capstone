@@ -19,12 +19,8 @@ namespace TermProjectUI.Controllers
 
     public class TransportationTasksController : Controller
     {
-        // private TransportTaskDBModelContainer db = new TransportTaskDBModelContainer();
+        static List<TransportationTaskModel.Item> itemList = new List<TransportationTaskModel.Item>();
 
-        //private TransportationTaskRepoEF ttr = new TransportationTaskRepoEF();
-
-         static List<TransportationTaskModel.Item> itemList = new List<TransportationTaskModel.Item>();
-       
 
         static List<Object> deletedTask = new List<Object>();
 
@@ -63,11 +59,11 @@ namespace TermProjectUI.Controllers
             return View();
         }
 
-      
-            // POST: TransportationTasks/Create
-            // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-            // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
+
+        // POST: TransportationTasks/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(TransportationTaskModel transportationTask)
         {
@@ -76,7 +72,7 @@ namespace TermProjectUI.Controllers
             transportationTask.posterPhoto = Session["Img"].ToString();
             transportationTask.taskType = "Transportation Task";
             transportationTask.taskName = transportationTask.taskType + " - " + transportationTask.PUCity + " to " + transportationTask.DOCity;
-            
+
             transportationTask.Items = itemList;
             transportationTask.creationDate = DateTime.Today;
             //transportationTask.assignees = "0";
@@ -89,45 +85,45 @@ namespace TermProjectUI.Controllers
                 productCollection.InsertOne(transportationTask);
                 deletedTask = new List<object>();
                 deletedTask.Add(transportationTask);
-                
+
                 itemList = new List<TransportationTaskModel.Item>();
 
                 return RedirectToAction("Details", new { id = transportationTask.Id });
-                
+
             }
             catch
             {
                 return View();
             }
         }
-       
+
         public JsonResult InsertItems(List<TransportationTaskModel.Item> items)
         {
-           
-                //Check for NULL.
-                if (items == null)
-                {
-                    items = new List<TransportationTaskModel.Item>();
-                }
 
-            
+            //Check for NULL.
+            if (items == null)
+            {
+                items = new List<TransportationTaskModel.Item>();
+            }
+
+
             foreach (TransportationTaskModel.Item item in items)
-                {
+            {
 
                 itemList.Add(item);
 
-                }
-                //Debug.WriteLine(itemList[0].ItemName);
-                int insertedRecords = itemList.Count();
-            
+            }
+            //Debug.WriteLine(itemList[0].ItemName);
+            int insertedRecords = itemList.Count();
+
             return Json(insertedRecords);
-            
+
         }
 
-       
+
         public JsonResult UpdateItems(List<TransportationTaskModel.Item> items)
         {
-            
+
             //Check for NULL.
             if (items == null)
             {
@@ -140,7 +136,7 @@ namespace TermProjectUI.Controllers
                 itemList.Add(item);
 
             }
-           // Debug.WriteLine(itemList[0].ItemName);
+            // Debug.WriteLine(itemList[0].ItemName);
             int insertedRecords = itemList.Count();
             return Json(insertedRecords);
 
@@ -223,13 +219,13 @@ namespace TermProjectUI.Controllers
             try
             {
 
-                
+
                 taskDelete.deletedTask = deletedTask;
                 taskDelete.tasksType = "Transportation";
                 deletedCollection.InsertOne(taskDelete);
                 deletedTask = new List<Object>();
                 productCollection.DeleteOne(Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
-                
+
                 return RedirectToAction("../AllTasks/Index");
             }
             catch
@@ -238,6 +234,6 @@ namespace TermProjectUI.Controllers
             }
         }
 
-       
+
     }
 }

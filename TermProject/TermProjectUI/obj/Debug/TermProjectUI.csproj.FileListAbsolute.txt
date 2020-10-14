@@ -1251,3 +1251,7 @@ D:\FinalTerm\CapstoneProject\capstone_20201009\Capstone\TermProject\TermProjectU
 D:\FinalTerm\CapstoneProject\capstone_20201009\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.csproj.CopyComplete
 D:\FinalTerm\CapstoneProject\capstone_20201009\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.dll
 D:\FinalTerm\CapstoneProject\capstone_20201009\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.pdb
+D:\FinalTerm\CapstoneProject\capstone20201014\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.csprojAssemblyReference.cache
+D:\FinalTerm\CapstoneProject\capstone20201014\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.csproj.CoreCompileInputs.cache
+D:\FinalTerm\CapstoneProject\capstone20201014\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.dll
+D:\FinalTerm\CapstoneProject\capstone20201014\Capstone\TermProject\TermProjectUI\obj\Debug\TermProjectUI.pdb

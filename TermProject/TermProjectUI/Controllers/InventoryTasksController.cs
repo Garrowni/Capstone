@@ -56,45 +56,18 @@ namespace TermProjectUI.Controllers
             return View(task);
         }
 
-        public JsonResult AddFile()
-        {​​​​
 
- 
-
-            string uname = Request["uploadername"];
-            HttpFileCollectionBase files = Request.Files;
-            for (int i = 0; i < files.Count; i++)
-            {​​​​
-                HttpPostedFileBase file = files[i];
-                string fname;
-                // Checking for Internet Explorer      
-                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                {​​​​
-                    string[] testfiles = file.FileName.Split(new char[] {​​​​ '\\' }​​​​);
-                    fname = testfiles[testfiles.Length - 1];
-                }​​​​
-                else
-                {​​​​
-                    fname = file.FileName;
-                }​​​​
-                // Get the complete folder path and store the file inside it.      
-                fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
-                file.SaveAs(fname);
-            }​​​​
-            return Json("Hi, " + uname + ". Your files uploaded successfully", JsonRequestBehavior.AllowGet);
-        }​​​​
-
-    // GET: TransportationTasks/Create
-    public ActionResult Create()
+        // GET: TransportationTasks/Create
+        public ActionResult Create()
         {
             return View();
         }
 
-      
-            // POST: TransportationTasks/Create
-            // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-            // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
+
+        // POST: TransportationTasks/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(InventoryTaskModel inventoryTask)
         {
@@ -103,22 +76,22 @@ namespace TermProjectUI.Controllers
             inventoryTask.taskType = "Inventory Task";
             inventoryTask.taskName = inventoryTask.taskType + " - " + inventoryTask.address;
             inventoryTask.requester = "Ellie";
-          
+
             inventoryTask.state = "Unassigned";
 
             inventoryTask.Documents = documentsList;
-  
+
 
             try
             {
                 productCollection.InsertOne(inventoryTask);
-               
+
                 deletedTask = new List<object>();
                 deletedTask.Add(inventoryTask);
                 documentsList = new List<InventoryTaskModel.documents>();
 
                 return RedirectToAction("Details", new { id = inventoryTask.Id });
-                
+
             }
             catch
             {
@@ -135,7 +108,7 @@ namespace TermProjectUI.Controllers
                 itemsSpec = new List<InventoryTaskModel.documents>();
             }
 
-   
+
 
             foreach (InventoryTaskModel.documents itemSpec in itemsSpec)
             {
@@ -202,7 +175,7 @@ namespace TermProjectUI.Controllers
                     .Set("taskDate", task.taskDate)
                     .Set("taskTime", task.taskTime)
                     .Set("AdditionalInfo", task.AdditionalInfo)
-                    .Set("Documents", task.Documents);                    ;
+                    .Set("Documents", task.Documents); ;
                 var result = productCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);
@@ -238,13 +211,13 @@ namespace TermProjectUI.Controllers
             try
             {
 
-                
+
                 taskDelete.deletedTask = deletedTask;
                 taskDelete.tasksType = "Inventory";
                 deletedCollection.InsertOne(taskDelete);
                 deletedTask = new List<Object>();
                 productCollection.DeleteOne(Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
-                
+
                 return RedirectToAction("../AllTasks/Index");
             }
             catch
@@ -253,6 +226,6 @@ namespace TermProjectUI.Controllers
             }
         }
 
-       
+
     }
 }
