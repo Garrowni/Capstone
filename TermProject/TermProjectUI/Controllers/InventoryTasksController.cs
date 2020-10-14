@@ -24,7 +24,7 @@ namespace TermProjectUI.Controllers
 
         //private InventoryTaskRepoEF ttr = new InventoryTaskRepoEF();
         static List<string> documentsList = new List<string>();
-
+        static List<string> existedList = new List<string>();
 
 
         static List<Object> deletedTask = new List<Object>();
@@ -119,6 +119,13 @@ namespace TermProjectUI.Controllers
         public ActionResult Edit(string id, InventoryTaskModel task)
         {
             task.FileList = documentsList;
+            task.posterName = Session["Username"].ToString();
+            task.posterPhoto = Session["Img"].ToString();
+            task.taskType = "Inventory Task";
+            task.taskName = task.taskType + " - " + task.address;
+            task.requester = "Ellie";
+
+            task.state = "Unassigned";
             try
             {
                 var filter = Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
@@ -135,7 +142,7 @@ namespace TermProjectUI.Controllers
                     .Set("taskDate", task.taskDate)
                     .Set("taskTime", task.taskTime)
                     .Set("AdditionalInfo", task.AdditionalInfo)
-                    .Set("Documents", task.FileList);                    ;
+                    .Set("FileList", task.FileList);                    ;
                 var result = productCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);
@@ -204,6 +211,7 @@ namespace TermProjectUI.Controllers
                   {
                       fname = file.FileName;
                   }
+
                   // Get the complete folder path and store the file inside it.      
                   fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
                   file.SaveAs(fname);
@@ -215,9 +223,59 @@ namespace TermProjectUI.Controllers
 
 
         }
+        public JsonResult UpdateFile()
+        {
+            documentsList = new List<string>();
+            //string uname = Request["existedList"];
+            HttpFileCollectionBase files = Request.Files;
+            for (int i = 0; i < files.Count; i++)
+            {
+                HttpPostedFileBase file = files[i];
+                string fname;
+                // Checking for Internet Explorer      
+                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                {
+                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                    fname = testfiles[testfiles.Length - 1];
+                }
+                else
+                {
+                    fname = file.FileName;
+                }
+                // Get the complete folder path and store the file inside it.      
+                fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
+                file.SaveAs(fname);
+                documentsList.Add("/UserImages/" + file.FileName);
+            }
+            return Json("Hi. Your files uploaded successfully", JsonRequestBehavior.AllowGet);
 
-        
-        public FileResult Downlaod(string FileName)
+
+
+
+        }
+        public JsonResult ExistedFiles(List<string> items)
+        {
+
+            //Check for NULL.
+            if (items == null)
+            {
+                items = new List<string>();
+            }
+
+
+            foreach (string item in items)
+            {
+
+                //existedList.Add(item);
+                documentsList.Add(item);
+            }
+            //Debug.WriteLine(itemList[0].ItemName);
+            int insertedRecords = existedList.Count();
+
+            return Json(insertedRecords);
+        }
+
+            public FileResult Downlaod(string FileName)
         {
             string[] NamePart = FileName.Split('/');
             string lastItem = NamePart[NamePart.Length - 1];
