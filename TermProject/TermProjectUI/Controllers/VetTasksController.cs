@@ -19,19 +19,19 @@ namespace TermProjectUI.Controllers
 
     public class VetTasksController : Controller
     {
-        static List<VetTaskModel.documents> documentsList = new List<VetTaskModel.documents>();
+        //static List<VetTaskModel.documents> documentsList = new List<VetTaskModel.documents>();
 
 
         static List<Object> deletedTask = new List<Object>();
 
         private MongoDBContext dbcontext;
-        private IMongoCollection<VetTaskModel> productCollection;
+        private IMongoCollection<VetTaskModel>vetCollection;
         private IMongoCollection<DeletedTaskModel> deletedCollection;
 
         public VetTasksController()
         {
             dbcontext = new MongoDBContext();
-            productCollection = dbcontext.database.GetCollection<VetTaskModel>("vet");
+            vetCollection = dbcontext.database.GetCollection<VetTaskModel>("vet");
             deletedCollection = dbcontext.database.GetCollection<DeletedTaskModel>("deletedTasks");
 
         }
@@ -41,7 +41,7 @@ namespace TermProjectUI.Controllers
             // return View(db.TransportationTasks.ToList());
             //return View(ttr.GetTransportationTasks());
 
-            List<VetTaskModel> tasks = productCollection.AsQueryable<VetTaskModel>().ToList();
+            List<VetTaskModel> tasks = vetCollection.AsQueryable<VetTaskModel>().ToList();
             return View(tasks);
         }
 
@@ -49,7 +49,7 @@ namespace TermProjectUI.Controllers
         public ActionResult Details(string id)
         {
             var taskId = new ObjectId(id);
-            var task = productCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
             return View(task);
         }
 
@@ -75,12 +75,12 @@ namespace TermProjectUI.Controllers
 
             vetTask.state = "Unassigned";
 
-            vetTask.Documents = documentsList;
+          //  vetTask.Documents = documentsList;
 
             try
             {
-                productCollection.InsertOne(vetTask);
-                documentsList = new List<VetTaskModel.documents>();
+               vetCollection.InsertOne(vetTask);
+           //     documentsList = new List<VetTaskModel.documents>();
                 deletedTask = new List<object>();
                 deletedTask.Add(vetTask);
 
@@ -94,55 +94,14 @@ namespace TermProjectUI.Controllers
             }
         }
 
-        public JsonResult InsertDocuments(List<VetTaskModel.documents> itemsSpec)
-        {
-
-            //Check for NULL.
-            if (itemsSpec == null)
-            {
-                itemsSpec = new List<VetTaskModel.documents>();
-            }
-
-
-
-            foreach (VetTaskModel.documents itemSpec in itemsSpec)
-            {
-
-                documentsList.Add(itemSpec);
-
-            }
-            //Debug.WriteLine(taskSpecList[0].Key);
-            int insertedRecords = documentsList.Count();
-            return Json(insertedRecords);
-
-        }
-        public JsonResult UpdateDocuments(List<VetTaskModel.documents> tasksSpec)
-        {
-
-            //Check for NULL.
-            if (tasksSpec == null)
-            {
-                tasksSpec = new List<VetTaskModel.documents>();
-            }
-
-            documentsList = new List<VetTaskModel.documents>();
-            foreach (VetTaskModel.documents taskSpec in tasksSpec)
-            {
-                documentsList.Add(taskSpec);
-
-            }
-
-            int insertedRecords = documentsList.Count();
-            return Json(insertedRecords);
-
-        }
+        
 
 
         // GET: TransportationTasks/Edit/5
         public ActionResult Edit(string id)
         {
             var taskId = new ObjectId(id);
-            var task = productCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
             return View(task);
         }
 
@@ -172,7 +131,7 @@ namespace TermProjectUI.Controllers
 
                     .Set("appointmentAddress", task.appointmentAddress)
 
-                    .Set("vet", task.vetName)
+               
                     .Set("appointmentReason", task.appointmentReason)
                     .Set("appointmentNotes", task.appointmentNotes)
                     .Set("dropoffLocation", task.dropoffLocation)
@@ -185,12 +144,12 @@ namespace TermProjectUI.Controllers
                     .Set("dogNotes", task.dogNotes)
                     .Set("Documents", task.Documents);
 
-                var result = productCollection.UpdateOne(filter, update);
+                var result = vetCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);
                 deletedTask.Add(task);
 
-                documentsList = new List<VetTaskModel.documents>();
+          //      documentsList = new List<VetTaskModel.documents>();
 
                 return RedirectToAction("Details", new { id = id });
             }
@@ -204,7 +163,7 @@ namespace TermProjectUI.Controllers
         public ActionResult Delete(string id)
         {
             var taskId = new ObjectId(id);
-            var task = productCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
             return View(task);
         }
 
@@ -225,7 +184,7 @@ namespace TermProjectUI.Controllers
                 taskDelete.tasksType = "Vet";
                 deletedCollection.InsertOne(taskDelete);
                 deletedTask = new List<Object>();
-                productCollection.DeleteOne(Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
+                vetCollection.DeleteOne(Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
 
                 return RedirectToAction("../AllTasks/Index");
             }

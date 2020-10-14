@@ -57,22 +57,7 @@
                         <div class="row">Breed:  @Html.DisplayFor(model => model.dogBreed)</div>
                         <div class="row">Size:  @Html.DisplayFor(model => model.dogSize)</div>
                         <div class="row">Notes:  @Html.DisplayFor(model => model.dogNotes)</div>
-                        <div class="row">
-
-
-                            <strong>Documents:</strong>
-                            @foreach (var item in Model.Documents)
-                            {
-                                <ul>
-                                    <li> @Html.DisplayFor(model => item.Document) : @Html.DisplayFor(model => item.Descrition) </li>
-
-                                </ul>
-
-                            }
-
-
-
-                        </div>
+                      
                         <div class="row"><strong>Additional Information:</strong>  @Html.DisplayFor(model => model.AdditionalInfo)</div>
                     </div>
                 </div>

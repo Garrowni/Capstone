@@ -12,350 +12,351 @@
 {
 @Html.AntiForgeryToken()
 
- <div class="form-horizontal">
-
-
-         <hr />
-         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-
-         <div class="form-row">
-             <div class="col-md-12">
-                 <h2>
-
-                     Photographer Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                         <span class="glyphicon glyphicon-remove-circle"></span>
-                     </a>
-                 </h2>
-             </div>
-         </div>
-         <!--Task Specification-->
-         <div class="form-row">
-             <div class="col-md-12">
-                 <hr />
-                 <h1>
-                     Task Specification
-                 </h1>
-             </div>
-         </div>
-         <div class="form-row">
-
-             <div class="col-md-3">
-                 <font color="red"><strong>*</strong></font>Location:
-                 @Html.EditorFor(model => model.location, new { htmlAttributes = new { @class = "form-control" } })
-                 @Html.ValidationMessageFor(model => model.location, "", new { @class = "text-danger" })
-                 <font color="red" size="2px"> <p id="taskLocation"></p></font>
-             </div>
-
-             <div class="col-md-3">
-                 <font color="red"><strong>*</strong></font>Photographer:
-                 @Html.EditorFor(model => model.photographerName, new { htmlAttributes = new { @class = "form-control" } })
-                 @Html.ValidationMessageFor(model => model.photographerName, "", new { @class = "text-danger" })
-                 <font color="red" size="2px"> <p id="taskPhotographerName"></p></font>
-             </div>
-         </div>
-         <div class="form-row">
-             <div class="col-md-12">
-                 <br />
-             </div>
-         </div>
-
-
-         <div class="form-row">
-             <div class="col-md-3">
-                 <div class="form-row">
-                     <div class="col">
-                         <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>--><br />
-                         @Html.TextBoxFor(model => model.taskDate, new { @type = "date", @class = "form-​control datepicker", @Value = Model.taskDate.ToString("yyyy-MM-dd") })
-                         @Html.ValidationMessageFor(model => model.taskDate.Date, "", new { @class = "text-danger" })
-
-                     </div>
-                 </div>
-             </div>
-             <div class="col-md-3">
-                 <div class="form-row">
-                     <div class="col">
-
-
-                         <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
-                         @Html.EditorFor(model => model.taskTime, new { htmlAttributes = new { @class = "form-control" } })
-                         @Html.ValidationMessageFor(model => model.taskTime, "", new { @class = "text-danger" })
-                     </div>
-                 </div>
-             </div>
-         </div>    <div class="form-row">
-             <div class="col-md-12">
-                 <br />
-             </div>
-         </div>
-
-         <div class="form-row">
-             <div class="col-md-3">
-                 <div class="form-row">
-                     <div class="col">
-                         <font color="red" size="2px"> <p id="taskDateError">.</p></font>
-                     </div>
-                 </div>
-             </div>
-             <div class="col-md-3">
-                 <div class="form-row">
-                     <div class="col">
-                         <font color="red" size="2px"> <p id="taskTimeError">.</p></font>
-                     </div>
-                 </div>
-             </div>
-         </div>
-
-
-
-
-         <div class="form-row">
-             <div class="col-md-12">
-                 <hr />
-                 <h1>
-                     Dog(s)
-                 </h1>
-             </div>
-         </div>
+<div class="form-horizontal">
+
+    @Html.HiddenFor(model => model.taskID)
+    @Html.HiddenFor(model => model.taskName)
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+    <div class="form-row">
+        <div class="col-md-12">
+            <h2>
+
+                Photographer Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </a>
+            </h2>
+        </div>
+    </div>
+    <!--Task Specification-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>
+                Task Specification
+            </h1>
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Location:
+            @Html.EditorFor(model => model.location, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.location, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="taskLocation"></p></font>
+        </div>
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Photographer:
+            @Html.EditorFor(model => model.photographerName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.photographerName, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="taskPhotographerName"></p></font>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>--><br />
+                    @Html.TextBoxFor(model => model.taskDate, new { @type = "date", @class = "form-​control datepicker", @Value = Model.taskDate.ToString("yyyy-MM-dd") })
+                    @Html.ValidationMessageFor(model => model.taskDate.Date, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+
+
+                    <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
+                    @Html.EditorFor(model => model.taskTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.taskTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>    <div class="form-row">
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="taskDateError">.</p></font>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="taskTimeError">.</p></font>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>
+                Dog(s)
+            </h1>
+        </div>
+    </div>
 
 
 
-
-         <body>
-           
 
-
+    <body>
 
 
-             <table id="tblTaskSpec" class="table" cellpadding="0" cellspacing="0">
-                 <thead>
-                     <tr>
-
-                         <th style="width:150px"> <font color="red"><strong>*</strong></font>Name</th>
-                         <th style="width:150px"> <font color="red"><strong>*</strong></font>Breed</th>
-                         <th style="width:150px"> <font color="red"><strong>*</strong></font>Size</th>
-                         <th style="width:150px"> <font color="red"></font>Notes</th>
-                         <th></th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                     @foreach (var item in Model.Dogs)
-                     {
-
-
-                     <tr>
-                         <td> @item.txtName </td>
-                         <td> @item.txtBreed </td>
-                         <td> @item.txtSize </td>
-                         <td> @item.txtNotes </td>
-                         <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
-                     </tr>
-                     }
-                 </tbody>
-                 <tfoot>
-                     <tr>
-                         <td><input type="text" id="txtName" /></td>
-                         <td><input type="text" id="txtBreed" /></td>
-                         <td>
-                            <input type="text" id="txtSize" />
-                         </td>
-                         <td>
-                             <input type="text" id="txtNotes" />
-                         </td>
-                         <td><input type="button" id="btnAdd" value="Add" /></td>
-                     </tr>
-                 </tfoot>
-             </table>
-
-
-
-             <br />
-
-             <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-             <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-
-
-             <script type="text/javascript">
-                 $("body").on("click", "#btnAdd", function () {
-                     //Reference the Name and Country TextBoxes.
-                     var txtName = $("#txtName");
-                     var txtBreed = $("#txtBreed");
-                     var txtSize = $("#txtSize");
-                     //  var txtSize = $("#sizes option:selected").text.text;
-                     var txtNotes = $("#txtNotes")
-
-                     if (txtName.val() == null || txtName.val() == "" || txtBreed.val() == null || txtBreed.val() == "" || txtSize.val() == null || txtSize.val() == "") {
-                         alert("Enter a name, breed, and size then press Add"); return false;
-
-                     }
-                     else {
-                         //Get the reference of the Table's TBODY element.
-                         var tBody = $("#tblTaskSpec > TBODY")[0];
-
-                         //Add Row.
-                         var row = tBody.insertRow(-1);
-
-
-                         var cell = $(row.insertCell(-1));
-                         cell.html(txtName.val());
-                         cell = $(row.insertCell(-1));
-                         cell.html(txtBreed.val());
-                         cell = $(row.insertCell(-1));
-                         cell.html(txtSize.val());
-                         cell = $(row.insertCell(-1));
-                         cell.html(txtNotes.val());
-
-
-
-
-                         //Add Button cell.
-                         cell = $(row.insertCell(-1));
-                         var btnRemove = $("<input />");
-                         btnRemove.attr("type", "button");
-                         btnRemove.attr("onclick", "Remove(this);");
-                         btnRemove.val("Remove");
-                         cell.append(btnRemove);
-
-                         //Clear the TextBoxes.
-                         txtName.val("");
-                         txtBreed.val("");
-                         txtSize.val("");
-                         txtNotes.val("");
-                     }
-
-                 });
-
-                 function Remove(button) {
-                     //Determine the reference of the Row using the Button.
-                     var row = $(button).closest("TR");
-                     var name = $("TD", row).eq(0).html();
-                     if (confirm("Do you want to delete: " + name)) {
-                         //Get the reference of the Table.
-                         var table = $("#tblTaskSpec")[0];
-
-                         //Delete the Table row using it's Index.
-                         table.deleteRow(row[0].rowIndex);
-                     }
-                 };
-                 $("body").on("click", "#reset", function () {
-                     $("#tblTaskSpec TBODY TR").each(function () {
-                         Remove(this);
-                     });
-                 });
-
-                 $("body").on("click", "#btnSave", function () {
-                     //Loop through the Table rows and build a JSON array.
-                     var tasksSpec = new Array();
-                     $("#tblTaskSpec TBODY TR").each(function () {
-                         var row = $(this);
-                         var taskSpec = {};
-                         taskSpec.txtName = row.find("TD").eq(0).html();
-                         taskSpec.txtBreed = row.find("TD").eq(1).html();
-                         taskSpec.txtSize = row.find("TD").eq(2).html();
-                         taskSpec.txtNotes = row.find("TD").eq(3).html();
-                         tasksSpec.push(taskSpec);
-                         // alert(itemsSpec[0].Key);
-
-                     });
-                     $('#taskAddress').html("");
-                     $('#taskDateError').html("");
-                     $('#taskTimeError').html("");
-                     $('#additionaInfo').html("");
-                     $('#taskspeci').html("");
-                     if ($('#address').val() === "" || $('#taskTime').val() === "" || $('#taskDate').val() === "" || $('#AdditionaInfo').val() === "") {
-
-                         if ($('#address').val() === "") {
-                             $('#taskAddress').html("Address is required");
-                         } if ($('#taskDate').val() === "") {
-                             $('#taskDateError').html("Date is required");
-                         } if ($('#taskTime').val() === "") {
-                             $('#taskTimeError').html("Time is required");
-                         } if ($('#AdditionalInfo').val() === "") {
-                             $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
-                         }
-                         return false;
-                     } else if (!tasksSpec.length) {
-                         $('#taskspeci').html("Add a document and description!"); return false;
-                     }
-                     else {
-                         //Send the JSON array to Controller using AJAX.
-                         $.ajax({
-                             type: "POST",
-                             url: "/PhotographyTasks/InsertDocuments",
-                             data: JSON.stringify(tasksSpec),
-                             contentType: "application/json; charset=utf-8",
-                             dataType: "json",
-                             success: function (r) {
-                                 //alert(r + " record(s) inserted.");
-                             }
-                         });
-                     }
-                 });
-             </script>
-         </body>
-
-
-
-
-
-
-
-
-
-
-
-
-         <div class="form-row">
-             <div class="col-md-12">
-                 <hr />
-                 <h2>Additional Information</h2>
-             </div>
-         </div>
-         <div class="form-row">
-             <div class="col-md-12">
-                 @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
-                 @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
-                 <font color="red" size="2px"> <p id="additionaInfo"></p></font>
-             </div>
-         </div>
-
-
-
-
-
-
-
-         <!--Blank Space-->
-         <div class="form-row">
-             <div class="col-md-12">
-
-             </div>
-         </div>
-         <!--Buttom Buttons-->
-         <div class="form-row">
-             <div class="col-md-12">
-                 <div class="form-row">
-                     <div class="col-md-6">
-                         <button class="btn btn-primary" type="button" style=" width: 15%; float:right; background-color: grey;border-color: black; margin-left: 2px;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
-                         <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Edit</button>
-                         <br /><br /><br />
-
-
-                     </div>
-                 </div>
-
-             </div>
-         </div>
-         <br />
-         <br />
-         <br />
-         <br />
-         <br />
-         <br />
-         <br />
-         <br />
-     </div>
+
+
+
+        <table id="tblTaskSpec" class="table" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Name</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Breed</th>
+                    <th style="width:150px"> <font color="red"><strong>*</strong></font>Size</th>
+                    <th style="width:150px"> <font color="red"></font>Notes</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Dogs)
+                {
+
+
+                    <tr>
+                        <td> @item.txtName </td>
+                        <td> @item.txtBreed </td>
+                        <td> @item.txtSize </td>
+                        <td> @item.txtNotes </td>
+                        <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><input type="text" id="txtName" /></td>
+                    <td><input type="text" id="txtBreed" /></td>
+                    <td>
+                        <input type="text" id="txtSize" />
+                    </td>
+                    <td>
+                        <input type="text" id="txtNotes" />
+                    </td>
+                    <td><input type="button" id="btnAdd" value="Add" /></td>
+                </tr>
+            </tfoot>
+        </table>
+
+
+
+        <br />
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
+
+        <script type="text/javascript">
+            $("body").on("click", "#btnAdd", function () {
+                //Reference the Name and Country TextBoxes.
+                var txtName = $("#txtName");
+                var txtBreed = $("#txtBreed");
+                var txtSize = $("#txtSize");
+                //  var txtSize = $("#sizes option:selected").text.text;
+                var txtNotes = $("#txtNotes")
+
+                if (txtName.val() == null || txtName.val() == "" || txtBreed.val() == null || txtBreed.val() == "" || txtSize.val() == null || txtSize.val() == "") {
+                    alert("Enter a name, breed, and size then press Add"); return false;
+
+                }
+                else {
+                    //Get the reference of the Table's TBODY element.
+                    var tBody = $("#tblTaskSpec > TBODY")[0];
+
+                    //Add Row.
+                    var row = tBody.insertRow(-1);
+
+
+                    var cell = $(row.insertCell(-1));
+                    cell.html(txtName.val());
+                    cell = $(row.insertCell(-1));
+                    cell.html(txtBreed.val());
+                    cell = $(row.insertCell(-1));
+                    cell.html(txtSize.val());
+                    cell = $(row.insertCell(-1));
+                    cell.html(txtNotes.val());
+
+
+
+
+                    //Add Button cell.
+                    cell = $(row.insertCell(-1));
+                    var btnRemove = $("<input />");
+                    btnRemove.attr("type", "button");
+                    btnRemove.attr("onclick", "Remove(this);");
+                    btnRemove.val("Remove");
+                    cell.append(btnRemove);
+
+                    //Clear the TextBoxes.
+                    txtName.val("");
+                    txtBreed.val("");
+                    txtSize.val("");
+                    txtNotes.val("");
+                }
+
+            });
+
+            function Remove(button) {
+                //Determine the reference of the Row using the Button.
+                var row = $(button).closest("TR");
+                var name = $("TD", row).eq(0).html();
+                if (confirm("Do you want to delete: " + name)) {
+                    //Get the reference of the Table.
+                    var table = $("#tblTaskSpec")[0];
+
+                    //Delete the Table row using it's Index.
+                    table.deleteRow(row[0].rowIndex);
+                }
+            };
+            $("body").on("click", "#reset", function () {
+                $("#tblTaskSpec TBODY TR").each(function () {
+                    Remove(this);
+                });
+            });
+
+            $("body").on("click", "#btnSave", function () {
+                //Loop through the Table rows and build a JSON array.
+                var tasksSpec = new Array();
+                $("#tblTaskSpec TBODY TR").each(function () {
+                    var row = $(this);
+                    var taskSpec = {};
+                    taskSpec.txtName = row.find("TD").eq(0).html();
+                    taskSpec.txtBreed = row.find("TD").eq(1).html();
+                    taskSpec.txtSize = row.find("TD").eq(2).html();
+                    taskSpec.txtNotes = row.find("TD").eq(3).html();
+                    tasksSpec.push(taskSpec);
+                    // alert(itemsSpec[0].Key);
+
+                });
+                $('#taskAddress').html("");
+                $('#taskDateError').html("");
+                $('#taskTimeError').html("");
+                $('#additionaInfo').html("");
+                $('#taskspeci').html("");
+                if ($('#address').val() === "" || $('#taskTime').val() === "" || $('#taskDate').val() === "" || $('#AdditionaInfo').val() === "") {
+
+                    if ($('#address').val() === "") {
+                        $('#taskAddress').html("Address is required");
+                    } if ($('#taskDate').val() === "") {
+                        $('#taskDateError').html("Date is required");
+                    } if ($('#taskTime').val() === "") {
+                        $('#taskTimeError').html("Time is required");
+                    } if ($('#AdditionalInfo').val() === "") {
+                        $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
+                    }
+                    return false;
+                } else if (!tasksSpec.length) {
+                    $('#taskspeci').html("Add a document and description!"); return false;
+                }
+                else {
+                    //Send the JSON array to Controller using AJAX.
+                    $.ajax({
+                        type: "POST",
+                        url: "/PhotographyTasks/InsertDocuments",
+                        data: JSON.stringify(tasksSpec),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            //alert(r + " record(s) inserted.");
+                        }
+                    });
+                }
+            });
+        </script>
+    </body>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h2>Additional Information</h2>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
+            @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="additionaInfo"></p></font>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!--Blank Space-->
+    <div class="form-row">
+        <div class="col-md-12">
+
+        </div>
+    </div>
+    <!--Buttom Buttons-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <button class="btn btn-primary" type="button" style=" width: 15%; float:right; background-color: grey;border-color: black; margin-left: 2px;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
+                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Edit</button>
+                    <br /><br /><br />
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
                      <script>
                          var today = new Date().toISOString().split('T')[0];
                          document.getElementsByName("taskDate")[0].setAttribute('min', today);

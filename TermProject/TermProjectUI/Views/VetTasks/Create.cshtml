@@ -237,25 +237,6 @@
         </div>
         <body>
 
-            <table id="tblTaskSpec" class="table" cellpadding="0" cellspacing="0">
-                <thead>
-                    <tr>
-
-                        <th style="width:150px"> <font color="red"><strong>*</strong></font>Document</th>
-                        <th style="width:150px"> <font color="red"><strong>*</strong></font>Description</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td><input type="file" name="file" id="txtDoc" accept=".doc, .docx, .txt, .pdf" /></td>
-                        <td><input type="text" id="txtDes" /></td>
-                        <td><input type="button" id="btnAdd" value="Add" /></td>
-                    </tr>
-                </tfoot>
-            </table><font color="red" size="2px"> <p id="taskspeci"></p></font>
 
             <br />
 
@@ -266,79 +247,9 @@
             <script type="text/javascript">
 
 
-                $("body").on("click", "#btnAdd", function () {
-                    //Reference the Name and Country TextBoxes.
-                    var txtDoc = $("#txtDoc");
-                    var txtDes = $("#txtDes");
-
-
-                    if (txtDoc.val() == null || txtDoc.val() == "" || txtDes.val() == null || txtDes.val() == "") {
-                        alert("Enter a document and description then press Add"); return false;
-
-                    }
-                    else {
-                        //Get the reference of the Table's TBODY element.
-                        var tBody = $("#tblTaskSpec > TBODY")[0];
-
-                        //Add Row.
-                        var row = tBody.insertRow(-1);
-
-
-                        var cell = $(row.insertCell(-1));
-                        cell.html(txtDoc.val());
-                        cell = $(row.insertCell(-1));
-                        cell.html(txtDes.val());
-
-
-
-
-                        //Add Button cell.
-                        cell = $(row.insertCell(-1));
-                        var btnRemove = $("<input />");
-                        btnRemove.attr("type", "button");
-                        btnRemove.attr("onclick", "Remove(this);");
-                        btnRemove.val("Remove");
-                        cell.append(btnRemove);
-
-                        //Clear the TextBoxes.
-                        txtDoc.val("");
-                        txtDes.val("");
-                    }
-
-                });
-
-                function Remove(button) {
-                    //Determine the reference of the Row using the Button.
-                    var row = $(button).closest("TR");
-                    var name = $("TD", row).eq(0).html();
-                    if (confirm("Do you want to delete: " + name)) {
-                        //Get the reference of the Table.
-                        var table = $("#tblTaskSpec")[0];
-
-                        //Delete the Table row using it's Index.
-                        table.deleteRow(row[0].rowIndex);
-                    }
-                };
-                $("body").on("click", "#reset", function () {
-                    $("#tblItems TBODY TR").each(function () {
-                        Remove(this);
-                    });
-
-
-                });
-
+        
                 $("body").on("click", "#btnSave", function () {
-                    //Loop through the Table rows and build a JSON array.
-                    var tasksSpec = new Array();
-                    $("#tblTaskSpec TBODY TR").each(function () {
-                        var row = $(this);
-                        var taskSpec = {};
-                        taskSpec.Document = row.find("TD").eq(0).html();
-                        taskSpec.Description = row.find("TD").eq(1).html();
-                        tasksSpec.push(taskSpec);
-                        // alert(itemsSpec[0].Key);
-
-                    });
+                   
 
                     $('#puLocation').html("");
                     $('#puVolunteer').html("");
@@ -378,9 +289,7 @@
                         if ($('#dogBreed').val() === "") { $('#breed').html("Breed needed"); }
                         if ($('#dogSize').val() === "") { $('#size').html("Size Needed"); }
                         return false;
-                    } else if (!tasksSpec.length) {
-                        $('#taskspeci').html("Add a document and description!"); return false;
-                    }
+                    } 
                     else {
                         //Send the JSON array to Controller using AJAX.
                         $.ajax({
@@ -511,7 +420,7 @@
     </div>
     <script>
         var today = new Date().toISOString().split('T')[0];
-        document.getElementsByName("doDate")[0].setAttribute('min', today);
+        document.getElementsByName("DODate")[0].setAttribute('min', today);
         document.getElementsByName("apDate")[0].setAttribute('min', today);
         document.getElementsByName("puDate")[0].setAttribute('min', today);
     </script>

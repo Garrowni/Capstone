@@ -96,46 +96,49 @@ namespace TermProjectUI.Controllers
         }
 
 
-        public JsonResult InsertDocuments(List<PhotographyTaskModel.dog> itemsSpec)
+        public JsonResult InsertDocuments(List<PhotographyTaskModel.dog> items)
         {
 
             //Check for NULL.
-            if (itemsSpec == null)
+            if (items == null)
             {
-                itemsSpec = new List<PhotographyTaskModel.dog>();
+                items = new List<PhotographyTaskModel.dog>();
             }
 
 
-
-            foreach (PhotographyTaskModel.dog itemSpec in itemsSpec)
+            foreach (PhotographyTaskModel.dog item in items)
             {
 
-                dogsList.Add(itemSpec);
+                dogsList.Add(item);
 
             }
-            //Debug.WriteLine(taskSpecList[0].Key);
+            //Debug.WriteLine(itemList[0].ItemName);
             int insertedRecords = dogsList.Count();
+
             return Json(insertedRecords);
 
         }
-        public JsonResult UpdateDocuments(List<PhotographyTaskModel.dog> tasksSpec)
+
+
+        public JsonResult UpdateItems(List<PhotographyTaskModel.dog> items)
         {
 
             //Check for NULL.
-            if (tasksSpec == null)
+            if (items == null)
             {
-                tasksSpec = new List<PhotographyTaskModel.dog>();
+                items = new List<PhotographyTaskModel.dog>();
             }
 
             dogsList = new List<PhotographyTaskModel.dog>();
-            foreach (PhotographyTaskModel.dog taskSpec in tasksSpec)
+            foreach (PhotographyTaskModel.dog item in items)
             {
-                dogsList.Add(taskSpec);
+                dogsList.Add(item);
 
             }
-
+            // Debug.WriteLine(itemList[0].ItemName);
             int insertedRecords = dogsList.Count();
             return Json(insertedRecords);
+
 
         }
 
@@ -155,6 +158,7 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(string id, PhotographyTaskModel task)
         {
+            task.Dogs = dogsList;
             
             try
             {
