@@ -13,6 +13,7 @@ using TermProjectUI.App_Start;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Diagnostics;
+using System.IO;
 
 namespace TermProjectUI.Controllers
 {
@@ -22,8 +23,8 @@ namespace TermProjectUI.Controllers
         // private InventoryTaskDBModelContainer db = new TransportTaskDBModelContainer();
 
         //private InventoryTaskRepoEF ttr = new InventoryTaskRepoEF();
-        static List<InventoryTaskModel.documents> documentsList = new List<InventoryTaskModel.documents>();
-
+        static List<string> documentsList = new List<string>();
+        static List<string> existedList = new List<string>();
 
 
         static List<Object> deletedTask = new List<Object>();
@@ -79,7 +80,7 @@ namespace TermProjectUI.Controllers
 
             inventoryTask.state = "Unassigned";
 
-            inventoryTask.Documents = documentsList;
+            inventoryTask.FileList = documentsList;
 
 
             try
@@ -88,7 +89,7 @@ namespace TermProjectUI.Controllers
 
                 deletedTask = new List<object>();
                 deletedTask.Add(inventoryTask);
-                documentsList = new List<InventoryTaskModel.documents>();
+                documentsList = new List<string>();
 
                 return RedirectToAction("Details", new { id = inventoryTask.Id });
 
@@ -99,48 +100,7 @@ namespace TermProjectUI.Controllers
             }
         }
 
-        public JsonResult InsertDocuments(List<InventoryTaskModel.documents> itemsSpec)
-        {
 
-            //Check for NULL.
-            if (itemsSpec == null)
-            {
-                itemsSpec = new List<InventoryTaskModel.documents>();
-            }
-
-
-
-            foreach (InventoryTaskModel.documents itemSpec in itemsSpec)
-            {
-
-                documentsList.Add(itemSpec);
-
-            }
-            //Debug.WriteLine(taskSpecList[0].Key);
-            int insertedRecords = documentsList.Count();
-            return Json(insertedRecords);
-
-        }
-        public JsonResult UpdateDocuments(List<InventoryTaskModel.documents> tasksSpec)
-        {
-
-            //Check for NULL.
-            if (tasksSpec == null)
-            {
-                tasksSpec = new List<InventoryTaskModel.documents>();
-            }
-
-            documentsList = new List<InventoryTaskModel.documents>();
-            foreach (InventoryTaskModel.documents taskSpec in tasksSpec)
-            {
-                documentsList.Add(taskSpec);
-
-            }
-
-            int insertedRecords = documentsList.Count();
-            return Json(insertedRecords);
-
-        }
 
 
         // GET: TransportationTasks/Edit/5
@@ -158,7 +118,14 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(string id, InventoryTaskModel task)
         {
-            task.Documents = documentsList;
+            task.FileList = documentsList;
+            task.posterName = Session["Username"].ToString();
+            task.posterPhoto = Session["Img"].ToString();
+            task.taskType = "Inventory Task";
+            task.taskName = task.taskType + " - " + task.address;
+            task.requester = "Ellie";
+
+            task.state = "Unassigned";
             try
             {
                 var filter = Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
@@ -175,13 +142,13 @@ namespace TermProjectUI.Controllers
                     .Set("taskDate", task.taskDate)
                     .Set("taskTime", task.taskTime)
                     .Set("AdditionalInfo", task.AdditionalInfo)
-                    .Set("Documents", task.Documents); ;
+                    .Set("FileList", task.FileList); ;
                 var result = productCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);
                 deletedTask.Add(task);
 
-                documentsList = new List<InventoryTaskModel.documents>();
+                documentsList = new List<string>();
 
                 return RedirectToAction("Details", new { id = id });
             }
@@ -224,6 +191,100 @@ namespace TermProjectUI.Controllers
             {
                 return View();
             }
+        }
+        public JsonResult AddFile()
+        {
+
+            //string uname = Request["description"];
+            HttpFileCollectionBase files = Request.Files;
+            for (int i = 0; i < files.Count; i++)
+            {
+                HttpPostedFileBase file = files[i];
+                string fname;
+                // Checking for Internet Explorer      
+                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                {
+                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                    fname = testfiles[testfiles.Length - 1];
+                }
+                else
+                {
+                    fname = file.FileName;
+                }
+
+                // Get the complete folder path and store the file inside it.      
+                fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
+                file.SaveAs(fname);
+                documentsList.Add("/UserImages/" + file.FileName);
+            }
+            return Json("Hi. Your files uploaded successfully", JsonRequestBehavior.AllowGet);
+
+
+
+
+        }
+        public JsonResult UpdateFile()
+        {
+            documentsList = new List<string>();
+            //string uname = Request["existedList"];
+            HttpFileCollectionBase files = Request.Files;
+            for (int i = 0; i < files.Count; i++)
+            {
+                HttpPostedFileBase file = files[i];
+                string fname;
+                // Checking for Internet Explorer      
+                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                {
+                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                    fname = testfiles[testfiles.Length - 1];
+                }
+                else
+                {
+                    fname = file.FileName;
+                }
+                // Get the complete folder path and store the file inside it.      
+                fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
+                file.SaveAs(fname);
+                documentsList.Add("/UserImages/" + file.FileName);
+            }
+            return Json("Hi. Your files uploaded successfully", JsonRequestBehavior.AllowGet);
+
+
+
+
+        }
+        public JsonResult ExistedFiles(List<string> items)
+        {
+
+            //Check for NULL.
+            if (items == null)
+            {
+                items = new List<string>();
+            }
+
+
+            foreach (string item in items)
+            {
+
+                //existedList.Add(item);
+                documentsList.Add(item);
+            }
+            //Debug.WriteLine(itemList[0].ItemName);
+            int insertedRecords = existedList.Count();
+
+            return Json(insertedRecords);
+        }
+
+        public FileResult Downlaod(string FileName)
+        {
+            string[] NamePart = FileName.Split('/');
+            string lastItem = NamePart[NamePart.Length - 1];
+            string[] Names = lastItem.Split('.');
+            string extention = Names[Names.Length - 1];
+            string Name = Names[0];
+
+            return File(FileName, MimeMapping.GetMimeMapping(FileName), Name + "." + extention);
+
         }
 
 

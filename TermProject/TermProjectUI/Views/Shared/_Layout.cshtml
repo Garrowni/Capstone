@@ -10,7 +10,7 @@
     @Scripts.Render("~/bundles/modernizr")
 
     <style>
-        
+
 
         .dropdown {
             position: relative;
@@ -42,18 +42,18 @@
         }
 
         .dropdown:hover .dropbtn {
-            
         }
+
         .arrow {
             border: solid #f1f1f1;
             border-width: 0 3px 3px 0;
             display: inline-block;
             padding: 3px;
         }
+
         .down {
             transform: rotate(45deg);
             -webkit-transform: rotate(45deg);
-            
         }
     </style>
 </head>
@@ -71,16 +71,10 @@
                     <span class="icon-bar"></span>
 
                 </button>
-           <!--Html.ActionLink("Capstone Magic", "LogIn", "LogIn", new { area = "" }, new { class = "navbar-brand" })-->
+                <!--Html.ActionLink("Capstone Magic", "LogIn", "LogIn", new { area = "" }, new { class = "navbar-brand" })-->
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav ">
-
-                    
-
-
-
-
                 </ul>
 
                 @{
@@ -90,34 +84,34 @@
                     }
                     else
                     {
-                                <ul class="nav navbar-nav">
-                                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                                    <li>@Html.ActionLink("Tasks", "Index", "AllTasks", new { area = "" }, null) </li>
-                                    @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
-                                    {
-                                        <li>@Html.ActionLink("Manage Users", "Index", "Volunteers", new { area = "" }, null) </li>
-                                    }
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                            <li>@Html.ActionLink("Tasks", "Index", "AllTasks", new { area = "" }, null) </li>
+                            @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+                            {
+                                <li>@Html.ActionLink("Manage Users", "Index", "Volunteers", new { area = "" }, null) </li>
+                            }
 
-                                </ul>
-                                <ul class="nav navbar-nav pull-right">
-                                    <li class="dropdown">
-                                        <a class="dropbtn">@Session["Username"].ToString() <i class="arrow down" ></i></a>
-                                        <div class="dropdown-content">
-                                            <a>@Html.ActionLink("Update Profile", "UpdateProfile", "Volunteers")</a>
-                                          
-                                            
-                                        </div>
-                                    </li>
-                                    
-
-                                    <li>@Html.ActionLink("Log out", "LogOut", "LogIn")</li>
-                                </ul>
-    }
-
-    }
+                        </ul>
+                        <ul class="nav navbar-nav pull-right">
+                            <li class="dropdown">
+                                <a class="dropbtn">@Session["Username"].ToString() <i class="arrow down"></i></a>
+                                <div class="dropdown-content">
+                                    <a>@Html.ActionLink("Update Profile", "UpdateProfile", "Volunteers")</a>
 
 
-</div>
+                                </div>
+                            </li>
+
+
+                            <li>@Html.ActionLink("Log out", "LogOut", "LogIn")</li>
+                        </ul>
+                    }
+
+                }
+
+
+            </div>
 
         </div>
 
