@@ -3,11 +3,7 @@
 @{
     ViewBag.Title = "Delete";
 }
-    <style>
-        a {
-            color: white;
-        }
-    </style>
+   
 
 <h2>Delete</h2>
 
@@ -186,10 +182,24 @@
 
 
         <dt>
-            Task Specifications:
+            Documents:
         </dt>
 
-    
+        <dd>
+            @foreach (var item in Model.FileList)
+            {
+
+                <ul>
+                    <li>
+                        @Html.ActionLink("Download", "Download", new { FileName = item.ToString(), style = "color:blue" })
+                        @Html.DisplayFor(model => item)
+                    </li>
+                </ul>
+
+
+            }
+        </dd>
+
     </dl>
 
 
@@ -208,7 +218,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" style="color: white; margin-top: 2px; background-color: grey;border-color: black;" /> |
-            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
+            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }, new { @style = "color:white;" }) </button>
 
         </div>
     }

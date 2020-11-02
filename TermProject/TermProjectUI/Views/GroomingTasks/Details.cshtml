@@ -1,4 +1,4 @@
-﻿@model TermProjectUI.Models.OtherTaskModel
+﻿@model TermProjectUI.Models.GroomingTaskModel
 
 @{
     ViewBag.Title = "Details";
@@ -18,9 +18,9 @@
             <div class="col-md-8 col-xl-9">
                 <div class="row">
                     <div class="col">
-                        <img src="~/Images/other_Nav.JPG" style="float: left; height: 15%; width: 15%;">
+                        <img src="~/Images/grooming_Nav.JPG" style="float: left; height: 15%; width: 15%;">
                         <br />
-                        <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskTitle)</h1>
+                        <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskName)</h1>
                     </div>
                 </div>
                 <div class="row">
@@ -36,30 +36,107 @@
                     <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
                         <div class="row">
 
+                            <div class="col-md-4">
 
-                            Task Information:
-                            @foreach (var item in Model.TaskRequirements)
-                            {
+                                Dog Info
                                 <ul>
-                                    <li> @Html.DisplayFor(model => item.Key) : @Html.DisplayFor(model => item.Value) </li>
-
+                                    <li>Dog Name:  @Html.DisplayFor(model => model.dogName) </li>
+                                    <li>Dog Age: @Html.DisplayFor(model => model.dogAge)</li>
+                                    <li>Dog Size: @Html.DisplayFor(model => model.dogSize)</li>
+                                    <li>Dog Breed:  @Html.DisplayFor(model => model.dogBreed)</li>
                                 </ul>
 
-                            }
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                Services
+                                <ul>
+                                    <li>Wash: @Html.DisplayFor(model => model.wash)</li>
+                                    <li>Nails: @Html.DisplayFor(model => model.nailCleaning) </li>
+                                    <li>Cut: @Html.DisplayFor(model => model.cut)</li>
+                                    <li>Trim: @Html.DisplayFor(model => model.trim) </li>
+                                    <li>Ear Cleaning: @Html.DisplayFor(model => model.earClean)</li>
+                                    <li>Teeth Cleaning: @Html.DisplayFor(model => model.teethClean) </li>
+                                </ul>
 
 
 
+                            </div>
+                        </div>
+                        <div class="row" id="booked">
+                            <div class="col-md-4">
+
+                                Booked Info
+                                <ul>
+                                    <li>Booked: @Html.DisplayFor(model => model.booked)</li>
+                                    <li id="book">@Html.DisplayFor(model => model.bookedStore)</li>
+                                    <li>@Html.DisplayFor(model => model.bookedAddress)</li>
+                                    <li>Booked Date: @Html.DisplayFor(model => model.bookedDate)</li>
+                                    <li>Booked Time: @Html.DisplayFor(model => model.bookedTime)</li>
+                                </ul>
+
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="row" id="prefered">
+                            <div class="col-md-4">
+
+                                Preference Info
+                                <ul>
+                                    <li>Prefered:  @Html.DisplayFor(model => model.booked)</li>
+                                    <li id="pref">@Html.DisplayFor(model => model.prefStore)</li>
+                                    <li>Prefered Address: @Html.DisplayFor(model => model.prefAddress) </li>
+                                    <li>Prefered Date: @Html.DisplayFor(model => model.prefDate)</li>
+                                   
+                                </ul>
+
+                            </div>
+
+                        </div>
+                        <div class="row" id="pay">
+                            <div class="col-md-4">
+
+                                Payed Info
+                                <ul>
+                                    <li>@Html.DisplayFor(model => model.paid)</li>
+                                    <li id="receipt">@Html.DisplayFor(model => model.receipt)</li>
+                                    <li>@Html.DisplayFor(model => model.payer)</li>
+                                </ul>
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                Additional Information
+                                <ul>
+                                    <li>@Html.DisplayFor(model => model.AdditionalInfo)</li>
+                                </ul>
+
+
+
+                            </div>
                         </div>
 
                     </div>
                 </div>
-               
-                
+
+
             </div>
             <div class="col-md-4 col-xl-3">
                 <div class="row">
                     <div class="col">
-                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;     />
+                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;       />
                     </div>
                 </div>
 
@@ -150,3 +227,64 @@
 
 
 </p>
+<script>
+    var pay = document.getElementById("pay");
+    var receipt = document.getElementById("receipt");
+
+    var prefered = document.getElementById("prefered");
+    var pref = document.getElementById("pref");
+
+    var booked = document.getElementById("booked");
+    var book = document.getElementById("book");
+    if (book.innerText == "") {
+
+       // pay.style.display = "none";
+        booked.style.display = "none";
+        prefered.style.display = "none";
+
+
+    } else {
+
+        //pay.style.display = "block";
+        booked.style.display = "block";
+        prefered.style.display = "none";
+        if (receipt.innerText == "" || receipt.innerText == "") {
+            pay.style.display = "none";
+            
+        } else {
+
+            pay.style.display = "block";
+            
+        }
+
+
+    }
+
+
+    if (receipt.innerText == "" || receipt.innerText == "" ) {
+        pay.style.display = "none";
+        prefered.style.display = "block";
+
+    } else {
+
+        pay.style.display = "block";
+        prefered.style.display = "none";
+    }
+
+
+ 
+
+    if (pref.innerText == "") {
+       booked.style.display = "block";
+        prefered.style.display = "none";
+
+
+    } else {
+
+        pay.style.display = "none";
+        booked.style.display = "none";
+        prefered.style.display = "block";
+    }
+  
+
+</script>

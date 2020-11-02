@@ -1,284 +1,375 @@
-﻿@model TermProjectUI.Models.OtherTaskModel
+﻿@model TermProjectUI.Models.GroomingTaskModel
 
 @{
     ViewBag.Title = "Edit";
 }
-    <style>
-        a {
-            color: white;
-        }
-    </style>
+<style>
+    a {
+        color: white;
+    }
+</style>
 <h2>Edit</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-row">
+            <div class="col-md-12">
+                <h2>
 
-
-    <div class="form-row">
-        <div class="col-md-12">
-            <h2>
-
-                Other Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                    <span class="glyphicon glyphicon-remove-circle"></span>
-                </a>
-            </h2>
+                    Grooming Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </a>
+                </h2>
+            </div>
         </div>
-    </div>
-    <!--Task Specification-->
-    <div class="form-row">
-        <div class="col-md-12">
-            <hr />
-            <h1>
-                Task Specification
-            </h1>
+
+
+
+
+        <!--Task Specification-->
+        <div class="form-row">
+
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Dogs Name:
+                @Html.EditorFor(model => model.dogName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dogName, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskDogName"></p></font>
+            </div>
+
+            <div class="col-md-2">
+                <font color="red"><strong>*</strong></font>Age
+                @Html.EditorFor(model => model.dogAge, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dogAge, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskDogAge"></p></font>
+            </div>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Size:
+                @Html.EditorFor(model => model.dogSize, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dogSize, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskDogSize"></p></font>
+            </div>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Dogs Breed:
+                @Html.EditorFor(model => model.dogBreed, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dogBreed, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskDogBreed"></p></font>
+            </div>
         </div>
-    </div>
-    <div class="form-row">
-
-        <div class="col-md-4">
-            <font color="red"><strong>*</strong></font>Title:
-            @Html.EditorFor(model => model.taskTitle, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.taskTitle, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="title"></p></font>
+        <div class="form-row">
+            <div class="col-md-12">
+                <br />
+            </div>
         </div>
-        <div class="col-md-4">
-            <font color="red"><strong>*</strong></font>Requester:
-            @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="req"></p></font>
+
+
+        <!--services-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <br />
+                Services:
+
+            </div>
         </div>
-    </div>
-
-
-    <body>
-
-        <table id="tblTaskSpec" class="table" cellpadding="0" cellspacing="0">
-            <thead>
-                <tr>
-                    <th style="width:150px">Field</th>
-                    <th style="width:150px">Value</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.TaskRequirements)
-                {
-
-
-                    <tr>
-                        <td><input type="text" id="txtKey" /></td>
-                        <td><input type="text" id="txtValue" /></td>
-                        <td><input type="button" id="btnAdd" value="Add" /></td>
-                    </tr>
-                </tfoot>
-            </table>
-            <br />
-
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-
-
-            <script type="text/javascript">
-                $("body").on("click", "#btnAdd", function () {
-                    //Reference the Name and Country TextBoxes.
-                    var txtKey = $("#txtKey");
-                    var txtValue = $("#txtValue");
-                    if (txtKey.val() == null || txtKey.val() == "" || txtValue.val() == null || txtValue.val() == "") {
-                        alert("Enter Field and Value and press Add"); return false;
-
-                    }
-                    else {
-                        //Get the reference of the Table's TBODY element.
-                        var tBody = $("#tblTaskSpec > TBODY")[0];
-
-                        //Add Row.
-                        var row = tBody.insertRow(-1);
-
-
-                        var cell = $(row.insertCell(-1));
-                        cell.html(txtKey.val());
-
-
-                        cell = $(row.insertCell(-1));
-                        cell.html(txtValue.val());
-
-
-                        <td>@item.Key</td>
-                        <td>@item.Value</td>
-
-                        <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
-                    </tr>
-
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td><input type="text" id="txtKey" /></td>
-                    <td><input type="text" id="txtValue" /></td>
-                    <td><input type="button" id="btnAdd" value="Add" /></td>
-                </tr>
-            </tfoot>
-        </table>
-        <br />
-
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-
-
-        <script type="text/javascript">
-            $("body").on("click", "#btnAdd", function () {
-                //Reference the Name and Country TextBoxes.
-                var txtKey = $("#txtKey");
-                var txtValue = $("#txtValue");
-                if (txtKey.val() == null || txtKey.val() == "" || txtValue.val() == null || txtValue.val() == "") {
-                    alert("Enter Field and Value and press Add"); return false;
-
-                }
-                else {
-                    //Get the reference of the Table's TBODY element.
-                    var tBody = $("#tblTaskSpec > TBODY")[0];
-
-                    //Add Row.
-                    var row = tBody.insertRow(-1);
-
-
-                    var cell = $(row.insertCell(-1));
-                    cell.html(txtKey.val());
-
-
-                    cell = $(row.insertCell(-1));
-                    cell.html(txtValue.val());
 
 
 
-
-                    //Add Button cell.
-                    cell = $(row.insertCell(-1));
-                    var btnRemove = $("<input />");
-                    btnRemove.attr("type", "button");
-                    btnRemove.attr("onclick", "Remove(this);");
-                    btnRemove.val("Remove");
-                    cell.append(btnRemove);
-
-                    //Clear the TextBoxes.
-                    txtKey.val("");
-                    txtValue.val("");
-                }
-            });
-
-            function Remove(button) {
-                //Determine the reference of the Row using the Button.
-                var row = $(button).closest("TR");
-                var name = $("TD", row).eq(0).html();
-                if (confirm("Do you want to delete: " + name)) {
-                    //Get the reference of the Table.
-                    var table = $("#tblTaskSpec")[0];
-
-                    //Delete the Table row using it's Index.
-                    table.deleteRow(row[0].rowIndex);
-                }
-            };
-
-            $("body").on("click", "#btnSave", function () {
-                //Loop through the Table rows and build a JSON array.
-                var tasksSpec = new Array();
-                $("#tblTaskSpec TBODY TR").each(function () {
-                    var row = $(this);
-                    var taskSpec = {};
-                    taskSpec.Key = row.find("TD").eq(0).html();
-                    taskSpec.Value = row.find("TD").eq(1).html();
-                    tasksSpec.push(taskSpec);
-                    // alert(itemsSpec[0].Key);
-
-                    $('#req').html("");
-                    $('#title').html("");
-                    $('#additionaInfo').html("");
-                    $('#taskspeci').html("");
-                    if ($('#requester').val() === "" || $('#taskTitle').val() === "" || $('#AdditionaInfo').val() === "") {
-
-                        if ($('#requester').val() === "") {
-                            $('#req').html("Requester is required");
-                        } if ($('#taskTitle').val() === "") {
-                            $('#title').html("Title is required");
-                        } if ($('#AdditionalInfo').val() === "") {
-                            $('#additionaInfo').html("If you have no Additional info enter NA as an answer");
-                        }
-                        return false;
-                    } else if (!tasksSpec.length) {
-                        $('#taskspeci').html("add more in information"); return false;
-                    }
-                else {
-                    //Send the JSON array to Controller using AJAX.
-                    $.ajax({
-                        type: "POST",
-                        url: "/OtherTasks/UpdateTaskSpecifications",
-                        data: JSON.stringify(tasksSpec),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (r) {
-                            //alert(r + " record(s) inserted.");
-                        }
-                    });
-                }
-            });
-        </script>
-    </body>
-    <div class="form-row">
-        <div class="col-md-12">
-            <hr />
-            <h2>Additional Information</h2>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col-md-12">
-            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="additionaInfo"></p></font>
-        </div>
-    </div>
-
-    <!--Blank Space-->
-    <div class="form-row">
-        <div class="col-md-12">
-            <hr />
-        </div>
-    </div>
-    <!--Buttom Buttons-->
-    <div class="form-row">
-        <div class="col-md-12">
-            <div class="form-row">
-                <div class="col-md-6">
-                    <button class="btn btn-primary" type="button" style=" width: 15%; float:right; background-color: grey;border-color: black; margin-left: 2px;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
-                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
-                    <br /><br /><br />
-
-
+        <div class="form-row">
+            <div class="col-md-4">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.wash)  Wash/Shampoo
+                    </div>
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.nailCleaning) Nails
+                    </div>
                 </div>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.cut) Cut
+                    </div>
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.earClean) Ear Cleaning
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.trim) Trim
+                    </div>
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.teethClean) Teeth Cleaning
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--Appointment-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <br />
+                Appointment Details:
+            </div>
+        </div>
+
+        <!--booked-->
+
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+
+
+                <label for="myCheck">Booked:</label>
+                <input type="checkbox" id="myCheck" onclick="bookedCB()">
+
+
+                <script>
+
+                    function bookedCB() {
+
+                        var bookedCheckBox = document.getElementById("myCheck");
+                        var preferedTitle = document.getElementById("preferedTitle");
+                        var preferedRow = document.getElementById("preferedRow");
+                        var bookedTitle = document.getElementById("bookedTitle");
+                        var bookedRow = document.getElementById("bookedRow");
+                        var payTitle = document.getElementById("payTitle");
+                        var payedCheckBox = document.getElementById("myPayCB");
+                        var payedInfoTitle = document.getElementById("payedInfoTitle");
+                        var payedInfo = document.getElementById("payedInfo");
+                        if (bookedCheckBox.checked == true) {
+                            preferedTitle.style.display = "none";
+                            preferedRow.style.display = "none";
+                            bookedTitle.style.display = "block";
+                            bookedRow.style.display = "block";
+                            payTitle.style.display = "block";
+                        } else {
+
+                            preferedTitle.style.display = "block";
+                            preferedRow.style.display = "block";
+                            bookedTitle.style.display = "none";
+                            bookedRow.style.display = "none";
+                            payTitle.style.display = "none";
+                            payedCheckBox.checked = false;
+                            payedInfoTitle.style.display = "none";
+                            payedInfo.style.display = "none";
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+
+        <!--Appointment Details Prefered-->
+        <!--
+
+        This section should only show if booked is not checked. if it is checked it should be blank/disabled
+
+            -->
+        <div class="form-row" id="preferedTitle">
+
+
+            <div class="col-md-12">
+                Prefered
+                <br />
+            </div>
+        </div>
+
+        <div class="form-row" id="preferedRow">
+            <!--style="display: none" id="prefRow">-->
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Groomer/Store
+                @Html.EditorFor(model => model.prefStore, new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+
+            <div class="col-md-2">
+                <font color="red"><strong>*</strong></font>Address:
+                @Html.EditorFor(model => model.prefAddress, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Date:
+                @Html.EditorFor(model => model.prefDate, new { htmlAttributes = new { @class = "form-control" } })
             </div>
 
         </div>
+
+
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+                <br />
+            </div>
+        </div>
+
+        <!--Appointment Details Booked-->
+        <div class="form-row" id="bookedTitle" style="display:none">
+
+
+            <div class="col-md-12">
+                Booking Details
+                <br />
+            </div>
+        </div>
+
+        <div class="form-row" id="bookedRow" style="display:none">
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Groomer/Store
+                @Html.EditorFor(model => model.bookedStore, new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Address:
+                @Html.EditorFor(model => model.bookedAddress, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Date:
+                @Html.EditorFor(model => model.bookedDate, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Time:
+                @Html.EditorFor(model => model.bookedTime, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+        </div>
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+                <br />
+            </div>
+        </div>
+
+        <!--Payed-->
+
+        <div class="form-row" id="payTitle" style="display:none">
+            <div class="form-row">
+
+
+                <div class="col-md-12">
+                    Payment
+                    <br />
+                </div>
+            </div>
+
+            <div class="col-md-12">
+
+                <label for="myCheck">Paid:</label>
+                <input type="checkbox" id="myPayCB" onclick="payedCB()">
+
+
+
+
+
+
+
+                <script>
+                    function payedCB() {
+                        var payedCheckBox = document.getElementById("myPayCB");
+                        var payedInfoTitle = document.getElementById("payedInfoTitle");
+                        var payedInfo = document.getElementById("payedInfo");
+                        var space = document.getElementById("space");
+                        if (payedCheckBox.checked == true) {
+                            payedInfoTitle.style.display = "block";
+                            payedInfo.style.display = "block";
+                            space.style.display = "block";
+                        } else {
+
+                            payedInfoTitle.style.display = "none";
+                            payedInfo.style.display = "none";
+                            space.style.display = "none";
+
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+                <br />
+            </div>
+        </div>
+        <!--Pay Details-->
+        <div class="form-row" id="payedInfoTitle" style="display:none">
+
+
+            <div class="col-md-12">
+                Payment Details
+                <br />
+            </div>
+        </div>
+
+        <div class="form-row" id="payedInfo" style="display:none">
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Payer
+                @Html.EditorFor(model => model.payer, new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Receipt:
+                @Html.EditorFor(model => model.receipt, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+
+        </div>
+        <div class="form-row" id="space" style="display:none">
+
+
+            <div class="col-md-12">
+                <br />
+            </div>
+        </div>
+        <!--additional information-->
+
+
+        <div class="form-row">
+
+            <div class="col-md-3">
+                Additional Information
+                @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+        <div class="form-row">
+            <div class="col-md-12">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <button class="btn btn-primary" type="button" style=" width: 15%; float:right; background-color: grey;border-color: black; margin-left: 2px;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
+                        <button class="btn btn-primary" type="submit" value="Save" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                        <br /><br /><br />
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 
-    <div>
-        <div id="listSectionTEST"><ul></ul></div>
 
-    </div>
-
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-</div>
 }

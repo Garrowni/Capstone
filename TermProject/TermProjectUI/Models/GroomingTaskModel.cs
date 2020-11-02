@@ -14,6 +14,10 @@ namespace TermProjectUI.Models
         [BsonId]
         public ObjectId Id { get; set; }
 
+        [BsonElement("requester")]
+
+        public string requester { get; set; }
+
 
         [BsonElement("posterPhoto")]
         public string posterPhoto { get; set; }
@@ -79,27 +83,30 @@ namespace TermProjectUI.Models
         //not payed
         [BsonElement("price")]
         public double price { get; set; }
-
-
+        public bool nailCleaning { get; set; }
+        public bool wash { get; set; }
         //services
-        public class services
-        {
-            public bool wash { get; set; }
-            public bool cut { get; set; }
-            public bool trim { get; set; }
-            public bool nailClean { get; set; }
-            public bool earClean { get; set; }
-            public bool teethClean { get; set; }
-
-        }
 
 
-        public List<services> Services
-        {
-            get;
-            set;
+        public bool cut { get; set; }
+        public bool trim { get; set; }
+    
+        public bool earClean { get; set; }
+        public bool teethClean { get; set; }
 
-        }
+//        public class services
+  //      {
+    //        public bool wash { get; set; }
+          
+      //  }
+
+
+    //    public List<services> Services
+  //      {
+   //         get;
+   //         set;
+
+    //    }
 
         [BsonElement("AdditionalInfo")]
         public string AdditionalInfo { get; set; }

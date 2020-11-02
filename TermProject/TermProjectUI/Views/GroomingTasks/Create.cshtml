@@ -27,8 +27,13 @@
             </h2>
         </div>
     </div>
+
+
+
+
     <!--Task Specification-->
     <div class="form-row">
+
 
         <div class="col-md-3">
             <font color="red"><strong>*</strong></font>Dogs Name:
@@ -68,32 +73,36 @@
         <div class="col-md-12">
             <br />
             Services:
+          
         </div>
     </div>
+
+
+
     <div class="form-row">
         <div class="col-md-4">
             <div class="form-row">
                 <div class="col-md-6">
-                    <input type="checkbox" value="Wash/Shampoo" /> Wash/Shampoo
+                    @Html.CheckBoxFor(model => model.wash)  Wash/Shampoo
                 </div>
                 <div class="col-md-6">
-                    <input type="checkbox" value="nails" /> Nails
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-md-6">
-                    <input type="checkbox" value="Cut" /> Cut
-                </div>
-                <div class="col-md-6">
-                    <input type="checkbox" value="Ear Cleaning" /> Ear Cleaning
+                    @Html.CheckBoxFor(model => model.nailCleaning) Nails
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-md-6">
-                    <input type="checkbox" value="Trim" /> Trim
+                    @Html.CheckBoxFor(model => model.cut) Cut
                 </div>
                 <div class="col-md-6">
-                    <input type="checkbox" value="TeethCleaning" /> Teeth Cleaning
+                    @Html.CheckBoxFor(model => model.earClean) Ear Cleaning
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    @Html.CheckBoxFor(model => model.trim) Trim
+                </div>
+                <div class="col-md-6">
+                    @Html.CheckBoxFor(model => model.teethClean) Teeth Cleaning
                 </div>
             </div>
         </div>
@@ -115,24 +124,54 @@
 
 
         <div class="col-md-12">
-            <input type="checkbox" value="appointmentBooked" name="bookedID" id="bookedID" /> Booked
-            <br />
-        </div>
-    </div>
-    <div class="form-row">
 
 
-        <div class="col-md-12">
-            <br />
+            <label for="myCheck">Booked:</label>
+            <input type="checkbox" id="myCheck" onclick="bookedCB()">
+           
+
+            <script>
+                
+                function bookedCB() {
+
+                    var bookedCheckBox = document.getElementById("myCheck");
+                    var preferedTitle = document.getElementById("preferedTitle");
+                    var preferedRow = document.getElementById("preferedRow");
+                    var bookedTitle = document.getElementById("bookedTitle");
+                    var bookedRow = document.getElementById("bookedRow");
+                    var payTitle = document.getElementById("payTitle");
+                    var payedCheckBox = document.getElementById("myPayCB");
+                    var payedInfoTitle = document.getElementById("payedInfoTitle");
+                    var payedInfo = document.getElementById("payedInfo");
+                    if (bookedCheckBox.checked == true) {
+                        preferedTitle.style.display = "none";
+                        preferedRow.style.display = "none";
+                        bookedTitle.style.display = "block";
+                        bookedRow.style.display = "block";
+                        payTitle.style.display = "block";
+                    } else {
+
+                        preferedTitle.style.display = "block";
+                        preferedRow.style.display = "block";
+                        bookedTitle.style.display = "none";
+                        bookedRow.style.display = "none";
+                        payTitle.style.display = "none";
+                        payedCheckBox.checked = false;
+                        payedInfoTitle.style.display = "none";
+                        payedInfo.style.display = "none";
+                    }
+                }
+            </script>
         </div>
     </div>
+
     <!--Appointment Details Prefered-->
     <!--
 
     This section should only show if booked is not checked. if it is checked it should be blank/disabled
 
         -->
-    <div class="form-row">
+    <div class="form-row" id="preferedTitle">
 
 
         <div class="col-md-12">
@@ -140,14 +179,8 @@
             <br />
         </div>
     </div>
-    <div class="form-row">
 
-
-        <div class="col-md-12">
-            <br />
-        </div>
-    </div>
-    <div class="form-row">
+    <div class="form-row" id="preferedRow">
         <!--style="display: none" id="prefRow">-->
 
         <div class="col-md-3">
@@ -168,10 +201,16 @@
     </div>
 
 
+    <div class="form-row">
 
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
 
     <!--Appointment Details Booked-->
-    <div class="form-row">
+    <div class="form-row" id="bookedTitle" style="display:none">
 
 
         <div class="col-md-12">
@@ -179,14 +218,8 @@
             <br />
         </div>
     </div>
-    <div class="form-row">
 
-
-        <div class="col-md-12">
-            <br />
-        </div>
-    </div>
-    <div class="form-row">
+    <div class="form-row" id="bookedRow" style="display:none">
 
         <div class="col-md-3">
             <font color="red"><strong>*</strong></font>Groomer/Store
@@ -208,11 +241,17 @@
         </div>
 
     </div>
+    <div class="form-row">
 
+
+        <div class="col-md-12">
+            <br />
+        </div>
+    </div>
 
     <!--Payed-->
 
-    <div class="form-row">
+    <div class="form-row" id="payTitle" style="display:none">
         <div class="form-row">
 
 
@@ -223,10 +262,38 @@
         </div>
 
         <div class="col-md-12">
-            <input type="checkbox" value="appointmentPayed" /> Payed
-            <br />
+
+            <label for="myCheck">Paid:</label>
+            <input type="checkbox" id="myPayCB" onclick="payedCB()">
+
+
+
+
+
+
+
+            <script>
+                function payedCB() {
+                    var payedCheckBox = document.getElementById("myPayCB");
+                    var payedInfoTitle = document.getElementById("payedInfoTitle");
+                    var payedInfo = document.getElementById("payedInfo");
+                    var space = document.getElementById("space");
+                    if (payedCheckBox.checked == true) {
+                        payedInfoTitle.style.display = "block";
+                        payedInfo.style.display = "block";
+                        space.style.display = "block";
+                    } else {
+
+                        payedInfoTitle.style.display = "none";
+                        payedInfo.style.display = "none";
+                        space.style.display = "none";
+                        
+                    }
+                }
+            </script>
         </div>
     </div>
+
     <div class="form-row">
 
 
@@ -234,10 +301,8 @@
             <br />
         </div>
     </div>
-
-
     <!--Pay Details-->
-    <div class="form-row">
+    <div class="form-row" id="payedInfoTitle" style="display:none">
 
 
         <div class="col-md-12">
@@ -245,14 +310,8 @@
             <br />
         </div>
     </div>
-    <div class="form-row">
 
-
-        <div class="col-md-12">
-            <br />
-        </div>
-    </div>
-    <div class="form-row">
+    <div class="form-row" id="payedInfo" style="display:none">
 
         <div class="col-md-3">
             <font color="red"><strong>*</strong></font>Payer
@@ -267,16 +326,16 @@
 
 
     </div>
-
-    <!--additional information-->
-
-    <div class="form-row">
+    <div class="form-row" id="space" style="display:none">
 
 
         <div class="col-md-12">
             <br />
         </div>
     </div>
+    <!--additional information-->
+
+
     <div class="form-row">
 
         <div class="col-md-3">
@@ -289,7 +348,24 @@
 
 
     </div>
-  
+
+
+
+    <div class="form-row">
+        <div class="col-md-12">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+
+                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                    <br /><br /><br />
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 

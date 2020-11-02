@@ -10,414 +10,506 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-
-
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-        <div class="form-row">
-            <div class="col-md-12">
-                <h2>
-
-                    Vet Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </a>
-                </h2>
-            </div>
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-row">
+        <div class="col-md-12">
+            <h2>
+                Vet Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </a>
+            </h2>
         </div>
-        <!--Pickup Details-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h2>
-                    Pickup Details
-                </h2>
-            </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h2>
+                Pickup Details
+            </h2>
         </div>
-        <div class="form-row">
-            <div class="col-md-3">
-                <font color="red"><strong>*</strong></font>Location:
-                @Html.EditorFor(model => model.pickupLocation, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.pickupLocation, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="puLocation"></p></font>
-            </div>
-            <div class="col-md-3">
-                <font color="red"><strong>*</strong></font>Volunteer:
-                @Html.EditorFor(model => model.pickupVolunteer, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.pickupVolunteer, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="puVolunteer"></p></font>
-            </div>
-
-
-
-
-
-            <div class="col-md-3">
-                <div class="form-row">
-                    <div class="col">
-                        <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
-                        <input type="date" id="PUDate" name="PUDate" class="form-control" required>
-
-
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-3">
-                <div class="form-row">
-                    <div class="col">
-
-                        <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
-                        <input type="time" id="PUTime" name="PUTime" class="form-control" style="width: 112%;" required>
-
-                    </div>
-                </div>
-            </div>
-
+    </div>
+    <div class="form-row">
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Location:
+            @Html.EditorFor(model => model.pickupLocation, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.pickupLocation, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="puLocation"></p></font>
         </div>
-        <div class="form-row">
-            <div class="col-md-5">
-                <div class="form-row">
-                    <div class="col">
-                        <font color="red" size="2px"> <p id="pudate">.</p></font>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Volunteer:
+            @Html.EditorFor(model => model.pickupVolunteer, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.pickupVolunteer, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="puVolunteer"></p></font>
+        </div>
 
-            <div class="col-md-3">
-                <div class="form-row">
-                    <div class="col">
-                        <font color="red" size="2px"> <p id="putime">.</p></font>
 
-                    </div>
+
+
+
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
+                    <input type="date" id="PUDate" name="PUDate" class="form-control" required>
+
+
                 </div>
             </div>
         </div>
 
 
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
 
+                    <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
+                    <input type="time" id="PUTime" name="PUTime" class="form-control" style="width: 112%;" required>
 
-
-
-
-
-        <!--Appointment Details-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h2>
-                    Appointment Details
-                </h2>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-3">
-                <font color="red"><strong>*</strong></font>Clinic Address:
-                @Html.EditorFor(model => model.appointmentAddress, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.appointmentAddress, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="apAddress"></p></font>
-            </div>
-
-
-
-            <div class="col-md-3">
-                <div class="form-row">
-                    <div class="col">
-                        <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
-                        <input type="date" id="APDate" name="APDate" class="form-control" required>
-
-
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-3">
-                <div class="form-row">
-                    <div class="col">
-
-                        <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
-                        <input type="time" id="APTime" name="APTime" class="form-control" style="width: 112%;" required>
-
-                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="form-row">
-            <div class="col-md-5">
-                <div class="form-row">
-                    <div class="col">
-                        <font color="red" size="2px"> <p id="apdate">.</p></font>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-row">
-                    <div class="col">
-                        <font color="red" size="2px"> <p id="aptime">.</p></font>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-12">
-
-                <h2>
-                </h2>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-3">
-                <font color="red"><strong>*</strong></font>Reason for Appointment:
-                @Html.EditorFor(model => model.appointmentReason, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.appointmentReason, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="apReason"></p></font>
-            </div>
-            <div class="col-md-3">
-                Notes:
-                @Html.EditorFor(model => model.appointmentNotes, new { htmlAttributes = new { @class = "form-control" } })
-
-            </div>
-            <div class="col-md-3"></div>
-
-        </div>
-
-        <!--Dog Details-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h2>
-                    Dog Details
-                </h2>
-            </div>
-        </div>
-        <div class="form-row">
-
-            <div class="col-md-3">
-                <font color="red"><strong>*</strong></font>Name:
-                @Html.EditorFor(model => model.dogName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dogName, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="name"></p></font>
-            </div>
-            <div class="col-md-3">
-                <font color="red"><strong>*</strong></font>Breed:
-                @Html.EditorFor(model => model.dogBreed, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dogBreed, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="breed"></p></font>
-            </div>
-
-            <div class="col-md-3">
-                <font color="red"><strong>*</strong></font>Size:
-                @Html.EditorFor(model => model.dogSize, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dogSize, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="size"></p></font>
-            </div>
-            <div class="col-md-3">
-                Notes:
-                @Html.EditorFor(model => model.dogNotes, new { htmlAttributes = new { @class = "form-control" } })
-
-            </div>
-        </div>
-
-
-        <!--Documents-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h1>
-                    Documents:
-                </h1>
-            </div>
-        </div>
-        <body>
-
-
-            <br />
-
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
-
-            <!--List Script-->
-            <script type="text/javascript">
-
-
-        
-                $("body").on("click", "#btnSave", function () {
-                   
-
-                    $('#puLocation').html("");
-                    $('#puVolunteer').html("");
-
-                    $('#apAddress').html("");
-
-                    $('#apReason').html("");
-                    $('#name').html("");
-                    $('#breed').html("");
-                    $('#size').html("");
-                    $('#doLocation').html("");
-                    $('#doVolunteer').html("");
-                    $('#dodate').html("");
-                    $('#dotime').html("");
-                    $('#apdate').html("");
-                    $('#aptime').html("");
-                    $('#pudate').html("");
-                    $('#putime').html("");
-                    $('#additionalinfo').html("");
-
-                    if ($('#dogSize').val() === "" || $('#dogBreed').val() === "" || $('#dogName').val() === "" || $('#apointmentReason').val() === "" || $('#apointmentAddress').val() === "" || $('#dropoffLocation').val() === "" || $('#dropoffVolunteer').val() === "" || $('#DODate').val() === "" || $('#DOTime').val() === "" || $('#PUDate').val() === "" || $('#PUTime').val() === "" || $('#APDate').val() === "" || $('#APTime').val() === "" || $('#pickupVolunteer').val() === "" || $('#pickupLocation').val() === "") {
-
-
-                        if ($('#appointmentReason').val() === "") { $('#apReason').html("Reason Needed"); }
-                        if ($('#appointmentAddress').val() === "") { $('#apAddress').html("Address is required"); }
-                        if ($('#dropoffLocation').val() === "") { $('#doLocation').html("Address is required"); }
-                        if ($('#dropoffVolunteer').val() === "") { $('#doVolunteer').html("Volunteer Needed"); }
-                        if ($('#DODate').val() === "") { $('#doDate').html("Date Needed"); }
-                        if ($('#DOTime').val() === "") { $('#doTime').html("Time Needed"); }
-                        if ($('#PUDate').val() === "") { $('#puDate').html("Date Needed"); }
-                        if ($('#PUTime').val() === "") { $('#puTime').html("Time Needed"); }
-                        if ($('#APDate').val() === "") { $('#apDate').html("Date Needed"); }
-                        if ($('#APTime').val() === "") { $('#apTime').html("Time Needed"); }
-                        if ($('#pickupVolunteer').val() === "") { $('#puVolunteer').html("Volunteer Needed"); }
-                        if ($('#pickupLocation').val() === "") { $('#puLocation').html("Address is required"); }
-                        if ($('#dogName').val() === "") { $('#name').html("Name Needed"); }
-                        if ($('#dogBreed').val() === "") { $('#breed').html("Breed needed"); }
-                        if ($('#dogSize').val() === "") { $('#size').html("Size Needed"); }
-                        return false;
-                    } 
-                    else {
-                        //Send the JSON array to Controller using AJAX.
-                        $.ajax({
-                            type: "POST",
-                            url: "/VetTasks/InsertDocuments",
-                            data: JSON.stringify(tasksSpec),
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            success: function (r) {
-                                //alert(r + " record(s) inserted.");
-                            }
-                        });
-                    }
-                });
-            </script>
-        </body>
-
-
-
-
-
-
-
-
-        <!--Drop off Details-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h2>
-                    Dropoff Details
-                </h2>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-3">
-                <font color="red"><strong>*</strong></font>Location:
-                @Html.EditorFor(model => model.dropoffLocation, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dropoffLocation, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="doLocation"></p></font>
-            </div>
-            <div class="col-md-3">
-                <font color="red"><strong>*</strong></font>Volunteer:
-                @Html.EditorFor(model => model.dropoffVolunteer, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dropoffVolunteer, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="doVolunteer"></p></font>
-            </div>
-            <div class="col-md-3">
-                <div class="form-row">
-                    <div class="col">
-                        <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
-                        <input type="date" id="DODate" name="DODate" class="form-control" required>
-
-
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-3">
-                <div class="form-row">
-                    <div class="col">
-
-                        <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
-                        <input type="time" id="DOTime" name="DOTime" class="form-control" style="width: 112%;" required>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="form-row">
-            <div class="col-md-5">
-                <div class="form-row">
-                    <div class="col">
-                        <font color="red" size="2px"> <p id="dodate">.</p></font>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-row">
-                    <div class="col">
-                        <font color="red" size="2px"> <p id="dotime">.</p></font>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Additional Info -->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-                <h1>Additional Information</h1>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
-                @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
-                <font color="red" size="2px"> <p id="additionalinfo"></p></font>
-            </div>
-        </div>
-        <!--Blank Space-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <hr />
-            </div>
-        </div>
-        <!--Buttom Buttons-->
-        <div class="form-row">
-            <div class="col-md-12">
-                <div class="form-row">
-                    <div class="col-md-6">
-                        <input class="btn btn-primary" type="reset" id="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
-
-                        <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
-                        <br /><br /><br />
-
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <!--Scripts-->
-
 
     </div>
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="pudate">.</p></font>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="putime">.</p></font>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!--Appointment Details-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h2>
+                Appointment Details
+            </h2>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Clinic Address:
+            @Html.EditorFor(model => model.appointmentAddress, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.appointmentAddress, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="apAddress"></p></font>
+        </div>
+
+
+
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
+                    <input type="date" id="APDate" name="APDate" class="form-control" required>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+
+                    <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
+                    <input type="time" id="APTime" name="APTime" class="form-control" style="width: 112%;" required>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="apdate">.</p></font>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="aptime">.</p></font>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
+
+            <h2>
+            </h2>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Reason for Appointment:
+            @Html.EditorFor(model => model.appointmentReason, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.appointmentReason, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="apReason"></p></font>
+        </div>
+        <div class="col-md-3">
+            Notes:
+            @Html.EditorFor(model => model.appointmentNotes, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+        <div class="col-md-3"></div>
+
+    </div>
+
+    <!--Dog Details-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h2>
+                Dog Details
+            </h2>
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Name:
+            @Html.EditorFor(model => model.dogName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.dogName, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="name"></p></font>
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Breed:
+            @Html.EditorFor(model => model.dogBreed, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.dogBreed, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="breed"></p></font>
+        </div>
+
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Size:
+            @Html.EditorFor(model => model.dogSize, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.dogSize, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="size"></p></font>
+        </div>
+        <div class="col-md-3">
+            Notes:
+            @Html.EditorFor(model => model.dogNotes, new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+    </div>
+
+
+    <!--Documents-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>
+                Documents:
+            </h1>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    Choose a File:
+                    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
+
+                    <input id="fileInput" type="file" accept=".docx,.pdf" multiple />
+
+                    <br />
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table" id="FilesList" style="visibility:hidden">
+
+        <tr>
+            <th>
+                Attachment(s)
+            </th>
+
+            <th>
+                Action
+            </th>
+        </tr>
+
+    </table>
+
+    <script>
+        var formdata = new FormData(); //FormData object
+
+        $(document).ready(function () {
+
+            $("#fileInput").on("change", function () {
+                var fileInput = document.getElementById('fileInput');
+
+                //Iterating through each files selected in fileInput
+                for (i = 0; i < fileInput.files.length; i++) {
+
+                    var sfilename = fileInput.files[i].name;
+
+                    let srandomid = Math.random().toString(36).substring(7);
+                    var desc = $('#txtuploader').val();
+                    formdata.append(sfilename, fileInput.files[i]);
+
+                    var markup = "<tr id='" + srandomid + "'><td>" + sfilename + "</td><td><a href='#' onclick='DeleteFile(\"" + srandomid + "\",\"" + sfilename +
+                        "\")'><span class='glyphicon glyphicon-remove red'></span></a></td></tr>"; // Binding the file name
+                    $("#FilesList tbody").append(markup);
+
+                }
+                chkatchtbl();
+                $('#fileInput').val('');
+
+            });
+
+            $("#btnSave").click(function () {
+
+                $.ajax({
+                    url: '/VetTasks/AddFile',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: formdata,
+                    async: false,
+                    success: function (result) {
+                        if (result != "") {
+                            alert(result);
+                        }
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            });
+        });
+        function DeleteFile(Fileid, FileName) {
+            formdata.delete(FileName)
+            $("#" + Fileid).remove();
+            chkatchtbl();
+        }
+        function chkatchtbl() {
+            if ($('#FilesList tr').length > 1) {
+                $("#FilesList").css("visibility", "visible");
+            } else {
+                $("#FilesList").css("visibility", "hidden");
+            }
+        }
+    </script>
+
+
+
+    <body>
+
+
+
+
+        <br />
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
+        <!--List Script-->
+        <script type="text/javascript">
+
+
+
+            $("body").on("click", "#btnSave", function () {
+
+
+                $('#puLocation').html("");
+                $('#puVolunteer').html("");
+
+                $('#apAddress').html("");
+
+                $('#apReason').html("");
+                $('#name').html("");
+                $('#breed').html("");
+                $('#size').html("");
+                $('#doLocation').html("");
+                $('#doVolunteer').html("");
+                $('#dodate').html("");
+                $('#dotime').html("");
+                $('#apdate').html("");
+                $('#aptime').html("");
+                $('#pudate').html("");
+                $('#putime').html("");
+                $('#additionalinfo').html("");
+
+                if ($('#dogSize').val() === "" || $('#dogBreed').val() === "" || $('#dogName').val() === "" || $('#apointmentReason').val() === "" || $('#apointmentAddress').val() === "" || $('#dropoffLocation').val() === "" || $('#dropoffVolunteer').val() === "" || $('#DODate').val() === "" || $('#DOTime').val() === "" || $('#PUDate').val() === "" || $('#PUTime').val() === "" || $('#APDate').val() === "" || $('#APTime').val() === "" || $('#pickupVolunteer').val() === "" || $('#pickupLocation').val() === "") {
+
+
+                    if ($('#appointmentReason').val() === "") { $('#apReason').html("Reason Needed"); }
+                    if ($('#appointmentAddress').val() === "") { $('#apAddress').html("Address is required"); }
+                    if ($('#dropoffLocation').val() === "") { $('#doLocation').html("Address is required"); }
+                    if ($('#dropoffVolunteer').val() === "") { $('#doVolunteer').html("Volunteer Needed"); }
+                    if ($('#DODate').val() === "") { $('#doDate').html("Date Needed"); }
+                    if ($('#DOTime').val() === "") { $('#doTime').html("Time Needed"); }
+                    if ($('#PUDate').val() === "") { $('#puDate').html("Date Needed"); }
+                    if ($('#PUTime').val() === "") { $('#puTime').html("Time Needed"); }
+                    if ($('#APDate').val() === "") { $('#apDate').html("Date Needed"); }
+                    if ($('#APTime').val() === "") { $('#apTime').html("Time Needed"); }
+                    if ($('#pickupVolunteer').val() === "") { $('#puVolunteer').html("Volunteer Needed"); }
+                    if ($('#pickupLocation').val() === "") { $('#puLocation').html("Address is required"); }
+                    if ($('#dogName').val() === "") { $('#name').html("Name Needed"); }
+                    if ($('#dogBreed').val() === "") { $('#breed').html("Breed needed"); }
+                    if ($('#dogSize').val() === "") { $('#size').html("Size Needed"); }
+                    return false;
+                }
+                else {
+                    //Send the JSON array to Controller using AJAX.
+                    $.ajax({
+                        type: "POST",
+                        url: "/VetTasks/InsertDocuments",
+                        data: JSON.stringify(tasksSpec),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            //alert(r + " record(s) inserted.");
+                        }
+                    });
+                }
+            });
+        </script>
+    </body>
+
+
+
+
+
+
+
+
+    <!--Drop off Details-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h2>
+                Dropoff Details
+            </h2>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Location:
+            @Html.EditorFor(model => model.dropoffLocation, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.dropoffLocation, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="doLocation"></p></font>
+        </div>
+        <div class="col-md-3">
+            <font color="red"><strong>*</strong></font>Volunteer:
+            @Html.EditorFor(model => model.dropoffVolunteer, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.dropoffVolunteer, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="doVolunteer"></p></font>
+        </div>
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red"><strong>*</strong></font>Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
+                    <input type="date" id="DODate" name="DODate" class="form-control" required>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+
+                    <font color="red"><strong>*</strong></font>Time:<!--<input type="time" id="doTime" name="doTime" class="form-control" style="width: 112%;" required>-->
+                    <input type="time" id="DOTime" name="DOTime" class="form-control" style="width: 112%;" required>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="dodate">.</p></font>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-row">
+                <div class="col">
+                    <font color="red" size="2px"> <p id="dotime">.</p></font>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Additional Info -->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h1>Additional Information</h1>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
+            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
+            @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
+            <font color="red" size="2px"> <p id="additionalinfo"></p></font>
+        </div>
+    </div>
+    <!--Blank Space-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+        </div>
+    </div>
+    <!--Buttom Buttons-->
+    <div class="form-row">
+        <div class="col-md-12">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <input class="btn btn-primary" type="reset" id="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+
+                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                    <br /><br /><br />
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--Scripts-->
+
+
+</div>
     <script>
         var today = new Date().toISOString().split('T')[0];
         document.getElementsByName("DODate")[0].setAttribute('min', today);

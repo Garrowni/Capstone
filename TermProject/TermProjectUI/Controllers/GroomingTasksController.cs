@@ -23,7 +23,7 @@ namespace TermProjectUI.Controllers
 
         //private InventoryTaskRepoEF ttr = new InventoryTaskRepoEF();
 
-        static List<GroomingTaskModel.services> servicesList = new List<GroomingTaskModel.services>();
+     //   static List<GroomingTaskModel.services> servicesList = new List<GroomingTaskModel.services>();
        
 
         static List<Object> deletedTask = new List<Object>();
@@ -75,16 +75,17 @@ namespace TermProjectUI.Controllers
             groomingTask.posterPhoto = Session["Img"].ToString();
             groomingTask.taskType = "Grooming Task";
             groomingTask.taskName = "GroomingTaskTest";
-          
+
+            groomingTask.requester = "Me";
             groomingTask.state = "Unassigned";
 
-            groomingTask.Services = servicesList;
+        //    groomingTask.Services = servicesList;
   
 
             try
             {
                 productCollection.InsertOne(groomingTask);
-                servicesList = new List<GroomingTaskModel.services>();
+           //     servicesList = new List<GroomingTaskModel.services>();
                 deletedTask = new List<object>();
                 deletedTask.Add(groomingTask);
                 
@@ -98,48 +99,48 @@ namespace TermProjectUI.Controllers
             }
         }
 
-        public JsonResult InsertDocuments(List<GroomingTaskModel.services> itemsSpec)
-        {
+   //     public JsonResult InsertDocuments(List<GroomingTaskModel.services> itemsSpec)
+    //    {
 
             //Check for NULL.
-            if (itemsSpec == null)
-            {
-                itemsSpec = new List<GroomingTaskModel.services>();
-            }
+   //         if (itemsSpec == null)
+    //        {
+    //            itemsSpec = new List<GroomingTaskModel.services>();
+    //        }
 
 
 
-            foreach (GroomingTaskModel.services itemSpec in itemsSpec)
-            {
+      //     foreach (GroomingTaskModel.services itemSpec in itemsSpec)
+      //      {
 
-                servicesList.Add(itemSpec);
-
-            }
+     //           servicesList.Add(itemSpec);
+//
+       //     }
             //Debug.WriteLine(taskSpecList[0].Key);
-            int insertedRecords = servicesList.Count();
-            return Json(insertedRecords);
+      //      int insertedRecords = servicesList.Count();
+     //       return Json(insertedRecords);
 
-        }
-        public JsonResult UpdateDocuments(List<GroomingTaskModel.services> tasksSpec)
-        {
-
+   //     }
+   //     public JsonResult UpdateDocuments(List<GroomingTaskModel.services> tasksSpec)
+    //    {
+//
             //Check for NULL.
-            if (tasksSpec == null)
-            {
-                tasksSpec = new List<GroomingTaskModel.services>();
-            }
+   //         if (tasksSpec == null)
+   //         {
+    //            tasksSpec = new List<GroomingTaskModel.services>();
+    //        }
 
-            servicesList = new List<GroomingTaskModel.services>();
-            foreach (GroomingTaskModel.services taskSpec in tasksSpec)
-            {
-                servicesList.Add(taskSpec);
+    //        servicesList = new List<GroomingTaskModel.services>();
+    //        foreach (GroomingTaskModel.services taskSpec in tasksSpec)
+     //       {
+    //            servicesList.Add(taskSpec);
 
-            }
+     //       }
 
-            int insertedRecords = servicesList.Count();
-            return Json(insertedRecords);
+    //        int insertedRecords = servicesList.Count();
+    //        return Json(insertedRecords);
 
-        }
+     //   }
 
 
 
@@ -175,7 +176,7 @@ namespace TermProjectUI.Controllers
                     .Set("dogAge", task.dogAge)
                     .Set("dogBreed", task.dogBreed)
                     .Set("dogSize", task.dogSize)
-                    .Set("Services", task.Services)
+                    //.Set("Services", task.Services)
                     .Set("booked", task.booked)
                     .Set("bookedAddress", task.bookedAddress)
                     .Set("bookedStore", task.bookedStore)
@@ -193,7 +194,7 @@ namespace TermProjectUI.Controllers
                 task.Id = ObjectId.Parse(id);
                 deletedTask.Add(task);
 
-                servicesList = new List<GroomingTaskModel.services>();
+               // servicesList = new List<GroomingTaskModel.services>();
 
                 return RedirectToAction("Details", new { id = id });
             }

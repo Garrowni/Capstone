@@ -87,31 +87,18 @@ namespace TermProjectUI.Models
         [BsonElement("dogNotes")]
         public string dogNotes { get; set; }
 
-        //documents
-
-
-        public class documents
-        {
-            public string Document { get; set; }  //not sure how to do this yet
-            public string Descrition { get; set; }
-
-        }
-
-
-
-
-        public List<documents> Documents
-        {
-            get;
-            set;
-
-        }
-
-
 
 
         [BsonElement("AdditionalInfo")]
         public string AdditionalInfo { get; set; }
+        //documents
+
+        public string File { get; set; }
+
+        public List<string> FileList { get; set; }
+
+
+ 
 
     }
 }

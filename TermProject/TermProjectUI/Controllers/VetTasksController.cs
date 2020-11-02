@@ -13,6 +13,7 @@ using TermProjectUI.App_Start;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Diagnostics;
+using System.IO;
 
 namespace TermProjectUI.Controllers
 {
@@ -21,6 +22,8 @@ namespace TermProjectUI.Controllers
     {
         //static List<VetTaskModel.documents> documentsList = new List<VetTaskModel.documents>();
 
+        static List<string> documentsList = new List<string>();
+        static List<string> existedList = new List<string>();
 
         static List<Object> deletedTask = new List<Object>();
 
@@ -75,15 +78,14 @@ namespace TermProjectUI.Controllers
 
             vetTask.state = "Unassigned";
 
-          //  vetTask.Documents = documentsList;
+            vetTask.FileList = documentsList;
 
             try
             {
                vetCollection.InsertOne(vetTask);
-           //     documentsList = new List<VetTaskModel.documents>();
                 deletedTask = new List<object>();
                 deletedTask.Add(vetTask);
-
+                documentsList = new List<string>();
 
                 return RedirectToAction("Details", new { id = vetTask.Id });
 
@@ -112,7 +114,7 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(string id, VetTaskModel task)
         {
-
+            task.FileList = documentsList;
             try
             {
                 var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
@@ -142,13 +144,13 @@ namespace TermProjectUI.Controllers
                     .Set("dogBreed", task.dogBreed)
                     .Set("dogSize", task.dogSize)
                     .Set("dogNotes", task.dogNotes)
-                    .Set("Documents", task.Documents);
+                    .Set("FileList", task.FileList);
 
                 var result = vetCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);
                 deletedTask.Add(task);
-
+                documentsList = new List<string>();
           //      documentsList = new List<VetTaskModel.documents>();
 
                 return RedirectToAction("Details", new { id = id });
@@ -193,6 +195,103 @@ namespace TermProjectUI.Controllers
                 return View();
             }
         }
+
+
+        public JsonResult AddFile()
+        {
+
+            //string uname = Request["description"];
+            HttpFileCollectionBase files = Request.Files;
+            for (int i = 0; i < files.Count; i++)
+            {
+                HttpPostedFileBase file = files[i];
+                string fname;
+                // Checking for Internet Explorer      
+                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                {
+                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                    fname = testfiles[testfiles.Length - 1];
+                }
+                else
+                {
+                    fname = file.FileName;
+                }
+
+                // Get the complete folder path and store the file inside it.      
+                fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
+                file.SaveAs(fname);
+                documentsList.Add("/UserImages/" + file.FileName);
+            }
+            return Json("Files uploaded successfully", JsonRequestBehavior.AllowGet);
+
+
+
+
+        }
+        public JsonResult UpdateFile()
+        {
+            documentsList = new List<string>();
+            //string uname = Request["existedList"];
+            HttpFileCollectionBase files = Request.Files;
+            for (int i = 0; i < files.Count; i++)
+            {
+                HttpPostedFileBase file = files[i];
+                string fname;
+                // Checking for Internet Explorer      
+                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                {
+                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                    fname = testfiles[testfiles.Length - 1];
+                }
+                else
+                {
+                    fname = file.FileName;
+                }
+                // Get the complete folder path and store the file inside it.      
+                fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
+                file.SaveAs(fname);
+                documentsList.Add("/UserImages/" + file.FileName);
+            }
+            return Json("Files uploaded successfully", JsonRequestBehavior.AllowGet);
+
+
+
+
+        }
+        public JsonResult ExistedFiles(List<string> items)
+        {
+
+            //Check for NULL.
+            if (items == null)
+            {
+                items = new List<string>();
+            }
+
+
+            foreach (string item in items)
+            {
+
+                //existedList.Add(item);
+                documentsList.Add(item);
+            }
+            //Debug.WriteLine(itemList[0].ItemName);
+            int insertedRecords = existedList.Count();
+
+            return Json(insertedRecords);
+        }
+
+        public FileResult Download(string FileName)
+        {
+            string[] NamePart = FileName.Split('/');
+            string lastItem = NamePart[NamePart.Length - 1];
+            string[] Names = lastItem.Split('.');
+            string extention = Names[Names.Length - 1];
+            string Name = Names[0];
+
+            return File(FileName, MimeMapping.GetMimeMapping(FileName), Name + "." + extention);
+
+        }
+
 
 
     }

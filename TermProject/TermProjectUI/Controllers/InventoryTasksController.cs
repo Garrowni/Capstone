@@ -217,7 +217,7 @@ namespace TermProjectUI.Controllers
                 file.SaveAs(fname);
                 documentsList.Add("/UserImages/" + file.FileName);
             }
-            return Json("Hi. Your files uploaded successfully", JsonRequestBehavior.AllowGet);
+            return Json("Your files uploaded successfully", JsonRequestBehavior.AllowGet);
 
 
 
@@ -247,7 +247,7 @@ namespace TermProjectUI.Controllers
                 file.SaveAs(fname);
                 documentsList.Add("/UserImages/" + file.FileName);
             }
-            return Json("Hi. Your files uploaded successfully", JsonRequestBehavior.AllowGet);
+            return Json("Your files uploaded successfully", JsonRequestBehavior.AllowGet);
 
 
 
@@ -275,7 +275,7 @@ namespace TermProjectUI.Controllers
             return Json(insertedRecords);
         }
 
-        public FileResult Downlaod(string FileName)
+        public FileResult Download(string FileName)
         {
             string[] NamePart = FileName.Split('/');
             string lastItem = NamePart[NamePart.Length - 1];

@@ -5,11 +5,7 @@
 }
 
 
-<style>
-    a {
-        color: white;
-    }
-</style>
+
 
 <br />
 <br />
@@ -26,8 +22,8 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
-                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
+                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @style = "color:white;" }) </button>
+                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @style = "color:white;" }) </button>
 
 
 
@@ -57,7 +53,29 @@
                         <div class="row">Breed:  @Html.DisplayFor(model => model.dogBreed)</div>
                         <div class="row">Size:  @Html.DisplayFor(model => model.dogSize)</div>
                         <div class="row">Notes:  @Html.DisplayFor(model => model.dogNotes)</div>
-                      
+
+
+                        <div class="row">
+
+
+                            Documents:
+                            @foreach (var item in Model.FileList)
+                            {
+                                <ul>
+                                    <li>
+                                        @Html.ActionLink("Download", "Download", new { FileName = item.ToString(), style = "color:blue" })
+                                        @Html.DisplayFor(model => item)
+                                    </li>
+                                </ul>
+
+                            }
+
+
+
+                        </div>
+
+
+
                         <div class="row"><strong>Additional Information:</strong>  @Html.DisplayFor(model => model.AdditionalInfo)</div>
                     </div>
                 </div>
