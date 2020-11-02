@@ -10,364 +10,388 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+    <div class="form-horizontal">
 
 
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-    <div class="form-row">
-        <div class="col-md-12">
-            <h2>
+        <div class="form-row">
+            <div class="col-md-12">
+                <h2>
 
-                Grooming Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                    <span class="glyphicon glyphicon-remove-circle"></span>
-                </a>
-            </h2>
-        </div>
-    </div>
-
-
-
-
-    <!--Task Specification-->
-    <div class="form-row">
-
-
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Dogs Name:
-            @Html.EditorFor(model => model.dogName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.dogName, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="taskDogName"></p></font>
-        </div>
-
-        <div class="col-md-2">
-            <font color="red"><strong>*</strong></font>Age
-            @Html.EditorFor(model => model.dogAge, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.dogAge, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="taskDogAge"></p></font>
-        </div>
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Size:
-            @Html.EditorFor(model => model.dogSize, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.dogSize, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="taskDogSize"></p></font>
-        </div>
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Dogs Breed:
-            @Html.EditorFor(model => model.dogBreed, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.dogBreed, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="taskDogBreed"></p></font>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col-md-12">
-            <br />
-        </div>
-    </div>
-
-
-    <!--services-->
-    <div class="form-row">
-        <div class="col-md-12">
-            <br />
-            Services:
-          
-        </div>
-    </div>
-
-
-
-    <div class="form-row">
-        <div class="col-md-4">
-            <div class="form-row">
-                <div class="col-md-6">
-                    @Html.CheckBoxFor(model => model.wash)  Wash/Shampoo
-                </div>
-                <div class="col-md-6">
-                    @Html.CheckBoxFor(model => model.nailCleaning) Nails
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-md-6">
-                    @Html.CheckBoxFor(model => model.cut) Cut
-                </div>
-                <div class="col-md-6">
-                    @Html.CheckBoxFor(model => model.earClean) Ear Cleaning
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-md-6">
-                    @Html.CheckBoxFor(model => model.trim) Trim
-                </div>
-                <div class="col-md-6">
-                    @Html.CheckBoxFor(model => model.teethClean) Teeth Cleaning
-                </div>
+                    Grooming Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </a>
+                </h2>
             </div>
         </div>
-    </div>
 
 
 
-    <!--Appointment-->
-    <div class="form-row">
-        <div class="col-md-12">
-            <br />
-            Appointment Details:
-        </div>
-    </div>
 
-    <!--booked-->
-
-    <div class="form-row">
-
-
-        <div class="col-md-12">
-
-
-            <label for="myCheck">Booked:</label>
-            <input type="checkbox" id="myCheck" onclick="bookedCB()">
-           
-
-            <script>
-                
-                function bookedCB() {
-
-                    var bookedCheckBox = document.getElementById("myCheck");
-                    var preferedTitle = document.getElementById("preferedTitle");
-                    var preferedRow = document.getElementById("preferedRow");
-                    var bookedTitle = document.getElementById("bookedTitle");
-                    var bookedRow = document.getElementById("bookedRow");
-                    var payTitle = document.getElementById("payTitle");
-                    var payedCheckBox = document.getElementById("myPayCB");
-                    var payedInfoTitle = document.getElementById("payedInfoTitle");
-                    var payedInfo = document.getElementById("payedInfo");
-                    if (bookedCheckBox.checked == true) {
-                        preferedTitle.style.display = "none";
-                        preferedRow.style.display = "none";
-                        bookedTitle.style.display = "block";
-                        bookedRow.style.display = "block";
-                        payTitle.style.display = "block";
-                    } else {
-
-                        preferedTitle.style.display = "block";
-                        preferedRow.style.display = "block";
-                        bookedTitle.style.display = "none";
-                        bookedRow.style.display = "none";
-                        payTitle.style.display = "none";
-                        payedCheckBox.checked = false;
-                        payedInfoTitle.style.display = "none";
-                        payedInfo.style.display = "none";
-                    }
-                }
-            </script>
-        </div>
-    </div>
-
-    <!--Appointment Details Prefered-->
-    <!--
-
-    This section should only show if booked is not checked. if it is checked it should be blank/disabled
-
-        -->
-    <div class="form-row" id="preferedTitle">
-
-
-        <div class="col-md-12">
-            Prefered
-            <br />
-        </div>
-    </div>
-
-    <div class="form-row" id="preferedRow">
-        <!--style="display: none" id="prefRow">-->
-
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Groomer/Store
-            @Html.EditorFor(model => model.prefStore, new { htmlAttributes = new { @class = "form-control" } })
-
-        </div>
-
-        <div class="col-md-2">
-            <font color="red"><strong>*</strong></font>Address:
-            @Html.EditorFor(model => model.prefAddress, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Date:
-            @Html.EditorFor(model => model.prefDate, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-
-    </div>
-
-
-    <div class="form-row">
-
-
-        <div class="col-md-12">
-            <br />
-        </div>
-    </div>
-
-    <!--Appointment Details Booked-->
-    <div class="form-row" id="bookedTitle" style="display:none">
-
-
-        <div class="col-md-12">
-            Booking Details
-            <br />
-        </div>
-    </div>
-
-    <div class="form-row" id="bookedRow" style="display:none">
-
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Groomer/Store
-            @Html.EditorFor(model => model.bookedStore, new { htmlAttributes = new { @class = "form-control" } })
-
-        </div>
-
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Address:
-            @Html.EditorFor(model => model.bookedAddress, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Date:
-            @Html.EditorFor(model => model.bookedDate, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Time:
-            @Html.EditorFor(model => model.bookedTime, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-
-    </div>
-    <div class="form-row">
-
-
-        <div class="col-md-12">
-            <br />
-        </div>
-    </div>
-
-    <!--Payed-->
-
-    <div class="form-row" id="payTitle" style="display:none">
+        <!--Task Specification-->
         <div class="form-row">
 
 
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Dogs Name:
+                @Html.EditorFor(model => model.dogName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dogName, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskDogName"></p></font>
+            </div>
+
+            <div class="col-md-2">
+                <font color="red"><strong>*</strong></font>Age
+                @Html.EditorFor(model => model.dogAge, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dogAge, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskDogAge"></p></font>
+            </div>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Size:
+                @Html.EditorFor(model => model.dogSize, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dogSize, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskDogSize"></p></font>
+            </div>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Dogs Breed:
+                @Html.EditorFor(model => model.dogBreed, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dogBreed, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskDogBreed"></p></font>
+            </div>
+        </div>
+        <div class="form-row">
             <div class="col-md-12">
-                Payment
                 <br />
             </div>
         </div>
 
-        <div class="col-md-12">
 
-            <label for="myCheck">Paid:</label>
-            <input type="checkbox" id="myPayCB" onclick="payedCB()">
+        <!--services-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <br />
+                Services:
 
-
-
-
-
-
-
-            <script>
-                function payedCB() {
-                    var payedCheckBox = document.getElementById("myPayCB");
-                    var payedInfoTitle = document.getElementById("payedInfoTitle");
-                    var payedInfo = document.getElementById("payedInfo");
-                    var space = document.getElementById("space");
-                    if (payedCheckBox.checked == true) {
-                        payedInfoTitle.style.display = "block";
-                        payedInfo.style.display = "block";
-                        space.style.display = "block";
-                    } else {
-
-                        payedInfoTitle.style.display = "none";
-                        payedInfo.style.display = "none";
-                        space.style.display = "none";
-                        
-                    }
-                }
-            </script>
-        </div>
-    </div>
-
-    <div class="form-row">
-
-
-        <div class="col-md-12">
-            <br />
-        </div>
-    </div>
-    <!--Pay Details-->
-    <div class="form-row" id="payedInfoTitle" style="display:none">
-
-
-        <div class="col-md-12">
-            Payment Details
-            <br />
-        </div>
-    </div>
-
-    <div class="form-row" id="payedInfo" style="display:none">
-
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Payer
-            @Html.EditorFor(model => model.payer, new { htmlAttributes = new { @class = "form-control" } })
-
-        </div>
-
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Receipt:
-            @Html.EditorFor(model => model.receipt, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-
-
-    </div>
-    <div class="form-row" id="space" style="display:none">
-
-
-        <div class="col-md-12">
-            <br />
-        </div>
-    </div>
-    <!--additional information-->
-
-
-    <div class="form-row">
-
-        <div class="col-md-3">
-            Additional Information
-            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
-
+            </div>
         </div>
 
 
 
-
-    </div>
-
-
-
-    <div class="form-row">
-        <div class="col-md-12">
-            <div class="form-row">
-                <div class="col-md-6">
-                    <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
-
-                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
-                    <br /><br /><br />
-
-
+        <div class="form-row">
+            <div class="col-md-4">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.wash)  Wash/Shampoo
+                    </div>
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.nailCleaning) Nails
+                    </div>
                 </div>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.cut) Cut
+                    </div>
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.earClean) Ear Cleaning
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.trim) Trim
+                    </div>
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(model => model.teethClean) Teeth Cleaning
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--Appointment-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <br />
+                Appointment Details:
+            </div>
+        </div>
+
+        <!--booked-->
+
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+
+
+                <label for="myCheck">Booked:</label>
+                <input type="checkbox" id="myCheck" onclick="bookedCB()">
+
+
+                <script>
+
+                    function bookedCB() {
+
+                        var bookedCheckBox = document.getElementById("myCheck");
+                        var preferedTitle = document.getElementById("preferedTitle");
+                        var preferedRow = document.getElementById("preferedRow");
+                        var bookedTitle = document.getElementById("bookedTitle");
+                        var bookedRow = document.getElementById("bookedRow");
+                        var payTitle = document.getElementById("payTitle");
+                        var payedCheckBox = document.getElementById("myPayCB");
+                        var payedInfoTitle = document.getElementById("payedInfoTitle");
+                        var payedInfo = document.getElementById("payedInfo");
+                        if (bookedCheckBox.checked == true) {
+                            $('#prefStore').val("");
+                            $('#prefAddress').val("");
+                            $('#prefDate').val("");
+                            preferedTitle.style.display = "none";
+                            preferedRow.style.display= "none";
+                            $('#payer').val("");
+                            $('#receipt').val("");
+                            bookedTitle.style.display = "block";
+                            bookedRow.style.display = "block";
+                            payTitle.style.display = "block";
+                        } else {
+
+                            preferedTitle.style.display = "block";
+                            preferedRow.style.display = "block";
+                            bookedTitle.style.display = "none";
+                            bookedRow.style.display = "none";
+                            payTitle.style.display = "none";
+                            $('#bookedStore').val("");
+                            $('#bookedAddress').val("");
+                            $('#bookedDate').val("");
+                            $('#bookedTime').val("");
+                            payedCheckBox.checked = false;
+                            payedInfoTitle.style.display = "none";
+                            payedInfo.style.display = "none";
+                            $('#payer').val("");
+                            $('#receipt').val("");
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+
+        <!--Appointment Details Prefered-->
+        <!--
+
+        This section should only show if booked is not checked. if it is checked it should be blank/disabled
+
+            -->
+        <div class="form-row" id="preferedTitle">
+
+
+            <div class="col-md-12">
+                Prefered
+                <br />
+            </div>
+        </div>
+
+        <div class="form-row" id="preferedRow">
+            <!--style="display: none" id="prefRow">-->
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Groomer/Store
+                @Html.EditorFor(model => model.prefStore, new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+
+            <div class="col-md-2">
+                <font color="red"><strong>*</strong></font>Address:
+                @Html.EditorFor(model => model.prefAddress, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Prefered Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
+                <input type="date" id="prefDDate" name="prefDate" class="form-control" >
             </div>
 
         </div>
+
+
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+                <br />
+            </div>
+        </div>
+
+        <!--Appointment Details Booked-->
+        <div class="form-row" id="bookedTitle" style="display:none">
+
+
+            <div class="col-md-12">
+                Booking Details
+                <br />
+            </div>
+        </div>
+
+        <div class="form-row" id="bookedRow" style="display:none">
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Groomer/Store
+                @Html.EditorFor(model => model.bookedStore, new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Address:
+                @Html.EditorFor(model => model.bookedAddress, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Booked Date:<!--<input type="date" id="puDate" name="puDate" class="form-control" required>-->
+                <input type="date" id="bookedDate" name="bookedDate" class="form-control">
+            </div>
+            <div class="col-md-3">
+
+                <font color="red"><strong>*</strong></font>Booked Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
+                <input type="time" id="bookedTime" name="bookedTime" class="form-control" style="width: 112%;" >
+            </div>
+
+        </div>
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+                <br />
+            </div>
+        </div>
+
+        <!--Payed-->
+
+        <div class="form-row" id="payTitle" style="display:none">
+            <div class="form-row">
+
+
+                <div class="col-md-12">
+                    Payment
+                    <br />
+                </div>
+            </div>
+
+            <div class="col-md-12">
+
+                <label for="myCheck">Paid:</label>
+                <input type="checkbox" id="myPayCB" onclick="payedCB()">
+
+
+
+
+
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+
+
+                <script type="text/javascript">
+                    function payedCB() {
+                        var payedCheckBox = document.getElementById("myPayCB");
+                        var payedInfoTitle = document.getElementById("payedInfoTitle");
+                        var payedInfo = document.getElementById("payedInfo");
+                        var space = document.getElementById("space");
+                        if (payedCheckBox.checked == true) {
+                            payedInfoTitle.style.display = "block";
+                            payedInfo.style.display = "block";
+                            space.style.display = "block";
+
+
+                        } else {
+
+                            $('#payer').val("");
+                            $('#receipt').val("");
+                            payedInfoTitle.style.display = "none";
+                            payedInfo.style.display = "none";
+                            space.style.display = "none";
+
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="form-row">
+
+
+            <div class="col-md-12">
+                <br />
+            </div>
+        </div>
+        <!--Pay Details-->
+        <div class="form-row" id="payedInfoTitle" style="display:none">
+
+
+            <div class="col-md-12">
+                Payment Details
+                <br />
+            </div>
+        </div>
+
+        <div class="form-row" id="payedInfo" style="display:none">
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Payer
+                @Html.EditorFor(model => model.payer, new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Receipt:
+                @Html.EditorFor(model => model.receipt, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+
+        </div>
+        <div class="form-row" id="space" style="display:none">
+
+
+            <div class="col-md-12">
+                <br />
+            </div>
+        </div>
+        <!--additional information-->
+
+
+        <div class="form-row">
+
+            <div class="col-md-3">
+                Additional Information
+                @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+        <div class="form-row">
+            <div class="col-md-12">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+
+                        <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                        <br /><br /><br />
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-</div>
+
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("bookedDate")[0].setAttribute('min', today);
+        document.getElementsByName("prefDate")[0].setAttribute('min', today);
 
 
+    </script>
 
 }

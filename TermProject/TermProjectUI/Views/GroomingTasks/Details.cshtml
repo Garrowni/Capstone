@@ -72,9 +72,9 @@
 
                                 Booked Info
                                 <ul>
-                                    <li>Booked: @Html.DisplayFor(model => model.booked)</li>
-                                    <li id="book">@Html.DisplayFor(model => model.bookedStore)</li>
-                                    <li>@Html.DisplayFor(model => model.bookedAddress)</li>
+                                  
+                                    <li id="book">Booked Store: @Html.DisplayFor(model => model.bookedStore)</li>
+                                    <li>Booked Address: @Html.DisplayFor(model => model.bookedAddress)</li>
                                     <li>Booked Date: @Html.DisplayFor(model => model.bookedDate)</li>
                                     <li>Booked Time: @Html.DisplayFor(model => model.bookedTime)</li>
                                 </ul>
@@ -90,8 +90,8 @@
 
                                 Preference Info
                                 <ul>
-                                    <li>Prefered:  @Html.DisplayFor(model => model.booked)</li>
-                                    <li id="pref">@Html.DisplayFor(model => model.prefStore)</li>
+                                   
+                                    <li id="pref">Prefered Store: @Html.DisplayFor(model => model.prefStore)</li>
                                     <li>Prefered Address: @Html.DisplayFor(model => model.prefAddress) </li>
                                     <li>Prefered Date: @Html.DisplayFor(model => model.prefDate)</li>
                                    
@@ -105,9 +105,9 @@
 
                                 Payed Info
                                 <ul>
-                                    <li>@Html.DisplayFor(model => model.paid)</li>
-                                    <li id="receipt">@Html.DisplayFor(model => model.receipt)</li>
-                                    <li>@Html.DisplayFor(model => model.payer)</li>
+                                    
+                                    <li id="receipt">Receipt: @Html.DisplayFor(model => model.receipt)</li>
+                                    <li>Paid By: @Html.DisplayFor(model => model.payer)</li>
                                 </ul>
 
 
@@ -236,7 +236,7 @@
 
     var booked = document.getElementById("booked");
     var book = document.getElementById("book");
-    if (book.innerText == "") {
+    if (book.innerText == "Store: ") {
 
        // pay.style.display = "none";
         booked.style.display = "none";
@@ -248,7 +248,7 @@
         //pay.style.display = "block";
         booked.style.display = "block";
         prefered.style.display = "none";
-        if (receipt.innerText == "" || receipt.innerText == "") {
+        if (receipt.innerText == "Receipt: ") {
             pay.style.display = "none";
             
         } else {
@@ -261,20 +261,16 @@
     }
 
 
-    if (receipt.innerText == "" || receipt.innerText == "" ) {
+    if (receipt.innerText == "Receipt: ") {
         pay.style.display = "none";
         prefered.style.display = "block";
 
-    } else {
-
-        pay.style.display = "block";
-        prefered.style.display = "none";
-    }
+    } 
 
 
  
 
-    if (pref.innerText == "") {
+    if (pref.innerText == "Prefered Store: ") {
        booked.style.display = "block";
         prefered.style.display = "none";
 

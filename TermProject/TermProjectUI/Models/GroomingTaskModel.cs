@@ -59,15 +59,18 @@ namespace TermProjectUI.Models
         public string bookedStore{ get; set; }
         [BsonElement("bookedAddress")]
         public string bookedAddress { get; set; }
-        [BsonElement("bookedDate")]
+
+
+        [BsonElement("bookedDate"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true), DataType(DataType.Date, ErrorMessage = "Date only")]
+
         public DateTime bookedDate { get; set; }
         [BsonElement("bookedTime")]
-        public DateTime bookedTime { get; set; }
+        public TimeSpan bookedTime { get; set; }
 
         //appontment details not booked
         [BsonElement("prefStore")]
         public string prefStore { get; set; }
-        [BsonElement("prefDate")]
+        [BsonElement("prefDate"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true), DataType(DataType.Date, ErrorMessage = "Date only")]
         public DateTime prefDate { get; set; }
         [BsonElement("prefAddress")]
         public string prefAddress { get; set; }
