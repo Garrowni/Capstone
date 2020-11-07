@@ -16,7 +16,9 @@
     var long1 = 0.0;
     var lat1 = 0.0;
     var loc1 = "";
-   
+    var long2 = 0.0;
+    var lat2 = 0.0;
+    var loc2 = "";
     function loadMapScenario() {
 
         var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
@@ -32,7 +34,7 @@
         //declare addMarker function
         function addMarker(latitude, longitude, title, description, pid)
         {
-            var marker = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, longitude), { color: 'green' });
+            var marker = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, longitude), { color: 'green'});
 
             infobox = new Microsoft.Maps.Infobox(marker.getLocation(), {
                 visible : true
@@ -46,6 +48,9 @@
 
             Microsoft.Maps.Events.addHandler(marker, 'mouseout', hideInfobox);
             Microsoft.Maps.Events.addHandler(marker, 'mouseover', showInfobox);
+
+
+
 
             infobox.setMap(map);
             map.entities.push(marker);
@@ -75,11 +80,12 @@
                 @:addMarker(@item.Latitude, @item.Longitude, '@item.Title', '@item.Description', @item.LocationId);
             }
         }*@
+       // alert(long2 + " " + lat2 + " " + loc2);
+       //alert(long1 + " " + lat1 + " " + loc1);
+      addMarker(lat1, long1, loc1, lat1, long1);
+        addMarker(lat2, long2, loc2, lat2, long2);
 
-        addMarker(lat1, long1, loc1, lat1, long1);
-       // addMarker(lat2, long2, loc2, lat2, long2);
 
-        //alert(long2 + " " + lat2 + " " + loc2);
     }
 
 
@@ -96,7 +102,12 @@
 
         CallRestService(geocodeRequest, GeocodeCallback);
 
-        
+
+        var query2 = @Html.Raw(Json.Encode(Model.PUAddress))+" "+@Html.Raw(Json.Encode(Model.PUCity))+" "+@Html.Raw(Json.Encode(Model.PUPostal));
+
+        var geocodeRequest2 = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent(query2) + "&jsonp=GeocodeCallback&key=" + BingMapsKey;
+
+        CallRestService(geocodeRequest2, GeocodeCallback);
     }
 
     function GeocodeCallback(response) {
@@ -109,12 +120,19 @@
 
             var results = response.resourceSets[0].resources;
 
+            if (lat1 == 0.0 && long1 == 0.0) {
+                lat1 = results[0].point.coordinates[0];
+                long1 = results[0].point.coordinates[1];
+            } else {
+                lat2 = results[0].point.coordinates[0];
+                long2 = results[0].point.coordinates[1];
 
+            }
              // alert(results[0].name + " " + results[0].point.coordinates[0] + " " + results[0].point.coordinates[1]);
-            lat1 = results[0].point.coordinates[0];
-            long1 = results[0].point.coordinates[1];
-            loc1 = @Html.Raw(Json.Encode(Model.DOAddress))+" "+@Html.Raw(Json.Encode(Model.DOCity))+" "+@Html.Raw(Json.Encode(Model.DOPostal));
             
+            loc1 = @Html.Raw(Json.Encode(Model.DOAddress))+" "+@Html.Raw(Json.Encode(Model.DOCity))+" "+@Html.Raw(Json.Encode(Model.DOPostal));
+            loc2 = @Html.Raw(Json.Encode(Model.PUAddress))+" "+@Html.Raw(Json.Encode(Model.PUCity))+" "+@Html.Raw(Json.Encode(Model.PUPostal));
+
             // alert(lat + " " +long + " " + results[0].point.coordinates[1]);
 
             loadMapScenario();
@@ -122,6 +140,7 @@
             output.innerHTML = "No results found.";
         }
     }
+  
 
 
     function CallRestService(request) {
@@ -287,32 +306,29 @@
                 </div>
                 <div class="row">
                     <div class="col">
+ @if (Model.assignees == null || Model.assignees.Count() == 0)
+            {<small style="float: left"> 0 Volunteers Assigned</small>
 
-                        @if (Model.assignees == null || Model.assignees.Count() == 0)
-                        {<small style="float: left"> 0 Volunteers Assigned</small>
+            }
+            else
+            {<small style="float: left"> @Model.assignees.Count() Volunteers Assigned   </small>
 
-                        }
-                        else
-                        {<small style="float: left"> @Model.assignees.Count() Volunteers Assigned   </small>
+            <div class="dropdown">
+                &nbsp;&nbsp;<a class="dropbtn" style="color:blue"> show </a>
+                <div class="dropdown-content">
+                    @foreach (string vol in ViewBag.AssigneeNames)
+                    {
+                        <ul style="list-style-type:none;">
+                            <li style="color:white">@vol</li>
 
-                        <div class="dropdown">
-                            &nbsp;&nbsp;<a class="dropbtn" style="color:blue"> show </a>
-                            <div class="dropdown-content">
-                                @foreach (string vol in ViewBag.AssigneeNames)
-                                {
-                                    <ul style="list-style-type:none;">
-                                        <li style="color:white">@vol</li>
-
-                                    </ul>
-
-                                }
-                            </div>
-                        </div>
+                        </ul>
 
                     }
+                </div>
+            </div>
 
-
-
+        }
+                      
                     </div>
                 </div>
                 @if (ViewBag.Message == false)

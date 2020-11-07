@@ -281,8 +281,8 @@ namespace TermProjectUI.Controllers
                 var result = productCollection.UpdateOne(filter, update);
                 
                 assignees = new List<string>();
-            return RedirectToAction("Details", new { id = id });
-
+           return RedirectToAction("Details", new { id = id });
+         
 
 
         }
