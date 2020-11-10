@@ -84,15 +84,16 @@
                     }
                     else
                     {
-                        <ul class="nav navbar-nav">
-                            <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                            <li>@Html.ActionLink("Tasks", "Index", "AllTasks", new { area = "" }, null) </li>
-                            @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
-                            {
-                                <li>@Html.ActionLink("Manage Users", "Index", "Volunteers", new { area = "" }, null) </li>
-                            }
+                                <ul class="nav navbar-nav">
+                                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                                    <li>@Html.ActionLink("Tasks", "Index", "AllTasks", new { area = "" }, null) </li>
+                                    <li>@Html.ActionLink("Joined Tasks", "Index", "JoinedTasks", new { area = "" }, null) </li>
+                                    @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+                                    {
+                                        <li>@Html.ActionLink("Manage Users", "Index", "Volunteers", new { area = "" }, null) </li>
+                                    }
 
-                        </ul>
+                                </ul>
                         <ul class="nav navbar-nav pull-right">
                             <li class="dropdown">
                                 <a class="dropbtn">@Session["Username"].ToString() <i class="arrow down"></i></a>

@@ -9,6 +9,96 @@
 
 <br />
 <br />
+<!--<script type='text/javascript'>
+    var long1 = 0.0;
+    var lat1 = 0.0;
+    var loc1 = "";
+    function loadMapScenario() {
+        var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+            credentials: "AjyvfzCGezrfMLlRlujZ0KBGQce1Pzht2V2 - 7ZkEgHDEE4y06p4Qz8U3HsEOcDGj",
+            mapTypeId: Microsoft.Maps.MapTypeId.road,
+            zoom: 5
+        });
+        // Create the infobox for the pushpin
+        var infobox = null;
+        //declare addMarker function
+        function addMarker(latitude, longitude, title, description, pid)
+        {
+            var marker = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, longitude), { color: 'green' });
+            infobox = new Microsoft.Maps.Infobox(marker.getLocation(), {
+                visible : true
+            });
+            marker.metadata = {
+                id: pid,
+                title: title,
+                description: description
+            };
+            Microsoft.Maps.Events.addHandler(marker, 'mouseout', hideInfobox);
+            Microsoft.Maps.Events.addHandler(marker, 'mouseover', showInfobox);
+            infobox.setMap(map);
+            map.entities.push(marker);
+            marker.setOptions({ enableHoverStyle: true });
+        };
+        function showInfobox(e) {
+            if (e.target.metadata) {
+                infobox.setOptions({
+                    location: e.target.getLocation(),
+                    title: e.target.metadata.title,
+                    description: e.target.metadata.description,
+                    visible: true
+                });
+            }
+        }
+        function hideInfobox(e) {
+            infobox.setOptions({ visible: false });
+        }
+        //add markers to map
+       @* @if (Model.LocationList != null)
+        {
+            foreach (var item in Model.LocationList)
+            {
+                @:addMarker(@item.Latitude, @item.Longitude, '@item.Title', '@item.Description', @item.LocationId);
+            }
+        }*@
+        addMarker(lat1, long1, loc1, lat1, long1);
+       // addMarker(lat2, long2, loc2, lat2, long2);
+        //alert(long2 + " " + lat2 + " " + loc2);
+    }
+    var BingMapsKey = "AjyvfzCGezrfMLlRlujZ0KBGQce1Pzht2V2 - 7ZkEgHDEE4y06p4Qz8U3HsEOcDGj";
+    function geocode() {
+        //var query = document.getElementById('input').value;
+        var query = @**Html.Raw(Json.Encode(Model.DOAddress))+" "+@Html.Raw(Json.Encode(Model.DOCity))+" "+@Html.Raw(Json.Encode(Model.DOPostal));
+        *@
+        var geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent(query) + "&jsonp=GeocodeCallback&key=" + BingMapsKey;
+        CallRestService(geocodeRequest, GeocodeCallback);
+    }
+    function GeocodeCallback(response) {
+        var output = document.getElementById('output');
+        if (response &&
+            response.resourceSets &&
+            response.resourceSets.length > 0 &&
+            response.resourceSets[0].resources) {
+            var results = response.resourceSets[0].resources;
+             // alert(results[0].name + " " + results[0].point.coordinates[0] + " " + results[0].point.coordinates[1]);
+            lat1 = results[0].point.coordinates[0];
+            long1 = results[0].point.coordinates[1];
+           loc1 = @**Html.Raw(Json.Encode(Model.DOAddress))+" "+@Html.Raw(Json.Encode(Model.DOCity))+" "+@Html.Raw(Json.Encode(Model.DOPostal));
+           *@
+            // alert(lat + " " +long + " " + results[0].point.coordinates[1]);
+            loadMapScenario();
+        } else {
+            output.innerHTML = "No results found.";
+        }
+    }
+    function CallRestService(request) {
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", request);
+        document.body.appendChild(script);
+    }
+</script>
+<script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?branch=release&callback=geocode' async defer></script>
+-->
 <div>
     <div class="container">
         <div class="row">
@@ -85,7 +175,11 @@
             <div class="col-md-4 col-xl-3">
                 <div class="row">
                     <div class="col">
-                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;       />
+                        .
+                        <!-- <div id="myMap" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;"></div>
+
+    <div id="output"></div>-->
+                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;      />
                     </div>
                 </div>
 
@@ -130,19 +224,62 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <small style="float: left">0 Volunteers Assigned</small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button class="btn btn-primary" type="button" style="float:left;margin-top: 5%;background-color: grey;border-color: black;">Join Task</button>
-                    </div>
 
+                        @if (Model.assignees == null || Model.assignees.Count() == 0)
+                        {<small style="float: left"> 0 Volunteers Assigned</small>
+
+                        }
+                        else
+                        {<small style="float: left"> @Model.assignees.Count() Volunteers Assigned   </small>
+
+                        <div class="dropdown">
+                            &nbsp;&nbsp;<a class="dropbtn" style="color:blue"> show </a>
+                            <div class="dropdown-content">
+                                @foreach (string vol in ViewBag.AssigneeNames)
+                                {
+                                    <ul style="list-style-type:none;">
+                                        <li style="color:white">@vol</li>
+
+                                    </ul>
+
+                                }
+                            </div>
+                        </div>
+
+                    }
+
+
+                    </div>
                 </div>
+
+                @if (ViewBag.Message == false)
+                {
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Join Task", "JoinTask", new { id = Model.Id })</button>
+
+
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Leave Task", "DisjointTask", new { id = Model.Id })</button>
+
+
+                        </div>
+
+                    </div>
+                }
 
             </div>
+
         </div>
     </div>
+</div>
 </div>
 
 

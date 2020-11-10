@@ -26,16 +26,17 @@ namespace TermProjectUI.Controllers
         static List<string> existedList = new List<string>();
 
         static List<Object> deletedTask = new List<Object>();
-
+        static List<string> assignees = new List<string>();
         private MongoDBContext dbcontext;
         private IMongoCollection<VetTaskModel>vetCollection;
         private IMongoCollection<DeletedTaskModel> deletedCollection;
-
+        private IMongoCollection<VolunteerModel> volunteerCollection;
         public VetTasksController()
         {
             dbcontext = new MongoDBContext();
             vetCollection = dbcontext.database.GetCollection<VetTaskModel>("vet");
             deletedCollection = dbcontext.database.GetCollection<DeletedTaskModel>("deletedTasks");
+            volunteerCollection = dbcontext.database.GetCollection<VolunteerModel>("volunteer");
 
         }
         // GET: TransportationTasks
@@ -53,6 +54,33 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            assignees = new List<string>();
+            bool assignedForTask = false;
+            if (task.assignees != null)
+            {
+                List<string> assigneeNames = new List<string>();
+
+                foreach (var assignee in task.assignees)
+                {
+                    assignees.Add(assignee);
+                    if (assignee == Session["UserId"].ToString())
+                    {
+                        assignedForTask = true;
+                    }
+                    var volunteerId = new ObjectId(assignee);
+                    var volunteer = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == volunteerId);
+                    assigneeNames.Add(volunteer.Name);
+                }
+                ViewBag.Message = assignedForTask;
+                ViewBag.AssigneeNames = assigneeNames;
+            }
+            else
+            {
+                assignees = new List<string>();
+                assignedForTask = false;
+                ViewBag.Message = assignedForTask;
+
+            }
             return View(task);
         }
 
@@ -292,7 +320,56 @@ namespace TermProjectUI.Controllers
 
         }
 
+        public ActionResult JoinTask(string id, VetTaskModel task)
+        {
+            assignees.Add(Session["UserId"].ToString());
+            task.assignees = assignees;
 
+            var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<VetTaskModel>.Update
+                .Set("assignees", assignees)
+                .Set("state", "Assigned");
+            var result = vetCollection.UpdateOne(filter, update);
+
+            assignees = new List<string>();
+            return RedirectToAction("Details", new { id = id });
+
+
+
+        }
+        public ActionResult DisjointTask(string id, VetTaskModel task)
+        {
+            assignees.Remove(Session["UserId"].ToString());
+            if (assignees.Count == 0 || assignees == null)
+            {
+                task.assignees = assignees;
+
+                var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                var update = Builders<VetTaskModel>.Update
+                    .Set("assignees", assignees)
+                     .Set("state", "Unassigned");
+                var result = vetCollection.UpdateOne(filter, update);
+
+                assignees = new List<string>();
+                return RedirectToAction("Details", new { id = id });
+            }
+            else
+            {
+                task.assignees = assignees;
+
+                var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                var update = Builders<VetTaskModel>.Update
+                    .Set("assignees", assignees);
+                var result = vetCollection.UpdateOne(filter, update);
+
+                assignees = new List<string>();
+                return RedirectToAction("Details", new { id = id });
+            }
+
+
+
+
+        }
 
     }
 }

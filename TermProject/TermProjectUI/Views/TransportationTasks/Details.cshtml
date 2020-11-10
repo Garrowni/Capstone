@@ -5,188 +5,334 @@
 }
 
 <style>
-    a{
+    a {
         color: white;
     }
 </style>
 
 <br />
 <br />
-    <div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 col-xl-9">
+<script type='text/javascript'>
+    var long1 = 0.0;
+    var lat1 = 0.0;
+    var loc1 = "";
+    var long2 = 0.0;
+    var lat2 = 0.0;
+    var loc2 = "";
+    function loadMapScenario() {
+        var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+            credentials: "AjyvfzCGezrfMLlRlujZ0KBGQce1Pzht2V2 - 7ZkEgHDEE4y06p4Qz8U3HsEOcDGj",
+            mapTypeId: Microsoft.Maps.MapTypeId.road,
+            zoom: 5
+        });
+        // Create the infobox for the pushpin
+        var infobox = null;
+        //declare addMarker function
+        function addMarker(latitude, longitude, title, description, pid)
+        {
+            var marker = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, longitude), { color: 'green'});
+            infobox = new Microsoft.Maps.Infobox(marker.getLocation(), {
+                visible : true
+            });
+            marker.metadata = {
+                id: pid,
+                title: title,
+                description: description
+            };
+            Microsoft.Maps.Events.addHandler(marker, 'mouseout', hideInfobox);
+            Microsoft.Maps.Events.addHandler(marker, 'mouseover', showInfobox);
+            infobox.setMap(map);
+            map.entities.push(marker);
+            marker.setOptions({ enableHoverStyle: true });
+        };
+        function showInfobox(e) {
+            if (e.target.metadata) {
+                infobox.setOptions({
+                    location: e.target.getLocation(),
+                    title: e.target.metadata.title,
+                    description: e.target.metadata.description,
+                    visible: true
+                });
+            }
+        }
+        function hideInfobox(e) {
+            infobox.setOptions({ visible: false });
+        }
+        //add markers to map
+       @* @if (Model.LocationList != null)
+        {
+            foreach (var item in Model.LocationList)
+            {
+                @:addMarker(@item.Latitude, @item.Longitude, '@item.Title', '@item.Description', @item.LocationId);
+            }
+        }*@
+       // alert(long2 + " " + lat2 + " " + loc2);
+       //alert(long1 + " " + lat1 + " " + loc1);
+      addMarker(lat1, long1, loc1, lat1, long1);
+        addMarker(lat2, long2, loc2, lat2, long2);
+    }
+    var BingMapsKey = "AjyvfzCGezrfMLlRlujZ0KBGQce1Pzht2V2 - 7ZkEgHDEE4y06p4Qz8U3HsEOcDGj";
+    function geocode() {
+        //var query = document.getElementById('input').value;
+        var query = @Html.Raw(Json.Encode(Model.DOAddress))+" "+@Html.Raw(Json.Encode(Model.DOCity))+" "+@Html.Raw(Json.Encode(Model.DOPostal));
+        var geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent(query) + "&jsonp=GeocodeCallback&key=" + BingMapsKey;
+        CallRestService(geocodeRequest, GeocodeCallback);
+        var query2 = @Html.Raw(Json.Encode(Model.PUAddress))+" "+@Html.Raw(Json.Encode(Model.PUCity))+" "+@Html.Raw(Json.Encode(Model.PUPostal));
+        var geocodeRequest2 = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent(query2) + "&jsonp=GeocodeCallback&key=" + BingMapsKey;
+        CallRestService(geocodeRequest2, GeocodeCallback);
+    }
+    function GeocodeCallback(response) {
+        var output = document.getElementById('output');
+        if (response &&
+            response.resourceSets &&
+            response.resourceSets.length > 0 &&
+            response.resourceSets[0].resources) {
+            var results = response.resourceSets[0].resources;
+            if (lat1 == 0.0 && long1 == 0.0) {
+                lat1 = results[0].point.coordinates[0];
+                long1 = results[0].point.coordinates[1];
+            } else {
+                lat2 = results[0].point.coordinates[0];
+                long2 = results[0].point.coordinates[1];
+            }
+             // alert(results[0].name + " " + results[0].point.coordinates[0] + " " + results[0].point.coordinates[1]);
+
+            loc1 = @Html.Raw(Json.Encode(Model.DOAddress))+" "+@Html.Raw(Json.Encode(Model.DOCity))+" "+@Html.Raw(Json.Encode(Model.DOPostal));
+            loc2 = @Html.Raw(Json.Encode(Model.PUAddress))+" "+@Html.Raw(Json.Encode(Model.PUCity))+" "+@Html.Raw(Json.Encode(Model.PUPostal));
+            // alert(lat + " " +long + " " + results[0].point.coordinates[1]);
+            loadMapScenario();
+        } else {
+            output.innerHTML = "No results found.";
+        }
+    }
+
+    function CallRestService(request) {
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", request);
+        document.body.appendChild(script);
+    }
+</script>
+<script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?branch=release&callback=geocode' async defer></script>
+
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-xl-9">
+                <div class="row">
+                    <div class="col">
+                        <img src="~/Images/transportation_Nav.JPG" style="float: left; height: 15%; width: 15%;">
+                        <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskName)</h1>
+                    </div>
+                </div>@if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+                {
                     <div class="row">
                         <div class="col">
-                            <img src="~/Images/transportation_Nav.JPG" style="float: left; height: 15%; width: 15%;">
-                            <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskName)</h1>
+                            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
+                            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
+
+
+
                         </div>
-                    </div>@if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
-                    {
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
                         <div class="row">
-                            <div class="col">
-                                <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) </button>
-                                <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) </button>
+
+
+                            Items
+                            @foreach (var item in Model.Items)
+                            {
+                                <ul>
+                                    <li>Name:  @Html.DisplayFor(model => item.ItemName) , Quantity: @Html.DisplayFor(model => item.ItemQuantity) , Notes: @Html.DisplayFor(model => item.ItemNote)</li>
+
+                                </ul>
+
+                            }
 
 
 
-                            </div>
                         </div>
-                    }
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
                         <div class="row">
-                            <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
-                                <div class="row">
+                            <div class="col-md-4">
+
+                                Pick Up
+                                <ul>
+                                    <li>Name:  @Html.DisplayFor(model => model.PUName) </li>
+                                    <li>Address: @Html.DisplayFor(model => model.PUAddress)</li>
+                                    <li>City: @Html.DisplayFor(model => model.PUCity)</li>
+                                    <li>Postal Code:  @Html.DisplayFor(model => model.PUPostal)</li>
+
+                                    <li>Date: @Html.DisplayFor(model => model.PUDate)</li>
+                                    <li>Time: @Html.DisplayFor(model => model.PUTime)</li>
+                                    <li>Notes:  @Html.DisplayFor(model => model.PUAdditional) </li>
+                                </ul>
 
 
-                                    Items
-                                    @foreach (var item in Model.Items)
-                                    {
-                                        <ul>
-                                            <li>Name:  @Html.DisplayFor(model => item.ItemName) , Quantity: @Html.DisplayFor(model => item.ItemQuantity) , Notes: @Html.DisplayFor(model => item.ItemNote)</li>
-
-                                        </ul>
-
-                                    }
-
-
-
-                                </div>
 
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
-                                <div class="row">
-                                    <div class="col-md-4">
+                            <div class="col-md-4">
 
-                                        Pick Up
-                                        <ul>
-                                            <li>Name:  @Html.DisplayFor(model => model.PUName) </li>
-                                            <li>Address: @Html.DisplayFor(model => model.PUAddress)</li>
-                                            <li>City: @Html.DisplayFor(model => model.PUCity)</li>
-                                            <li>Postal Code:  @Html.DisplayFor(model => model.PUPostal)</li>
-
-                                            <li>Date: @Html.DisplayFor(model => model.PUDate)</li>
-                                            <li>Time: @Html.DisplayFor(model => model.PUTime)</li>
-                                            <li>Notes:  @Html.DisplayFor(model => model.PUAdditional) </li>
-                                        </ul>
-
-
-
-                                    </div>
-                                    <div class="col-md-4">
-
-                                        Drop Off
-                                        <ul>
-                                            <li>Name:         @Html.DisplayFor(model => model.DOName) </li>
-                                            <li>Address:      @Html.DisplayFor(model => model.DOAddress)</li>
-                                            <li>City:         @Html.DisplayFor(model => model.DOCity)</li>
-                                            <li>Postal Code:  @Html.DisplayFor(model => model.DOPostal)</li>
-                                            <li>Date: @Html.DisplayFor(model => model.DODate)</li>
-                                            <li>Time: @Html.DisplayFor(model => model.DOTime)</li>
-                                            <li>Notes:        @Html.DisplayFor(model => model.DOAdditional) </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
+                                Drop Off
+                                <ul>
+                                    <li>Name:         @Html.DisplayFor(model => model.DOName) </li>
+                                    <li>Address:      @Html.DisplayFor(model => model.DOAddress)</li>
+                                    <li>City:         @Html.DisplayFor(model => model.DOCity)</li>
+                                    <li>Postal Code:  @Html.DisplayFor(model => model.DOPostal)</li>
+                                    <li>Date: @Html.DisplayFor(model => model.DODate)</li>
+                                    <li>Time: @Html.DisplayFor(model => model.DOTime)</li>
+                                    <li>Notes:        @Html.DisplayFor(model => model.DOAdditional) </li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                Additional Information: @Html.DisplayFor(model => model.AdditionalInfo)
-                            </div>
 
-                        </div>
                     </div>
-                <div class="col-md-4 col-xl-3">
-                    <div class="row">
-                        <div class="col">
-                            <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;   />
-                        </div>
-                    </div>
-
-                    <br />
-                    <br />
-                    <div class="row">
-                        <div class="col">
-                            <br />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="card">
-                                Poster
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="@Html.DisplayFor(model=>model.posterPhoto)" /></div><small style="margin-left: 2px">   @Html.DisplayFor(model=>model.posterName)</small>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <div class="card">
-                                Requester
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-
-                        <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/ellie.jpg" /></div><small style="margin-left: 2px"> @Html.DisplayFor(model=>model.Requester)</small>
-                    </div><br />
-                    <div class="row">
-                        <div class="col">
-                            <div class="card">
-                                Assigned Volunteers
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <small style="float: left">0 Volunteers Assigned</small>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><button class="btn btn-primary" type="button" style="float:left;margin-top: 5%;background-color: grey;border-color: black;">Join Task</button>
-                      </div>
-               
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Additional Information: @Html.DisplayFor(model => model.AdditionalInfo)
                     </div>
 
                 </div>
             </div>
+            <div class="col-md-4 col-xl-3">
+                <div class="row">
+                    <div class="col">
+                        <div id="myMap" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;"></div>
+                        <!-- <input type="button" onClick="geocode()" value="Search" /><br />-->
+                        <div id="output"></div>
+                    </div>
+                </div>
+
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            Poster
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="@Html.DisplayFor(model=>model.posterPhoto)" /></div><small style="margin-left: 2px">   @Html.DisplayFor(model => model.posterName)</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            Requester
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/ellie.jpg" /></div><small style="margin-left: 2px"> @Html.DisplayFor(model => model.Requester)</small>
+                </div><br />
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            Assigned Volunteers
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        @if (Model.assignees == null || Model.assignees.Count() == 0)
+                        {<small style="float: left"> 0 Volunteers Assigned</small>
+
+                        }
+                        else
+                        {<small style="float: left"> @Model.assignees.Count() Volunteers Assigned   </small>
+
+                        <div class="dropdown">
+                            &nbsp;&nbsp;<a class="dropbtn" style="color:blue"> show </a>
+                            <div class="dropdown-content">
+                                @foreach (string vol in ViewBag.AssigneeNames)
+                                {
+                                    <ul style="list-style-type:none;">
+                                        <li style="color:white">@vol</li>
+
+                                    </ul>
+
+                                }
+                            </div>
+                        </div>
+
+                    }
+
+                    </div>
+                </div>
+
+
+
+                @if (ViewBag.Message == false)
+                {
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Join Task", "JoinTask", new { id = Model.Id })</button>
+
+
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Leave Task", "DisjointTask", new { id = Model.Id })</button>
+
+
+                        </div>
+
+                    </div>
+                }
+            </div>
         </div>
     </div>
+</div>
 
 
 
 
 
-    <hr />
+<hr />
 
 
 
-   <!-- <div>
-      <strong>Admin Area</strong>
-        <br />
+<!-- <div>
+   <strong>Admin Area</strong>
+     <br />
 
-        TaskType:          Html.DisplayFor(model => model.taskType)
-        <br />
-        Importance Level:   Html.DisplayFor(model => model.importanceLevel)
-        <br />
-        Creation Date:            Html.DisplayFor(model => model.creationDate)
-        <br />State:  Html.DisplayFor(model => model.state)
-        <br />
-        Not set up yet:
-        Html.DisplayFor(model => model.items)
-        <br />
-        Assignees:  Html.DisplayFor(model => model.assignees)
-        <br />
+     TaskType:          Html.DisplayFor(model => model.taskType)
+     <br />
+     Importance Level:   Html.DisplayFor(model => model.importanceLevel)
+     <br />
+     Creation Date:            Html.DisplayFor(model => model.creationDate)
+     <br />State:  Html.DisplayFor(model => model.state)
+     <br />
+     Not set up yet:
+     Html.DisplayFor(model => model.items)
+     <br />
+     Assignees:  Html.DisplayFor(model => model.assignees)
+     <br />
 
-    </div>-->
-    <p>
-      
-      
-    </p> 
+ </div>-->
+<p>
+
+
+</p> 

@@ -21,21 +21,21 @@ namespace TermProjectUI.Controllers
     {
 
         static List<PhotographyTaskModel.dog> dogsList = new List<PhotographyTaskModel.dog>();
-      
-       
+        static List<string> assignees = new List<string>();
+
 
         static List<Object> deletedTask = new List<Object>();
 
         private MongoDBContext dbcontext;
         private IMongoCollection<PhotographyTaskModel> productCollection;
         private IMongoCollection<DeletedTaskModel> deletedCollection;
-
+        private IMongoCollection<VolunteerModel> volunteerCollection;
         public PhotographyTasksController()
         {
             dbcontext = new MongoDBContext();
             productCollection = dbcontext.database.GetCollection<PhotographyTaskModel>("photography");
             deletedCollection = dbcontext.database.GetCollection<DeletedTaskModel>("deletedTasks");
-
+            volunteerCollection = dbcontext.database.GetCollection<VolunteerModel>("volunteer");
         }
         // GET: TransportationTasks
         public ActionResult Index()
@@ -52,6 +52,33 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<PhotographyTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            assignees = new List<string>();
+            bool assignedForTask = false;
+            if (task.assignees != null)
+            {
+                List<string> assigneeNames = new List<string>();
+
+                foreach (var assignee in task.assignees)
+                {
+                    assignees.Add(assignee);
+                    if (assignee == Session["UserId"].ToString())
+                    {
+                        assignedForTask = true;
+                    }
+                    var volunteerId = new ObjectId(assignee);
+                    var volunteer = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == volunteerId);
+                    assigneeNames.Add(volunteer.Name);
+                }
+                ViewBag.Message = assignedForTask;
+                ViewBag.AssigneeNames = assigneeNames;
+            }
+            else
+            {
+                assignees = new List<string>();
+                assignedForTask = false;
+                ViewBag.Message = assignedForTask;
+
+            }
             return View(task);
         }
 
@@ -226,8 +253,56 @@ namespace TermProjectUI.Controllers
             {
                 return View();
             }
+
+        }
+        public ActionResult JoinTask(string id, PhotographyTaskModel task)
+        {
+            assignees.Add(Session["UserId"].ToString());
+            task.assignees = assignees;
+
+            var filter = Builders<PhotographyTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<PhotographyTaskModel>.Update
+                .Set("assignees", assignees)
+                .Set("state", "Assigned");
+            var result = productCollection.UpdateOne(filter, update);
+
+            assignees = new List<string>();
+            return RedirectToAction("Details", new { id = id });
+
+
+
+        }
+        public ActionResult DisjointTask(string id, PhotographyTaskModel task)
+        {
+            assignees.Remove(Session["UserId"].ToString());
+            if (assignees.Count == 0 || assignees == null)
+            {
+                task.assignees = assignees;
+
+                var filter = Builders<PhotographyTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                var update = Builders<PhotographyTaskModel>.Update
+                    .Set("assignees", assignees)
+                     .Set("state", "Unassigned");
+                var result = productCollection.UpdateOne(filter, update);
+
+                assignees = new List<string>();
+                return RedirectToAction("Details", new { id = id });
+            }
+            else
+            {
+                task.assignees = assignees;
+
+                var filter = Builders<PhotographyTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                var update = Builders<PhotographyTaskModel>.Update
+                    .Set("assignees", assignees);
+                var result = productCollection.UpdateOne(filter, update);
+
+                assignees = new List<string>();
+                return RedirectToAction("Details", new { id = id });
+            }
+
         }
 
-       
+
     }
 }

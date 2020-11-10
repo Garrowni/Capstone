@@ -128,14 +128,14 @@ namespace TermProjectUI.Controllers
                 mode.Subject = "Hello";
                 mode.Body = "Hello, use the following temporary password to log in and make sure you change it as soon as you can: <h2>"+password+"</h2> ";
                 
-                SendEmail(mode);
+                GenerateNewPassword(mode);
                 
                 ViewBag.Message = "Email was sent to you with a temporary password....";
             }
             return View();
         }
 
-        public void SendEmail(MailAddressModel model)
+        public void GenerateNewPassword(MailAddressModel model)
         {
             MailMessage mail = new MailMessage();
 
