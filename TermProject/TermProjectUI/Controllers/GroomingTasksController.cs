@@ -268,6 +268,56 @@ namespace TermProjectUI.Controllers
                 return View();
             }
         }
+        public ActionResult JoinTask(string id, GroomingTaskModel task)
+        {
+            assignees.Add(Session["UserId"].ToString());
+            task.assignees = assignees;
+
+            var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<GroomingTaskModel>.Update
+                .Set("assignees", assignees)
+                .Set("state", "Assigned");
+            var result = productCollection.UpdateOne(filter, update);
+
+            assignees = new List<string>();
+            return RedirectToAction("Details", new { id = id });
+
+
+
+        }
+        public ActionResult DisjointTask(string id, GroomingTaskModel task)
+        {
+            assignees.Remove(Session["UserId"].ToString());
+            if (assignees.Count == 0 || assignees == null)
+            {
+                task.assignees = assignees;
+
+                var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                var update = Builders<GroomingTaskModel>.Update
+                    .Set("assignees", assignees)
+                     .Set("state", "Unassigned");
+                var result = productCollection.UpdateOne(filter, update);
+
+                assignees = new List<string>();
+                return RedirectToAction("Details", new { id = id });
+            }
+            else
+            {
+                task.assignees = assignees;
+
+                var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+                var update = Builders<GroomingTaskModel>.Update
+                    .Set("assignees", assignees);
+                var result = productCollection.UpdateOne(filter, update);
+
+                assignees = new List<string>();
+                return RedirectToAction("Details", new { id = id });
+            }
+
+
+
+        }
+
 
 
         public ActionResult JoinTask(string id, GroomingTaskModel task)
