@@ -51,22 +51,17 @@ namespace TermProjectUI.Models
 
 
 
-        public class documents
-        {
-            public string Document { get; set; }  //not sure how to do this yet
-            public string Description { get; set; }
+       // public class documents
+       // {
+           // public HttpPostedFileBase Document { get; set; }  //not sure how to do this yet
+            public string File { get; set; }
 
-        }
+       // }
+
+        public List<string> FileList { get; set; }
 
 
-
-
-        public List<documents> Documents
-        {
-            get;
-            set;
-
-        }
+       
 
     }
 }
