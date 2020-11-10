@@ -25,8 +25,9 @@ namespace TermProjectUI.Controllers
         //private InventoryTaskRepoEF ttr = new InventoryTaskRepoEF();
         static List<string> documentsList = new List<string>();
         static List<string> existedList = new List<string>();
+
         static List<string> assignees = new List<string>();
-       
+
         static List<Object> deletedTask = new List<Object>();
 
         private MongoDBContext dbcontext;
@@ -56,6 +57,7 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<InventoryTaskModel>().SingleOrDefault(x => x.Id == taskId);
+
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -86,18 +88,18 @@ namespace TermProjectUI.Controllers
             return View(task);
         }
 
-     
-    // GET: TransportationTasks/Create
-    public ActionResult Create()
+
+        // GET: TransportationTasks/Create
+        public ActionResult Create()
         {
             return View();
         }
 
-      
-            // POST: TransportationTasks/Create
-            // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-            // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
+
+        // POST: TransportationTasks/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(InventoryTaskModel inventoryTask)
         {
@@ -106,22 +108,22 @@ namespace TermProjectUI.Controllers
             inventoryTask.taskType = "Inventory Task";
             inventoryTask.taskName = inventoryTask.taskType + " - " + inventoryTask.address;
             inventoryTask.requester = "Ellie";
-          
+
             inventoryTask.state = "Unassigned";
 
             inventoryTask.FileList = documentsList;
-  
+
 
             try
             {
                 productCollection.InsertOne(inventoryTask);
-               
+
                 deletedTask = new List<object>();
                 deletedTask.Add(inventoryTask);
                 documentsList = new List<string>();
 
                 return RedirectToAction("Details", new { id = inventoryTask.Id });
-                
+
             }
             catch
             {
@@ -129,7 +131,7 @@ namespace TermProjectUI.Controllers
             }
         }
 
-      
+
 
 
         // GET: TransportationTasks/Edit/5
@@ -171,7 +173,7 @@ namespace TermProjectUI.Controllers
                     .Set("taskDate", task.taskDate)
                     .Set("taskTime", task.taskTime)
                     .Set("AdditionalInfo", task.AdditionalInfo)
-                    .Set("FileList", task.FileList);                    ;
+                    .Set("FileList", task.FileList); ;
                 var result = productCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);
@@ -207,13 +209,13 @@ namespace TermProjectUI.Controllers
             try
             {
 
-                
+
                 taskDelete.deletedTask = deletedTask;
                 taskDelete.tasksType = "Inventory";
                 deletedCollection.InsertOne(taskDelete);
                 deletedTask = new List<Object>();
                 productCollection.DeleteOne(Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
-                
+
                 return RedirectToAction("../AllTasks/Index");
             }
             catch
@@ -223,31 +225,31 @@ namespace TermProjectUI.Controllers
         }
         public JsonResult AddFile()
         {
-            
-            //string uname = Request["description"];
-             HttpFileCollectionBase files = Request.Files;
-              for (int i = 0; i < files.Count; i++)
-              {
-                  HttpPostedFileBase file = files[i];
-                  string fname;
-                  // Checking for Internet Explorer      
-                  if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                  {
-                      string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                      fname = testfiles[testfiles.Length - 1];
-                  }
-                  else
-                  {
-                      fname = file.FileName;
-                  }
 
-                  // Get the complete folder path and store the file inside it.      
-                  fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
-                  file.SaveAs(fname);
+            //string uname = Request["description"];
+            HttpFileCollectionBase files = Request.Files;
+            for (int i = 0; i < files.Count; i++)
+            {
+                HttpPostedFileBase file = files[i];
+                string fname;
+                // Checking for Internet Explorer      
+                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                {
+                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                    fname = testfiles[testfiles.Length - 1];
+                }
+                else
+                {
+                    fname = file.FileName;
+                }
+
+                // Get the complete folder path and store the file inside it.      
+                fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
+                file.SaveAs(fname);
                 documentsList.Add("/UserImages/" + file.FileName);
-              }
-              return Json("Hi. Your files uploaded successfully", JsonRequestBehavior.AllowGet);
-           
+            }
+            return Json("Your files uploaded successfully", JsonRequestBehavior.AllowGet);
+
 
 
 
@@ -276,7 +278,7 @@ namespace TermProjectUI.Controllers
                 file.SaveAs(fname);
                 documentsList.Add("/UserImages/" + file.FileName);
             }
-            return Json("Hi. Your files uploaded successfully", JsonRequestBehavior.AllowGet);
+            return Json("Your files uploaded successfully", JsonRequestBehavior.AllowGet);
 
 
 
@@ -304,15 +306,15 @@ namespace TermProjectUI.Controllers
             return Json(insertedRecords);
         }
 
-            public FileResult Downlaod(string FileName)
+        public FileResult Download(string FileName)
         {
             string[] NamePart = FileName.Split('/');
             string lastItem = NamePart[NamePart.Length - 1];
             string[] Names = lastItem.Split('.');
             string extention = Names[Names.Length - 1];
             string Name = Names[0];
-            
-            return File(FileName, MimeMapping.GetMimeMapping(FileName), Name+"."+extention);
+
+            return File(FileName, MimeMapping.GetMimeMapping(FileName), Name + "." + extention);
 
         }
         public ActionResult JoinTask(string id, InventoryTaskModel task)
@@ -365,5 +367,5 @@ namespace TermProjectUI.Controllers
 
         }
 
-        }
     }
+}

@@ -19,14 +19,8 @@ namespace TermProjectUI.Controllers
 
     public class TransportationTasksController : Controller
     {
-       
-        // private TransportTaskDBModelContainer db = new TransportTaskDBModelContainer();
-
-        //private TransportationTaskRepoEF ttr = new TransportationTaskRepoEF();
-
-         static List<TransportationTaskModel.Item> itemList = new List<TransportationTaskModel.Item>();
+        static List<TransportationTaskModel.Item> itemList = new List<TransportationTaskModel.Item>();
         static List<string> assignees = new List<string>();
-
 
         static List<Object> deletedTask = new List<Object>();
 
@@ -34,7 +28,6 @@ namespace TermProjectUI.Controllers
         private IMongoCollection<TransportationTaskModel> productCollection;
         private IMongoCollection<DeletedTaskModel> deletedCollection;
         private IMongoCollection<VolunteerModel> volunteerCollection;
-
         public TransportationTasksController()
         {
             dbcontext = new MongoDBContext();
@@ -62,12 +55,12 @@ namespace TermProjectUI.Controllers
             bool assignedForTask = false;
             if (task.assignees != null)
             {
-               List<string> assigneeNames = new List<string>();
+                List<string> assigneeNames = new List<string>();
 
                 foreach (var assignee in task.assignees)
                 {
                     assignees.Add(assignee);
-                    if (assignee==Session["UserId"].ToString())
+                    if (assignee == Session["UserId"].ToString())
                     {
                         assignedForTask = true;
                     }
@@ -83,7 +76,7 @@ namespace TermProjectUI.Controllers
                 assignees = new List<string>();
                 assignedForTask = false;
                 ViewBag.Message = assignedForTask;
-                
+
             }
             return View(task);
         }
@@ -94,11 +87,11 @@ namespace TermProjectUI.Controllers
             return View();
         }
 
-      
-            // POST: TransportationTasks/Create
-            // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-            // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
+
+        // POST: TransportationTasks/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(TransportationTaskModel transportationTask)
         {
@@ -107,7 +100,7 @@ namespace TermProjectUI.Controllers
             transportationTask.posterPhoto = Session["Img"].ToString();
             transportationTask.taskType = "Transportation Task";
             transportationTask.taskName = transportationTask.taskType + " - " + transportationTask.PUCity + " to " + transportationTask.DOCity;
-            
+
             transportationTask.Items = itemList;
             transportationTask.creationDate = DateTime.Today;
             //transportationTask.assignees = "0";
@@ -120,45 +113,45 @@ namespace TermProjectUI.Controllers
                 productCollection.InsertOne(transportationTask);
                 deletedTask = new List<object>();
                 deletedTask.Add(transportationTask);
-                
+
                 itemList = new List<TransportationTaskModel.Item>();
 
                 return RedirectToAction("Details", new { id = transportationTask.Id });
-                
+
             }
             catch
             {
                 return View();
             }
         }
-       
+
         public JsonResult InsertItems(List<TransportationTaskModel.Item> items)
         {
-           
-                //Check for NULL.
-                if (items == null)
-                {
-                    items = new List<TransportationTaskModel.Item>();
-                }
 
-            
+            //Check for NULL.
+            if (items == null)
+            {
+                items = new List<TransportationTaskModel.Item>();
+            }
+
+
             foreach (TransportationTaskModel.Item item in items)
-                {
+            {
 
                 itemList.Add(item);
 
-                }
-                //Debug.WriteLine(itemList[0].ItemName);
-                int insertedRecords = itemList.Count();
-            
+            }
+            //Debug.WriteLine(itemList[0].ItemName);
+            int insertedRecords = itemList.Count();
+
             return Json(insertedRecords);
-            
+
         }
 
-       
+
         public JsonResult UpdateItems(List<TransportationTaskModel.Item> items)
         {
-            
+
             //Check for NULL.
             if (items == null)
             {
@@ -171,7 +164,7 @@ namespace TermProjectUI.Controllers
                 itemList.Add(item);
 
             }
-           // Debug.WriteLine(itemList[0].ItemName);
+            // Debug.WriteLine(itemList[0].ItemName);
             int insertedRecords = itemList.Count();
             return Json(insertedRecords);
 
@@ -254,13 +247,13 @@ namespace TermProjectUI.Controllers
             try
             {
 
-                
+
                 taskDelete.deletedTask = deletedTask;
                 taskDelete.tasksType = "Transportation";
                 deletedCollection.InsertOne(taskDelete);
                 deletedTask = new List<Object>();
                 productCollection.DeleteOne(Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
-                
+
                 return RedirectToAction("../AllTasks/Index");
             }
             catch
@@ -268,28 +261,27 @@ namespace TermProjectUI.Controllers
                 return View();
             }
         }
-        
         public ActionResult JoinTask(string id, TransportationTaskModel task)
         {
             assignees.Add(Session["UserId"].ToString());
-            task.assignees = assignees; 
-            
-                var filter = Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
-                var update = Builders<TransportationTaskModel>.Update
-                    .Set("assignees", assignees)
-                    .Set("state" , "Assigned");
-                var result = productCollection.UpdateOne(filter, update);
-                
-                assignees = new List<string>();
-           return RedirectToAction("Details", new { id = id });
-         
+            task.assignees = assignees;
+
+            var filter = Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<TransportationTaskModel>.Update
+                .Set("assignees", assignees)
+                .Set("state", "Assigned");
+            var result = productCollection.UpdateOne(filter, update);
+
+            assignees = new List<string>();
+            return RedirectToAction("Details", new { id = id });
+
 
 
         }
         public ActionResult DisjointTask(string id, TransportationTaskModel task)
         {
             assignees.Remove(Session["UserId"].ToString());
-            if (assignees.Count==0 || assignees==null)
+            if (assignees.Count == 0 || assignees == null)
             {
                 task.assignees = assignees;
 
@@ -314,12 +306,11 @@ namespace TermProjectUI.Controllers
                 assignees = new List<string>();
                 return RedirectToAction("Details", new { id = id });
             }
-          
+
 
 
 
         }
-
 
     }
 }

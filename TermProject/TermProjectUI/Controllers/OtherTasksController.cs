@@ -19,7 +19,6 @@ namespace TermProjectUI.Controllers
         static List<Object> deletedTask = new List<Object>();
         static List<string> assignees = new List<string>();
 
-
         private MongoDBContext dbcontext;
         private IMongoCollection<OtherTaskModel> productCollection;
         private IMongoCollection<DeletedTaskModel> deletedCollection;
@@ -29,7 +28,7 @@ namespace TermProjectUI.Controllers
             dbcontext = new MongoDBContext();
             productCollection = dbcontext.database.GetCollection<OtherTaskModel>("other");
             deletedCollection = dbcontext.database.GetCollection<DeletedTaskModel>("deletedTasks");
-            volunteerCollection= dbcontext.database.GetCollection<VolunteerModel>("volunteer");
+            volunteerCollection = dbcontext.database.GetCollection<VolunteerModel>("volunteer");
 
         }
         // GET: OtherTasks
@@ -46,6 +45,7 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<OtherTaskModel>().SingleOrDefault(x => x.Id == taskId);
+
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -267,9 +267,6 @@ namespace TermProjectUI.Controllers
                 assignees = new List<string>();
                 return RedirectToAction("Details", new { id = id });
             }
-
-
-
 
         }
     }

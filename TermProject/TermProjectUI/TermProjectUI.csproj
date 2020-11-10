@@ -205,7 +205,7 @@
     <Compile Include="Controllers\GroomingTasksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryTasksController.cs" />
-    <Compile Include="Controllers\JointTasksController.cs" />
+    <Compile Include="Controllers\JoinedTasksController.cs" />
     <Compile Include="Controllers\LogInController.cs" />
     <Compile Include="Controllers\PhotographyTasksController.cs" />
     <Compile Include="Controllers\VetTasksController.cs" />
@@ -221,7 +221,7 @@
     <Compile Include="Models\GroomingTaskModel.cs" />
     <Compile Include="Models\InventoryTaskModel.cs" />
     <Compile Include="Models\Item.cs" />
-    <Compile Include="Models\JointTasksModel.cs" />
+    <Compile Include="Models\JoinedTasksModel.cs" />
     <Compile Include="Models\LogInModel.cs" />
     <Compile Include="Models\MailAddressModel.cs" />
     <Compile Include="Models\OtherTaskModel.cs" />
@@ -383,7 +383,7 @@
     <Content Include="Views\GroomingTasks\Details.cshtml" />
     <Content Include="Views\GroomingTasks\Edit.cshtml" />
     <Content Include="Views\GroomingTasks\Index.cshtml" />
-    <Content Include="Views\JointTasks\Index.cshtml" />
+    <Content Include="Views\JoinedTasks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

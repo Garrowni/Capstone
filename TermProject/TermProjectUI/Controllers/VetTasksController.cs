@@ -13,27 +13,28 @@ using TermProjectUI.App_Start;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Diagnostics;
+using System.IO;
 
 namespace TermProjectUI.Controllers
 {
 
     public class VetTasksController : Controller
     {
-        static List<VetTaskModel.documents> documentsList = new List<VetTaskModel.documents>();
+        //static List<VetTaskModel.documents> documentsList = new List<VetTaskModel.documents>();
 
-
+        static List<string> documentsList = new List<string>();
+        static List<string> existedList = new List<string>();
 
         static List<Object> deletedTask = new List<Object>();
         static List<string> assignees = new List<string>();
-
         private MongoDBContext dbcontext;
-        private IMongoCollection<VetTaskModel> productCollection;
+        private IMongoCollection<VetTaskModel>vetCollection;
         private IMongoCollection<DeletedTaskModel> deletedCollection;
         private IMongoCollection<VolunteerModel> volunteerCollection;
         public VetTasksController()
         {
             dbcontext = new MongoDBContext();
-            productCollection = dbcontext.database.GetCollection<VetTaskModel>("vet");
+            vetCollection = dbcontext.database.GetCollection<VetTaskModel>("vet");
             deletedCollection = dbcontext.database.GetCollection<DeletedTaskModel>("deletedTasks");
             volunteerCollection = dbcontext.database.GetCollection<VolunteerModel>("volunteer");
 
@@ -44,7 +45,7 @@ namespace TermProjectUI.Controllers
             // return View(db.TransportationTasks.ToList());
             //return View(ttr.GetTransportationTasks());
 
-            List<VetTaskModel> tasks = productCollection.AsQueryable<VetTaskModel>().ToList();
+            List<VetTaskModel> tasks = vetCollection.AsQueryable<VetTaskModel>().ToList();
             return View(tasks);
         }
 
@@ -52,7 +53,7 @@ namespace TermProjectUI.Controllers
         public ActionResult Details(string id)
         {
             var taskId = new ObjectId(id);
-            var task = productCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -89,11 +90,11 @@ namespace TermProjectUI.Controllers
             return View();
         }
 
-      
-            // POST: TransportationTasks/Create
-            // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-            // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-            [HttpPost]
+
+        // POST: TransportationTasks/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(VetTaskModel vetTask)
         {
@@ -101,21 +102,21 @@ namespace TermProjectUI.Controllers
             vetTask.posterPhoto = Session["Img"].ToString();
             vetTask.taskType = "Vet Task";
             vetTask.taskName = "VetTaskTest";
-          
+            vetTask.requester = "Ellie";
+
             vetTask.state = "Unassigned";
 
-            vetTask.Documents = documentsList;
+            vetTask.FileList = documentsList;
 
             try
             {
-                productCollection.InsertOne(vetTask);
-                documentsList = new List<VetTaskModel.documents>();
+               vetCollection.InsertOne(vetTask);
                 deletedTask = new List<object>();
                 deletedTask.Add(vetTask);
-                
-             
+                documentsList = new List<string>();
+
                 return RedirectToAction("Details", new { id = vetTask.Id });
-                
+
             }
             catch
             {
@@ -123,55 +124,14 @@ namespace TermProjectUI.Controllers
             }
         }
 
-        public JsonResult InsertDocuments(List<VetTaskModel.documents> itemsSpec)
-        {
-
-            //Check for NULL.
-            if (itemsSpec == null)
-            {
-                itemsSpec = new List<VetTaskModel.documents>();
-            }
-
-
-
-            foreach (VetTaskModel.documents itemSpec in itemsSpec)
-            {
-
-                documentsList.Add(itemSpec);
-
-            }
-            //Debug.WriteLine(taskSpecList[0].Key);
-            int insertedRecords = documentsList.Count();
-            return Json(insertedRecords);
-
-        }
-        public JsonResult UpdateDocuments(List<VetTaskModel.documents> tasksSpec)
-        {
-
-            //Check for NULL.
-            if (tasksSpec == null)
-            {
-                tasksSpec = new List<VetTaskModel.documents>();
-            }
-
-            documentsList = new List<VetTaskModel.documents>();
-            foreach (VetTaskModel.documents taskSpec in tasksSpec)
-            {
-                documentsList.Add(taskSpec);
-
-            }
-
-            int insertedRecords = documentsList.Count();
-            return Json(insertedRecords);
-
-        }
+        
 
 
         // GET: TransportationTasks/Edit/5
         public ActionResult Edit(string id)
         {
             var taskId = new ObjectId(id);
-            var task = productCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
             return View(task);
         }
 
@@ -182,13 +142,13 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(string id, VetTaskModel task)
         {
-            
+            task.FileList = documentsList;
             try
             {
                 var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<VetTaskModel>.Update
-                   
-                    
+
+
                     .Set("taskID", task.taskID)
                     .Set("taskName", task.taskName)
                     .Set("taskType", task.taskType)
@@ -198,30 +158,28 @@ namespace TermProjectUI.Controllers
                     .Set("AdditionalInfo", task.AdditionalInfo)
                     .Set("pickupLocation", task.pickupLocation)
                     .Set("pickupVolunteer", task.pickupVolunteer)
-                    .Set("pickupDate", task.pickupDate)
-                    .Set("pickupTime", task.pickupTime)
+
                     .Set("appointmentAddress", task.appointmentAddress)
-                    .Set("appointmentDate", task.appointmentDate)
-                    .Set("appointmentTime", task.appointmentTime)
-                    .Set("vet", task.vetName)
+
+               
                     .Set("appointmentReason", task.appointmentReason)
                     .Set("appointmentNotes", task.appointmentNotes)
                     .Set("dropoffLocation", task.dropoffLocation)
                     .Set("dropoffVolunteer", task.dropoffVolunteer)
-                    .Set("dropoffDate", task.dropoffDate)
-                    .Set("dropoffTime", task.dropoffTime)
+                    .Set("DODate", task.DODate)
+                    .Set("DOTime", task.DOTime)
                     .Set("dogName", task.dogName)
                     .Set("dogBreed", task.dogBreed)
                     .Set("dogSize", task.dogSize)
                     .Set("dogNotes", task.dogNotes)
-                    .Set("Documents", task.Documents);
+                    .Set("FileList", task.FileList);
 
-                var result = productCollection.UpdateOne(filter, update);
+                var result = vetCollection.UpdateOne(filter, update);
                 deletedTask = new List<object>();
                 task.Id = ObjectId.Parse(id);
                 deletedTask.Add(task);
-
-                documentsList = new List<VetTaskModel.documents>();
+                documentsList = new List<string>();
+          //      documentsList = new List<VetTaskModel.documents>();
 
                 return RedirectToAction("Details", new { id = id });
             }
@@ -235,7 +193,7 @@ namespace TermProjectUI.Controllers
         public ActionResult Delete(string id)
         {
             var taskId = new ObjectId(id);
-            var task = productCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
             return View(task);
         }
 
@@ -251,19 +209,115 @@ namespace TermProjectUI.Controllers
             try
             {
 
-                
+
                 taskDelete.deletedTask = deletedTask;
                 taskDelete.tasksType = "Vet";
                 deletedCollection.InsertOne(taskDelete);
                 deletedTask = new List<Object>();
-                productCollection.DeleteOne(Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
-                
+                vetCollection.DeleteOne(Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id)));
+
                 return RedirectToAction("../AllTasks/Index");
             }
             catch
             {
                 return View();
             }
+        }
+
+
+        public JsonResult AddFile()
+        {
+
+            //string uname = Request["description"];
+            HttpFileCollectionBase files = Request.Files;
+            for (int i = 0; i < files.Count; i++)
+            {
+                HttpPostedFileBase file = files[i];
+                string fname;
+                // Checking for Internet Explorer      
+                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                {
+                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                    fname = testfiles[testfiles.Length - 1];
+                }
+                else
+                {
+                    fname = file.FileName;
+                }
+
+                // Get the complete folder path and store the file inside it.      
+                fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
+                file.SaveAs(fname);
+                documentsList.Add("/UserImages/" + file.FileName);
+            }
+            return Json("Files uploaded successfully", JsonRequestBehavior.AllowGet);
+
+
+
+
+        }
+        public JsonResult UpdateFile()
+        {
+            documentsList = new List<string>();
+            //string uname = Request["existedList"];
+            HttpFileCollectionBase files = Request.Files;
+            for (int i = 0; i < files.Count; i++)
+            {
+                HttpPostedFileBase file = files[i];
+                string fname;
+                // Checking for Internet Explorer      
+                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                {
+                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                    fname = testfiles[testfiles.Length - 1];
+                }
+                else
+                {
+                    fname = file.FileName;
+                }
+                // Get the complete folder path and store the file inside it.      
+                fname = Path.Combine(Server.MapPath("~/UserImages/"), fname);
+                file.SaveAs(fname);
+                documentsList.Add("/UserImages/" + file.FileName);
+            }
+            return Json("Files uploaded successfully", JsonRequestBehavior.AllowGet);
+
+
+
+
+        }
+        public JsonResult ExistedFiles(List<string> items)
+        {
+
+            //Check for NULL.
+            if (items == null)
+            {
+                items = new List<string>();
+            }
+
+
+            foreach (string item in items)
+            {
+
+                //existedList.Add(item);
+                documentsList.Add(item);
+            }
+            //Debug.WriteLine(itemList[0].ItemName);
+            int insertedRecords = existedList.Count();
+
+            return Json(insertedRecords);
+        }
+
+        public FileResult Download(string FileName)
+        {
+            string[] NamePart = FileName.Split('/');
+            string lastItem = NamePart[NamePart.Length - 1];
+            string[] Names = lastItem.Split('.');
+            string extention = Names[Names.Length - 1];
+            string Name = Names[0];
+
+            return File(FileName, MimeMapping.GetMimeMapping(FileName), Name + "." + extention);
+
         }
 
         public ActionResult JoinTask(string id, VetTaskModel task)
@@ -275,7 +329,7 @@ namespace TermProjectUI.Controllers
             var update = Builders<VetTaskModel>.Update
                 .Set("assignees", assignees)
                 .Set("state", "Assigned");
-            var result = productCollection.UpdateOne(filter, update);
+            var result = vetCollection.UpdateOne(filter, update);
 
             assignees = new List<string>();
             return RedirectToAction("Details", new { id = id });
@@ -294,7 +348,7 @@ namespace TermProjectUI.Controllers
                 var update = Builders<VetTaskModel>.Update
                     .Set("assignees", assignees)
                      .Set("state", "Unassigned");
-                var result = productCollection.UpdateOne(filter, update);
+                var result = vetCollection.UpdateOne(filter, update);
 
                 assignees = new List<string>();
                 return RedirectToAction("Details", new { id = id });
@@ -306,7 +360,7 @@ namespace TermProjectUI.Controllers
                 var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<VetTaskModel>.Update
                     .Set("assignees", assignees);
-                var result = productCollection.UpdateOne(filter, update);
+                var result = vetCollection.UpdateOne(filter, update);
 
                 assignees = new List<string>();
                 return RedirectToAction("Details", new { id = id });
@@ -316,5 +370,6 @@ namespace TermProjectUI.Controllers
 
 
         }
+
     }
 }

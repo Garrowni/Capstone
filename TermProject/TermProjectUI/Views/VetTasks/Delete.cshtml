@@ -1,13 +1,9 @@
-﻿@model TermProjectUI.Models.OtherTaskModel
+﻿@model TermProjectUI.Models.VetTaskModel
 
 @{
     ViewBag.Title = "Delete";
 }
-    <style>
-        a {
-            color: white;
-        }
-    </style>
+   
 
 <h2>Delete</h2>
 
@@ -17,7 +13,7 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            Requester: 
+            Requester:
         </dt>
 
         <dd>
@@ -25,43 +21,205 @@
         </dd>
 
         <dt>
-            Task Title: 
+            Task Title:
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.taskTitle)
+            @Html.DisplayFor(model => model.taskName)
         </dd>
 
         <dt>
-            Poster Name: 
+            Poster Name:
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.posterName)
         </dd>
+
+
+
+
+
+
+
+
         <dt>
-            Task Specifications:
+            Drop Off Location:
         </dt>
 
         <dd>
-            @foreach (var item in Model.TaskRequirements)
+            @Html.DisplayFor(model => model.dropoffLocation)
+        </dd>
+
+        <dt>
+            Volunteer Name:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dropoffVolunteer)
+        </dd>
+
+        <dt>
+            Drop Off Date:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DODate)
+        </dd>
+
+        <dt>
+            Dropoff Time:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DOTime)
+        </dd>
+
+        <dt>
+            Appointment Address:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.appointmentAddress)
+        </dd>
+        <dt>
+            Appointment Dates:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.APDate)
+        </dd>
+        <dt>
+            Appointment Time:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.APTime)
+        </dd>
+
+        <dt>
+            Appointment Reason:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.appointmentReason)
+        </dd>
+        <dt>
+            Appointment Notes:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.appointmentNotes)
+        </dd>
+
+
+        <dt>
+            Pick Up Location:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pickupLocation)
+        </dd>
+
+        <dt>
+            Volunteer Name:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pickupVolunteer)
+        </dd>
+
+        <dt>
+            Pick Up Date:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PUDate)
+        </dd>
+
+        <dt>
+            Pickup Time:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PUTime)
+        </dd>
+
+
+
+
+        <dt>
+            Dog Name:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dogName)
+        </dd>
+
+        <dt>
+            Dog Breed:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dogBreed)
+        </dd>
+
+        <dt>
+            Dog Size:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dogSize)
+        </dd>
+
+        <dt>
+            Dog Notes:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dogNotes)
+        </dd>
+
+
+        <dt>
+            Documents:
+        </dt>
+
+        <dd>
+            @foreach (var item in Model.FileList)
             {
 
-                <p> @Html.DisplayFor(model => item.Key) : @Html.DisplayFor(model => item.Value)</p>
-
+                <ul>
+                    <li>
+                        @Html.ActionLink("Download", "Download", new { FileName = item.ToString(), style = "color:blue" })
+                        @Html.DisplayFor(model => item)
+                    </li>
+                </ul>
 
 
             }
         </dd>
+
     </dl>
 
-    @using (Html.BeginForm()) {
+
+    <dt>
+        Extra Notes:
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.AdditionalInfo)
+    </dd>
+
+
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
-<div class="form-actions no-color">
-    <input type="submit" value="Delete" class="btn btn-default" style="color: white; margin-top: 2px; background-color: grey;border-color: black;" /> |
-    <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }) </button>
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" style="color: white; margin-top: 2px; background-color: grey;border-color: black;" /> |
+            <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Cancel", "Details", new { id = Model.Id }, new { @style = "color:white;" }) </button>
 
-</div>
+        </div>
     }
 </div>

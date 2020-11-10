@@ -1,235 +1,235 @@
-﻿<!--Documents section will be replaced so we can upload and download docs.-->
+﻿@model TermProjectUI.Models.InventoryTaskModel
 
-@model TermProjectUI.Models.InventoryTaskModel
-@{ ViewBag.Title = "Create"; }
+@{ 
+    ViewBag.Title = "Create"; 
+   }
 
 <h2>Create</h2>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-row">
-        <div class="col-md-12">
-            <h2>
-                Inventory Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                    <span class="glyphicon glyphicon-remove-circle"></span>
-                </a>
-            </h2>
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-row">
+            <div class="col-md-12">
+                <h2>
+                    Inventory Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </a>
+                </h2>
+            </div>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col-md-12">
-            <hr />
-            <h1>
-                Task Specification
-            </h1>
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h1>
+                    Task Specification
+                </h1>
+            </div>
         </div>
-    </div>
-    <div class="form-row">
+        <div class="form-row">
 
-        <div class="col-md-3">
-            <font color="red"><strong>*</strong></font>Address:
-            @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
-            <font color="red" size="2px"> <p id="taskAddress"></p></font>
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Address:
+                @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="taskAddress"></p></font>
+            </div>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col-md-12">
-            <hr />
-            <h1>
-                Instructions and Templates
-            </h1>
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h1>
+                    Instructions and Templates
+                </h1>
+            </div>
         </div>
-    </div>
-    <div class="form-row">
-        <div class="col-md-5">
-            <div class="form-row">
-                <div class="col">
-                   Choose a File:
-                    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-                    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+        <div class="form-row">
+            <div class="col-md-5">
+                <div class="form-row">
+                    <div class="col">
+                        Choose a File:
+                        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                        <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 
 
-                    <input id="fileInput" type="file" accept=".docx,.pdf" multiple />
+                        <input id="fileInput" type="file" accept=".docx,.pdf" multiple />
 
-                    <br />
-                    
+                        <br />
+
                     </div>
                 </div>
             </div>
-            </div>
-                    <table class="table" id="FilesList" style="visibility:hidden">
+        </div>
+        <table class="table" id="FilesList" style="visibility:hidden">
 
-                        <tr>
-                            <th>
-                                Attachment(s)
-                            </th>
-                           
-                            <th>
-                                Action
-                            </th>
-                        </tr>
+            <tr>
+                <th>
+                    Attachment(s)
+                </th>
 
-                    </table>
+                <th>
+                    Action
+                </th>
+            </tr>
 
-                    <script>
-                        var formdata = new FormData(); //FormData object
-                       
-                        $(document).ready(function () {
-                            
-                            $("#fileInput").on("change", function () {
-                                var fileInput = document.getElementById('fileInput');
-                               
-                                //Iterating through each files selected in fileInput
-                                for (i = 0; i < fileInput.files.length; i++) {
+        </table>
 
-                                    var sfilename = fileInput.files[i].name;
-                                    
-                                    let srandomid = Math.random().toString(36).substring(7);
-                                    var desc = $('#txtuploader').val();
-                                    formdata.append(sfilename, fileInput.files[i]);
-                                    
-                                    var markup = "<tr id='" + srandomid + "'><td>" + sfilename + "</td><td><a href='#' onclick='DeleteFile(\"" + srandomid + "\",\"" + sfilename +
-                                        "\")'><span class='glyphicon glyphicon-remove red'></span></a></td></tr>"; // Binding the file name
-                                    $("#FilesList tbody").append(markup);
-                                    
-                                }
-                                chkatchtbl();
-                                $('#fileInput').val('');
-                                
-                            });
+        <script>
+            var formdata = new FormData(); //FormData object
 
-                            $("#btnSave").click(function () {
-                                
-                                $.ajax({
-                                    url: '/InventoryTasks/AddFile',
-                                    type: "POST",
-                                    contentType: false, // Not to set any content header
-                                    processData: false, // Not to process data
-                                    data: formdata,
-                                    async: false,
-                                    success: function (result) {
-                                        if (result != "") {
-                                            alert(result);
-                                        }
-                                    },
-                                    error: function (err) {
-                                        alert(err.statusText);
-                                    }
-                                });
-                            });
-                        });
-                        function DeleteFile(Fileid, FileName) {
-                            formdata.delete(FileName)
-                            $("#" + Fileid).remove();
-                            chkatchtbl();
-                        }
-                        function chkatchtbl() {
-                            if ($('#FilesList tr').length > 1) {
-                                $("#FilesList").css("visibility", "visible");
-                            } else {
-                                $("#FilesList").css("visibility", "hidden");
+            $(document).ready(function () {
+
+                $("#fileInput").on("change", function () {
+                    var fileInput = document.getElementById('fileInput');
+
+                    //Iterating through each files selected in fileInput
+                    for (i = 0; i < fileInput.files.length; i++) {
+
+                        var sfilename = fileInput.files[i].name;
+
+                        let srandomid = Math.random().toString(36).substring(7);
+                        var desc = $('#txtuploader').val();
+                        formdata.append(sfilename, fileInput.files[i]);
+
+                        var markup = "<tr id='" + srandomid + "'><td>" + sfilename + "</td><td><a href='#' onclick='DeleteFile(\"" + srandomid + "\",\"" + sfilename +
+                            "\")'><span class='glyphicon glyphicon-remove red'></span></a></td></tr>"; // Binding the file name
+                        $("#FilesList tbody").append(markup);
+
+                    }
+                    chkatchtbl();
+                    $('#fileInput').val('');
+
+                });
+
+                $("#btnSave").click(function () {
+
+                    $.ajax({
+                        url: '/InventoryTasks/AddFile',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: formdata,
+                        async: false,
+                        success: function (result) {
+                            if (result != "") {
+                                alert(result);
                             }
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
                         }
-                    </script>
-
-
-
-                    <!--Date/Time-->
-                    <div class="form-row">
-                        <div class="col-md-5">
-                            <div class="form-row">
-                                <div class="col">
-                                    <font color="red"><strong>*</strong></font>Date:
-                                    <input type="date" id="taskDate" name="taskDate" class="form-control" required>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-row">
-                                <div class="col">
-
-                                    <font color="red"><strong>*</strong></font>Time:
-                                    <input type="time" id="taskTime" name="taskTime" class="form-control" style="width: 112%;" required>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="col-md-5">
-                            <div class="form-row">
-                                <div class="col">
-                                    <font color="red" size="2px"> <p id="taskDateError">.</p></font>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-row">
-                                <div class="col">
-                                    <font color="red" size="2px"> <p id="taskTimeError">.</p></font>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <!-- Additional Information -->
-
-                    <div class="form-row">
-                        <div class="col-md-12">
-                            <hr />
-                            <h2>Additional Information</h2>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
-                            @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
-                            <font color="red" size="2px"> <p id="additionaInfo"></p></font>
-                        </div>
-                    </div>
-
-                    <!--Blank Space-->
-                    <div class="form-row">
-                        <div class="col-md-12">
-
-                        </div>
-                    </div>
-                    <!--Buttom Buttons-->
-                    <div class="form-row">
-                        <div class="col-md-12">
-                            <div class="form-row">
-                                <div class="col-md-6">
-                                    <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
-
-                                    <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
-                                    <br /><br /><br />
-
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                </div>
-                <script>
-                    var today = new Date().toISOString().split('T')[0];
-                    document.getElementsByName("taskDate")[0].setAttribute('min', today);
-                </script>
+                    });
+                });
+            });
+            function DeleteFile(Fileid, FileName) {
+                formdata.delete(FileName)
+                $("#" + Fileid).remove();
+                chkatchtbl();
+            }
+            function chkatchtbl() {
+                if ($('#FilesList tr').length > 1) {
+                    $("#FilesList").css("visibility", "visible");
+                } else {
+                    $("#FilesList").css("visibility", "hidden");
                 }
-               
+            }
+        </script>
+
+
+
+        <!--Date/Time-->
+        <div class="form-row">
+            <div class="col-md-5">
+                <div class="form-row">
+                    <div class="col">
+                        <font color="red"><strong>*</strong></font>Date:
+                        <input type="date" id="taskDate" name="taskDate" class="form-control" required>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-row">
+                    <div class="col">
+
+                        <font color="red"><strong>*</strong></font>Time:
+                        <input type="time" id="taskTime" name="taskTime" class="form-control" style="width: 112%;" required>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-5">
+                <div class="form-row">
+                    <div class="col">
+                        <font color="red" size="2px"> <p id="taskDateError">.</p></font>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-row">
+                    <div class="col">
+                        <font color="red" size="2px"> <p id="taskTimeError">.</p></font>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Additional Information -->
+
+        <div class="form-row">
+            <div class="col-md-12">
+                <hr />
+                <h2>Additional Information</h2>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.AdditionalInfo, new { htmlAttributes = new { @class = "form-control", @Value = "NA" } })
+                @Html.ValidationMessageFor(model => model.AdditionalInfo, "", new { @class = "text-danger" })
+                <font color="red" size="2px"> <p id="additionaInfo"></p></font>
+            </div>
+        </div>
+
+        <!--Blank Space-->
+        <div class="form-row">
+            <div class="col-md-12">
+
+            </div>
+        </div>
+        <!--Buttom Buttons-->
+        <div class="form-row">
+            <div class="col-md-12">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <input class="btn btn-primary" type="reset" value="Reset" style="float:right; background-color: grey;border-color: black; margin-left: 2px;" />
+
+                        <button class="btn btn-primary" type="submit" value="Create" id="btnSave" style="float:right; background-color: grey;border-color: black;">Submit</button>
+                        <br /><br /><br />
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("taskDate")[0].setAttribute('min', today);
+    </script>
+}

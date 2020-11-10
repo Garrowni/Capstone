@@ -127,7 +127,7 @@ namespace TermProjectUI.Controllers
                 mode.From = "testint65@gmail.com";
                 mode.Subject = "Hello";
                 mode.Body = "Hello, use the following temporary password to log in and make sure you change it as soon as you can: <h2>"+password+"</h2> ";
-
+                
                 GenerateNewPassword(mode);
                 
                 ViewBag.Message = "Email was sent to you with a temporary password....";

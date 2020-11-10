@@ -1,4 +1,4 @@
-﻿@model TermProjectUI.Models.OtherTaskModel
+﻿@model TermProjectUI.Models.GroomingTaskModel
 
 @{
     ViewBag.Title = "Details";
@@ -13,46 +13,36 @@
 <br />
 <br />
 
-<!--<script type='text/javascript'>
+<script type='text/javascript'>
     var long1 = 0.0;
     var lat1 = 0.0;
     var loc1 = "";
-
     function loadMapScenario() {
-
         var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
             credentials: "AjyvfzCGezrfMLlRlujZ0KBGQce1Pzht2V2 - 7ZkEgHDEE4y06p4Qz8U3HsEOcDGj",
             mapTypeId: Microsoft.Maps.MapTypeId.road,
             zoom: 5
         });
-
-
         // Create the infobox for the pushpin
         var infobox = null;
-
         //declare addMarker function
         function addMarker(latitude, longitude, title, description, pid)
         {
             var marker = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, longitude), { color: 'green' });
-
             infobox = new Microsoft.Maps.Infobox(marker.getLocation(), {
                 visible : true
             });
-
             marker.metadata = {
                 id: pid,
                 title: title,
                 description: description
             };
-
             Microsoft.Maps.Events.addHandler(marker, 'mouseout', hideInfobox);
             Microsoft.Maps.Events.addHandler(marker, 'mouseover', showInfobox);
-
             infobox.setMap(map);
             map.entities.push(marker);
             marker.setOptions({ enableHoverStyle: true });
         };
-
         function showInfobox(e) {
             if (e.target.metadata) {
                 infobox.setOptions({
@@ -63,11 +53,9 @@
                 });
             }
         }
-
         function hideInfobox(e) {
             infobox.setOptions({ visible: false });
         }
-
         //add markers to map
        @* @if (Model.LocationList != null)
         {
@@ -76,74 +64,54 @@
                 @:addMarker(@item.Latitude, @item.Longitude, '@item.Title', '@item.Description', @item.LocationId);
             }
         }*@
-
         addMarker(lat1, long1, loc1, lat1, long1);
        // addMarker(lat2, long2, loc2, lat2, long2);
-
         //alert(long2 + " " + lat2 + " " + loc2);
     }
-
-
-
-
     var BingMapsKey = "AjyvfzCGezrfMLlRlujZ0KBGQce1Pzht2V2 - 7ZkEgHDEE4y06p4Qz8U3HsEOcDGj";
-
     function geocode() {
         //var query = document.getElementById('input').value;
 
-        var query = @**Html.Raw(Json.Encode(Model.DOAddress))+" "+@Html.Raw(Json.Encode(Model.DOCity))+" "+@Html.Raw(Json.Encode(Model.DOPostal));
-        *@
+        var query = @Html.Raw(Json.Encode(Model.bookedAddress));
         var geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent(query) + "&jsonp=GeocodeCallback&key=" + BingMapsKey;
-
         CallRestService(geocodeRequest, GeocodeCallback);
-
-
     }
-
     function GeocodeCallback(response) {
         var output = document.getElementById('output');
-
         if (response &&
             response.resourceSets &&
             response.resourceSets.length > 0 &&
             response.resourceSets[0].resources) {
-
             var results = response.resourceSets[0].resources;
-
-
              // alert(results[0].name + " " + results[0].point.coordinates[0] + " " + results[0].point.coordinates[1]);
             lat1 = results[0].point.coordinates[0];
             long1 = results[0].point.coordinates[1];
-           loc1 = @**Html.Raw(Json.Encode(Model.DOAddress))+" "+@Html.Raw(Json.Encode(Model.DOCity))+" "+@Html.Raw(Json.Encode(Model.DOPostal));
-           *@
+            loc1 = @Html.Raw(Json.Encode(Model.bookedAddress));
             // alert(lat + " " +long + " " + results[0].point.coordinates[1]);
-
             loadMapScenario();
         } else {
             output.innerHTML = "No results found.";
         }
     }
-
-
     function CallRestService(request) {
         var script = document.createElement("script");
         script.setAttribute("type", "text/javascript");
         script.setAttribute("src", request);
         document.body.appendChild(script);
     }
-
 </script>
 <script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?branch=release&callback=geocode' async defer></script>
--->
+
+
 <div>
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-xl-9">
                 <div class="row">
                     <div class="col">
-                        <img src="~/Images/other_Nav.JPG" style="float: left; height: 15%; width: 15%;">
+                        <img src="~/Images/grooming_Nav.JPG" style="float: left; height: 15%; width: 15%;">
                         <br />
-                        <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskTitle)</h1>
+                        <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskName)</h1>
                     </div>
                 </div>
                 <div class="row">
@@ -159,19 +127,96 @@
                     <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
                         <div class="row">
 
+                            <div class="col-md-4">
 
-                            Task Information:
-                            @foreach (var item in Model.TaskRequirements)
-                            {
+                                Dog Info
                                 <ul>
-                                    <li> @Html.DisplayFor(model => item.Key) : @Html.DisplayFor(model => item.Value) </li>
+                                    <li>Dog Name:  @Html.DisplayFor(model => model.dogName) </li>
+                                    <li>Dog Age: @Html.DisplayFor(model => model.dogAge)</li>
+                                    <li>Dog Size: @Html.DisplayFor(model => model.dogSize)</li>
+                                    <li>Dog Breed:  @Html.DisplayFor(model => model.dogBreed)</li>
+                                </ul>
+
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                Services
+                                <ul>
+                                    <li>Wash: @Html.DisplayFor(model => model.wash)</li>
+                                    <li>Nails: @Html.DisplayFor(model => model.nailCleaning) </li>
+                                    <li>Cut: @Html.DisplayFor(model => model.cut)</li>
+                                    <li>Trim: @Html.DisplayFor(model => model.trim) </li>
+                                    <li>Ear Cleaning: @Html.DisplayFor(model => model.earClean)</li>
+                                    <li>Teeth Cleaning: @Html.DisplayFor(model => model.teethClean) </li>
+                                </ul>
+
+
+
+                            </div>
+                        </div>
+                        <div class="row" id="booked">
+                            <div class="col-md-4">
+
+                                Booked Info
+                                <ul>
+
+                                    <li id="book">Booked Store: @Html.DisplayFor(model => model.bookedStore)</li>
+                                    <li>Booked Address: @Html.DisplayFor(model => model.bookedAddress)</li>
+                                    <li>Booked Date: @Html.DisplayFor(model => model.bookedDate)</li>
+                                    <li>Booked Time: @Html.DisplayFor(model => model.bookedTime)</li>
+                                </ul>
+
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="row" id="prefered">
+                            <div class="col-md-4">
+
+                                Preference Info
+                                <ul>
+
+                                    <li id="pref">Prefered Store: @Html.DisplayFor(model => model.prefStore)</li>
+                                    <li>Prefered Address: @Html.DisplayFor(model => model.prefAddress) </li>
+                                    <li>Prefered Date: @Html.DisplayFor(model => model.prefDate)</li>
 
                                 </ul>
 
-                            }
+                            </div>
+
+                        </div>
+                        <div class="row" id="pay">
+                            <div class="col-md-4">
+
+                                Payed Info
+                                <ul>
+
+                                    <li id="receipt">Receipt: @Html.DisplayFor(model => model.receipt)</li>
+                                    <li>Paid By: @Html.DisplayFor(model => model.payer)</li>
+                                </ul>
 
 
 
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                Additional Information
+                                <ul>
+                                    <li>@Html.DisplayFor(model => model.AdditionalInfo)</li>
+                                </ul>
+
+
+
+                            </div>
                         </div>
 
                     </div>
@@ -182,7 +227,9 @@
             <div class="col-md-4 col-xl-3">
                 <div class="row">
                     <div class="col">
-                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;       />
+                        <div id="myMap" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;"></div>
+                        <!-- <input type="button" onClick="geocode()" value="Search" /><br />-->
+                        <div id="output"></div>
                     </div>
                 </div>
 
@@ -251,9 +298,6 @@
                         </div>
 
                     }
-
-
-
                     </div>
                 </div>
                 @if (ViewBag.Message == false)
@@ -271,17 +315,18 @@
                 {
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Disjoint Task", "DisjointTask", new { id = Model.Id })</button>
-
-
+                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Leave Task", "DisjointTask", new { id = Model.Id })</button>
                         </div>
 
                     </div>
                 }
-
             </div>
+
         </div>
+
     </div>
+</div>
+    </div>.
 </div>
 
 
@@ -314,3 +359,60 @@
 
 
 </p>
+<script>
+    var pay = document.getElementById("pay");
+    var receipt = document.getElementById("receipt");
+
+    var prefered = document.getElementById("prefered");
+    var pref = document.getElementById("pref");
+
+    var booked = document.getElementById("booked");
+    var book = document.getElementById("book");
+    if (book.innerText == "Store: ") {
+
+        // pay.style.display = "none";
+        booked.style.display = "none";
+        prefered.style.display = "none";
+
+
+    } else {
+
+        //pay.style.display = "block";
+        booked.style.display = "block";
+        prefered.style.display = "none";
+        if (receipt.innerText == "Receipt: ") {
+            pay.style.display = "none";
+
+        } else {
+
+            pay.style.display = "block";
+
+        }
+
+
+    }
+
+
+    if (receipt.innerText == "Receipt: ") {
+        pay.style.display = "none";
+        prefered.style.display = "block";
+
+    }
+
+
+
+
+    if (pref.innerText == "Prefered Store: ") {
+        booked.style.display = "block";
+        prefered.style.display = "none";
+
+
+    } else {
+
+        pay.style.display = "none";
+        booked.style.display = "none";
+        prefered.style.display = "block";
+    }
+
+
+</script>

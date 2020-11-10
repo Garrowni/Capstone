@@ -14,6 +14,10 @@ namespace TermProjectUI.Models
         [BsonId]
         public ObjectId Id { get; set; }
 
+        [BsonElement("requester")]
+
+        public string requester { get; set; }
+
 
         [BsonElement("posterPhoto")]
         public string posterPhoto { get; set; }
@@ -55,15 +59,18 @@ namespace TermProjectUI.Models
         public string bookedStore{ get; set; }
         [BsonElement("bookedAddress")]
         public string bookedAddress { get; set; }
-        [BsonElement("bookedDate")]
+
+
+        [BsonElement("bookedDate"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true), DataType(DataType.Date, ErrorMessage = "Date only")]
+
         public DateTime bookedDate { get; set; }
         [BsonElement("bookedTime")]
-        public DateTime bookedTime { get; set; }
+        public TimeSpan bookedTime { get; set; }
 
         //appontment details not booked
         [BsonElement("prefStore")]
         public string prefStore { get; set; }
-        [BsonElement("prefDate")]
+        [BsonElement("prefDate"), DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true), DataType(DataType.Date, ErrorMessage = "Date only")]
         public DateTime prefDate { get; set; }
         [BsonElement("prefAddress")]
         public string prefAddress { get; set; }
@@ -79,27 +86,30 @@ namespace TermProjectUI.Models
         //not payed
         [BsonElement("price")]
         public double price { get; set; }
-
-
+        public bool nailCleaning { get; set; }
+        public bool wash { get; set; }
         //services
-        public class services
-        {
-            public bool wash { get; set; }
-            public bool cut { get; set; }
-            public bool trim { get; set; }
-            public bool nailClean { get; set; }
-            public bool earClean { get; set; }
-            public bool teethClean { get; set; }
-
-        }
 
 
-        public List<services> Services
-        {
-            get;
-            set;
+        public bool cut { get; set; }
+        public bool trim { get; set; }
+    
+        public bool earClean { get; set; }
+        public bool teethClean { get; set; }
 
-        }
+//        public class services
+  //      {
+    //        public bool wash { get; set; }
+          
+      //  }
+
+
+    //    public List<services> Services
+  //      {
+   //         get;
+   //         set;
+
+    //    }
 
         [BsonElement("AdditionalInfo")]
         public string AdditionalInfo { get; set; }
