@@ -9,6 +9,126 @@
 
 <br />
 <br />
+<script type='text/javascript'>
+    var long1 = 0.0;
+    var lat1 = 0.0;
+    var loc1 = "";
+
+    function loadMapScenario() {
+
+        var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+            credentials: "AjyvfzCGezrfMLlRlujZ0KBGQce1Pzht2V2 - 7ZkEgHDEE4y06p4Qz8U3HsEOcDGj",
+            mapTypeId: Microsoft.Maps.MapTypeId.road,
+            zoom: 5
+        });
+
+
+        // Create the infobox for the pushpin
+        var infobox = null;
+
+        //declare addMarker function
+        function addMarker(latitude, longitude, title, description, pid)
+        {
+            var marker = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, longitude), { color: 'green' });
+
+            infobox = new Microsoft.Maps.Infobox(marker.getLocation(), {
+                visible : true
+            });
+
+            marker.metadata = {
+                id: pid,
+                title: title,
+                description: description
+            };
+
+            Microsoft.Maps.Events.addHandler(marker, 'mouseout', hideInfobox);
+            Microsoft.Maps.Events.addHandler(marker, 'mouseover', showInfobox);
+
+            infobox.setMap(map);
+            map.entities.push(marker);
+            marker.setOptions({ enableHoverStyle: true });
+        };
+
+        function showInfobox(e) {
+            if (e.target.metadata) {
+                infobox.setOptions({
+                    location: e.target.getLocation(),
+                    title: e.target.metadata.title,
+                    description: e.target.metadata.description,
+                    visible: true
+                });
+            }
+        }
+
+        function hideInfobox(e) {
+            infobox.setOptions({ visible: false });
+        }
+
+        //add markers to map
+       @* @if (Model.LocationList != null)
+        {
+            foreach (var item in Model.LocationList)
+            {
+                @:addMarker(@item.Latitude, @item.Longitude, '@item.Title', '@item.Description', @item.LocationId);
+            }
+        }*@
+
+        addMarker(lat1, long1, loc1, lat1, long1);
+       // addMarker(lat2, long2, loc2, lat2, long2);
+
+        //alert(long2 + " " + lat2 + " " + loc2);
+    }
+
+
+
+
+    var BingMapsKey = "AjyvfzCGezrfMLlRlujZ0KBGQce1Pzht2V2 - 7ZkEgHDEE4y06p4Qz8U3HsEOcDGj";
+
+    function geocode() {
+        //var query = document.getElementById('input').value;
+
+        var query = @Html.Raw(Json.Encode(Model.address));
+        var geocodeRequest = "http://dev.virtualearth.net/REST/v1/Locations?query=" + encodeURIComponent(query) + "&jsonp=GeocodeCallback&key=" + BingMapsKey;
+
+        CallRestService(geocodeRequest, GeocodeCallback);
+
+
+    }
+
+    function GeocodeCallback(response) {
+        var output = document.getElementById('output');
+
+        if (response &&
+            response.resourceSets &&
+            response.resourceSets.length > 0 &&
+            response.resourceSets[0].resources) {
+
+            var results = response.resourceSets[0].resources;
+
+
+             // alert(results[0].name + " " + results[0].point.coordinates[0] + " " + results[0].point.coordinates[1]);
+            lat1 = results[0].point.coordinates[0];
+            long1 = results[0].point.coordinates[1];
+            loc1 = @Html.Raw(Json.Encode(Model.address));
+            // alert(lat + " " +long + " " + results[0].point.coordinates[1]);
+
+            loadMapScenario();
+        } else {
+            output.innerHTML = "No results found.";
+        }
+    }
+
+
+    function CallRestService(request) {
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", request);
+        document.body.appendChild(script);
+    }
+
+</script>
+<script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?branch=release&callback=geocode' async defer></script>
+
 <div>
     <div class="container">
         <div class="row">
@@ -23,7 +143,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id}, new { @style = "color:white;" } ) </button>
+                        <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @style = "color:white;" }) </button>
                         <button class="btn btn-primary" type="button" style="margin-top: 2px; background-color: grey;border-color: black;"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @style = "color:white;" }) </button>
 
 
@@ -33,41 +153,43 @@
 
 
 
-            
-
-
-            <div class="row">
-                <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
-                    <div class="row">Address:  @Html.DisplayFor(model => model.address)</div>
-                    <div class="row">Date:  @Html.DisplayFor(model => model.taskDate)</div>
-                    <div class="row">Time:  @Html.DisplayFor(model => model.taskTime)</div>
-                    
-                    <div class="row">
-
-
-                        Documents:
-                        @foreach (var item in Model.FileList)
-                        {
-                        <ul>
-                            <li>
-                                @Html.ActionLink("Downlaod", "Downlaod", new { FileName = item.ToString(), style = "color:blue" })
-                                @Html.DisplayFor(model => item)
-                            </li>
-                        </ul>
-
-                        }
 
 
 
+                <div class="row">
+                    <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
+                        <div class="row">Address:  @Html.DisplayFor(model => model.address)</div>
+                        <div class="row">Date:  @Html.DisplayFor(model => model.taskDate)</div>
+                        <div class="row">Time:  @Html.DisplayFor(model => model.taskTime)</div>
+
+                        <div class="row">
+
+
+                            Documents:
+                            @foreach (var item in Model.FileList)
+                            {
+                                <ul>
+                                    <li>
+                                        @Html.ActionLink("Downlaod", "Downlaod", new { FileName = item.ToString(), style = "color:blue" })
+                                        @Html.DisplayFor(model => item)
+                                    </li>
+                                </ul>
+
+                            }
+
+
+
+                        </div>
+                        <div class="row">Additional Information: @Html.DisplayFor(model => model.AdditionalInfo)</div>
                     </div>
-                    <div class="row">Additional Information: @Html.DisplayFor(model => model.AdditionalInfo)</div>
                 </div>
-            </div>
             </div>
             <div class="col-md-4 col-xl-3">
                 <div class="row">
                     <div class="col">
-                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;       />
+                        <div id="myMap" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;"></div>
+                        <!-- <input type="button" onClick="geocode()" value="Search" /><br />-->
+                        <div id="output"></div>
                     </div>
                 </div>
 
