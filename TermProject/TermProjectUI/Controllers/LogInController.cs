@@ -18,7 +18,7 @@ namespace TermProjectUI.Controllers
     {
         private MongoDBContext dbcontext;
         private IMongoCollection<VolunteerModel> volunteerCollection;
-
+        static List<string> volunteerList = new List<string>();
         public LogInController()
         {
             dbcontext = new MongoDBContext();
@@ -50,6 +50,21 @@ namespace TermProjectUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogIn(LogInModel logIn)
         {
+            List<VolunteerModel> volunteers = volunteerCollection.AsQueryable<VolunteerModel>().ToList();
+
+            volunteerList = new List<string>();
+           
+            foreach (var volun in volunteers)
+            {
+                if (volun.Active=="Yes")
+                {
+                    volunteerList.Add(volun.Name.ToString());
+
+                }
+                
+            }
+            Session["VolunteerList"] = volunteerList;
+           
             var email =logIn.Email;
             var password = logIn.Password;
             var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email == email);

@@ -318,7 +318,7 @@ namespace TermProjectUI.Controllers
 
         }
 
-
+        /**
 
         public ActionResult JoinTask(string id, GroomingTaskModel task)
         {
@@ -368,7 +368,7 @@ namespace TermProjectUI.Controllers
 
 
 
-        }
+        }*/
 
 
 

@@ -54,6 +54,7 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            ViewBag.req = task.requester;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)

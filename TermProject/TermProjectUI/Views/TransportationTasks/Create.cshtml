@@ -64,8 +64,10 @@
         </div>
         <div class="col-md-4">
             <font color="red"><strong>*</strong></font>Requester:
-            @Html.EditorFor(model => model.Requester, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Requester, "", new { @class = "text-danger" })
+           @Html.DropDownListFor(model => model.Requester, new SelectList((List<string>)Session["VolunteerList"]))
+
+            @*@Html.EditorFor(model => model.Requester, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Requester, "", new { @class = "text-danger" })*@
             <font color="red" size="2px"> <p id="requester"></p></font>
 
 

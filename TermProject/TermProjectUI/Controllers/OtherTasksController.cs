@@ -45,7 +45,7 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<OtherTaskModel>().SingleOrDefault(x => x.Id == taskId);
-
+            ViewBag.req = task.requester;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)

@@ -51,6 +51,9 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<TransportationTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            ViewBag.req = task.Requester;
+            ViewBag.post = task.posterName;
+            ViewBag.state = task.state;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -311,6 +314,22 @@ namespace TermProjectUI.Controllers
 
 
         }
+        public ActionResult CompleteTask(string id, TransportationTaskModel task)
+        {
 
+
+            var filter = Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<TransportationTaskModel>.Update
+                 .Set("state", "Completed");
+            var result = productCollection.UpdateOne(filter, update);
+            if (Session["Role"].ToString()=="Admin"|| Session["Role"].ToString() == "Moderator")
+            {
+                return RedirectToAction("../CompletedTasks/Index");
+            }
+            else
+            {
+                return RedirectToAction("../AllTasks/Index");
+            }
+        }
     }
 }

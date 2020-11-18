@@ -19,7 +19,7 @@ namespace TermProjectUI.Controllers
 
         private MongoDBContext dbcontext;
         private IMongoCollection<VolunteerModel> volunteerCollection;
-
+        static List<string> volunteerList = new List<string>();
         public VolunteersController()
         {
             dbcontext = new MongoDBContext();
@@ -179,6 +179,7 @@ namespace TermProjectUI.Controllers
             ViewBag.list = list;
             var volunteerId = new ObjectId(id);
             var volunteer = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Id == volunteerId);
+           
             return View(volunteer);
         }
         
@@ -221,7 +222,20 @@ namespace TermProjectUI.Controllers
 
                 }
 
+                List<VolunteerModel> volunteers = volunteerCollection.AsQueryable<VolunteerModel>().ToList();
 
+                volunteerList = new List<string>();
+
+                foreach (var volun in volunteers)
+                {
+                    if (volun.Active == "Yes")
+                    {
+                        volunteerList.Add(volun.Name.ToString());
+
+                    }
+
+                }
+                Session["VolunteerList"] = volunteerList;
                 return RedirectToAction("../Volunteers/Index");
             }
             catch
@@ -275,7 +289,20 @@ namespace TermProjectUI.Controllers
 
                     var result = volunteerCollection.UpdateOne(filter, update);
                 }
-               
+                List<VolunteerModel> volunteers = volunteerCollection.AsQueryable<VolunteerModel>().ToList();
+
+                volunteerList = new List<string>();
+
+                foreach (var volun in volunteers)
+                {
+                    if (volun.Active == "Yes")
+                    {
+                        volunteerList.Add(volun.Name.ToString());
+
+                    }
+
+                }
+                Session["VolunteerList"] = volunteerList;
                 return RedirectToAction("../Volunteers/Index");
             }
             catch
