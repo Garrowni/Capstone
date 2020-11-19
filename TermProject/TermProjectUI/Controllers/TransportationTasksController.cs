@@ -108,7 +108,8 @@ namespace TermProjectUI.Controllers
             transportationTask.creationDate = DateTime.Today;
             //transportationTask.assignees = "0";
             transportationTask.state = "Unassigned";
-
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Name == transportationTask.Requester);
+            transportationTask.reqPhoto = vol.UserPhoto;
 
 
             try

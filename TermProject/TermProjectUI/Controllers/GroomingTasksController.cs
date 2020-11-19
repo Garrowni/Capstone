@@ -57,6 +57,9 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<GroomingTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            ViewBag.req = task.requester;
+            ViewBag.post = task.posterName;
+            ViewBag.state = task.state;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -105,12 +108,13 @@ namespace TermProjectUI.Controllers
             groomingTask.posterPhoto = Session["Img"].ToString();
             groomingTask.taskType = "Grooming Task";
             groomingTask.taskName = "GroomingTaskTest";
-
-            groomingTask.requester = "Me";
+           
+           
             groomingTask.state = "Unassigned";
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Name ==groomingTask.requester);
+            groomingTask.reqphoto = vol.UserPhoto;
+            //    groomingTask.Services = servicesList;
 
-        //    groomingTask.Services = servicesList;
-  
 
             try
             {
@@ -317,58 +321,25 @@ namespace TermProjectUI.Controllers
 
 
         }
-
-        /**
-
-        public ActionResult JoinTask(string id, GroomingTaskModel task)
+        public ActionResult CompleteTask(string id, GroomingTaskModel task)
         {
-            assignees.Add(Session["UserId"].ToString());
-            task.assignees = assignees;
+
 
             var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
             var update = Builders<GroomingTaskModel>.Update
-                .Set("assignees", assignees)
-                .Set("state", "Assigned");
+                 .Set("state", "Completed");
             var result = productCollection.UpdateOne(filter, update);
-
-            assignees = new List<string>();
-            return RedirectToAction("Details", new { id = id });
-
-
-
-        }
-        public ActionResult DisjointTask(string id, GroomingTaskModel task)
-        {
-            assignees.Remove(Session["UserId"].ToString());
-            if (assignees.Count == 0 || assignees == null)
+            if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
             {
-                task.assignees = assignees;
-
-                var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
-                var update = Builders<GroomingTaskModel>.Update
-                    .Set("assignees", assignees)
-                     .Set("state", "Unassigned");
-                var result = productCollection.UpdateOne(filter, update);
-
-                assignees = new List<string>();
-                return RedirectToAction("Details", new { id = id });
+                return RedirectToAction("../CompletedTasks/Index");
             }
             else
             {
-                task.assignees = assignees;
-
-                var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
-                var update = Builders<GroomingTaskModel>.Update
-                    .Set("assignees", assignees);
-                var result = productCollection.UpdateOne(filter, update);
-
-                assignees = new List<string>();
-                return RedirectToAction("Details", new { id = id });
+                return RedirectToAction("../AllTasks/Index");
             }
-
-
-
-        }*/
+        }
+        
+       
 
 
 

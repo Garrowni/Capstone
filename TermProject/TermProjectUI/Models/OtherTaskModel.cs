@@ -13,6 +13,8 @@ namespace TermProjectUI.Models
         public ObjectId Id { get; set; }
         [BsonElement("requester")]
         public string requester { get; set; }
+        [BsonElement("reqPhoto")]
+        public string reqPhoto { get; set; }
         [BsonElement("taskTitle")]
         public string taskTitle { get; set; }
         [BsonElement("posterName")]

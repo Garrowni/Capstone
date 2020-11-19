@@ -57,7 +57,9 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<InventoryTaskModel>().SingleOrDefault(x => x.Id == taskId);
-
+            ViewBag.req = task.requester;
+            ViewBag.post = task.posterName;
+            ViewBag.state = task.state;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -107,7 +109,8 @@ namespace TermProjectUI.Controllers
             inventoryTask.posterPhoto = Session["Img"].ToString();
             inventoryTask.taskType = "Inventory Task";
             inventoryTask.taskName = inventoryTask.taskType + " - " + inventoryTask.address;
-            inventoryTask.requester = "Ellie";
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Name == inventoryTask.requester);
+           inventoryTask.reqPhoto = vol.UserPhoto;
 
             inventoryTask.state = "Unassigned";
 
@@ -365,6 +368,23 @@ namespace TermProjectUI.Controllers
 
 
 
+        }
+        public ActionResult CompleteTask(string id, InventoryTaskModel task)
+        {
+
+
+            var filter = Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<InventoryTaskModel>.Update
+                 .Set("state", "Completed");
+            var result = productCollection.UpdateOne(filter, update);
+            if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+            {
+                return RedirectToAction("../CompletedTasks/Index");
+            }
+            else
+            {
+                return RedirectToAction("../AllTasks/Index");
+            }
         }
 
     }

@@ -16,8 +16,9 @@ namespace TermProjectUI.Models
         [BsonElement("ImportanceLevel")]
         public int ImportanceLevel { get; set; }
         [BsonElement("Requester")]
-        
         public string Requester { get; set; }
+        [BsonElement("reqPhoto")]
+        public string reqPhoto { get; set; }
         [BsonElement("PUAddress")]
         public string PUAddress { get; set; }//startLocation
         [BsonElement("PUCity")]

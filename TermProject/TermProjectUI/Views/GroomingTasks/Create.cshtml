@@ -33,7 +33,12 @@
 
         <!--Task Specification-->
         <div class="form-row">
+            <div class="col-md-3">
+                <font color="red"><strong>*</strong></font>Requester:<br />
+                @Html.DropDownListFor(model => model.requester, new SelectList((List<string>)Session["VolunteerList"]))
 
+                
+            </div>
 
             <div class="col-md-3">
                 <font color="red"><strong>*</strong></font>Dogs Name:

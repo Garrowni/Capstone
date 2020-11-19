@@ -55,6 +55,8 @@ namespace TermProjectUI.Controllers
             var taskId = new ObjectId(id);
             var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
             ViewBag.req = task.requester;
+            ViewBag.post = task.posterName;
+            ViewBag.state = task.state;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -103,8 +105,9 @@ namespace TermProjectUI.Controllers
             vetTask.posterPhoto = Session["Img"].ToString();
             vetTask.taskType = "Vet Task";
             vetTask.taskName = "VetTaskTest";
-            vetTask.requester = "Ellie";
-
+            
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Name == vetTask.requester);
+            vetTask.reqPhoto = vol.UserPhoto;
             vetTask.state = "Unassigned";
 
             vetTask.FileList = documentsList;
@@ -371,6 +374,22 @@ namespace TermProjectUI.Controllers
 
 
         }
+        public ActionResult CompleteTask(string id, VetTaskModel task)
+        {
 
+
+            var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<VetTaskModel>.Update
+                 .Set("state", "Completed");
+            var result =vetCollection.UpdateOne(filter, update);
+            if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+            {
+                return RedirectToAction("../CompletedTasks/Index");
+            }
+            else
+            {
+                return RedirectToAction("../AllTasks/Index");
+            }
+        }
     }
 }

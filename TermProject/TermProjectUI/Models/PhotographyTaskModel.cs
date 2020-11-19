@@ -38,7 +38,8 @@ namespace TermProjectUI.Models
 
         [BsonElement("requester")]
         public string requester { get; set; }
-
+        [BsonElement("reqPhoto")]
+        public string reqPhoto { get; set; }
 
         [BsonElement("location")]
         public string location { get; set; }

@@ -52,6 +52,9 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<PhotographyTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            ViewBag.req = task.requester;
+            ViewBag.post = task.posterName;
+            ViewBag.state = task.state;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -102,7 +105,8 @@ namespace TermProjectUI.Controllers
             photographyTask.taskName = photographyTask.taskType + " - " + photographyTask.photographerName;
 
             photographyTask.state = "Unassigned";
-
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Name == photographyTask.requester);
+            photographyTask.reqPhoto = vol.UserPhoto;
             photographyTask.Dogs = dogsList;
 
             try
@@ -301,6 +305,24 @@ namespace TermProjectUI.Controllers
                 return RedirectToAction("Details", new { id = id });
             }
 
+        }
+
+        public ActionResult CompleteTask(string id, PhotographyTaskModel task)
+        {
+
+
+            var filter = Builders<PhotographyTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<PhotographyTaskModel>.Update
+                 .Set("state", "Completed");
+            var result = productCollection.UpdateOne(filter, update);
+            if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+            {
+                return RedirectToAction("../CompletedTasks/Index");
+            }
+            else
+            {
+                return RedirectToAction("../AllTasks/Index");
+            }
         }
 
 
