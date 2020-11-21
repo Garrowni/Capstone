@@ -1,0 +1,99 @@
+﻿@model TermProjectUI.Models.PhotographyTaskModel
+
+@{
+    ViewBag.Title = "AddComment";
+}
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" type="submit" value="Save" style=" background-color: grey;border-color: black;">
+                @Html.ActionLink("Back", "Details", new { id = Model.Id }, new { @style = "color:white" })
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+            <img src="~/Images/photography_Nav.JPG" style="float: left; height: 15%; width: 15%;">
+            <h1 style="float: left;margin-top: 2%;">  @Html.DisplayFor(model => model.taskName)</h1>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col">
+            <table>
+                <colgroup>
+                    <col span="1" style="width:40px">
+                    <col style="width:400px;text-align:left">
+                    <col style="width:100px">
+                </colgroup>
+                <tr>
+
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+
+                @if (Model.Comments == null || Model.Comments.Count() == 0)
+                {
+
+                }
+                else
+                {
+                    foreach (var com in Model.Comments)
+                    {
+                        <tr>
+                            <td>  <img class="mr-3" style=" float: left; width: 25px; height:25px;" src="@Html.DisplayFor(model =>com.volunteerPhoto)" /></td>
+                            <td>
+                                <strong>@Html.DisplayFor(model => com.volunteerName)</strong><br />@Html.DisplayFor(model => com.comm)
+
+
+                            </td>
+
+                            <td>
+                                @if (com.volunteerId == Session["UserId"].ToString())
+                                {
+                                    @Html.ActionLink("Edit", "EditComment", new { id = Model.Id, commentId = com.commId, comment = com.comm })
+                                    @Html.ActionLink("Delete", "DeleteComment", new { id = Model.Id, comment = com.commId }, new { @style = "margin-left:10px" })
+
+                                }
+                                else
+                                {
+
+                                }
+                            </td>
+
+                        </tr>
+
+                    }
+                }
+
+            </table>
+            <label><img class="mr-3" style=" float: left; width: 25px; height:25px;" src='@Session["Img"].ToString()' /></label>
+            @Html.EditorFor(model => model.singleComm, new { htmlAttributes = new { style = "width:4000px" } })
+            @Html.ValidationMessageFor(model => model.singleComm, "", new { @class = "text-danger" })
+
+            <br />
+            @if (ViewBag.edit == false || ViewBag.edit == null)
+            {
+                <button class="btn btn-primary" type="submit" value="Save" id="btnSave" style="float:right; background-color: grey;border-color: black;margin-right:860px;padding-top:10px;">Post</button>
+
+            }
+            @if (ViewBag.edit == true)
+            {
+                <button class="btn btn-primary" type="submit" value="Save" id="btnSave" style="float:right; background-color: grey;border-color: black;margin-right:860px;padding-top:10px;">Edit</button>
+
+            }
+        </div>
+    </div>
+}
+

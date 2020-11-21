@@ -22,6 +22,8 @@ namespace TermProjectUI.Controllers
 
         static List<PhotographyTaskModel.dog> dogsList = new List<PhotographyTaskModel.dog>();
         static List<string> assignees = new List<string>();
+        static List<PhotographyTaskModel.Comment> comments = new List<PhotographyTaskModel.Comment>();
+        static PhotographyTaskModel.Comment scomm = new PhotographyTaskModel.Comment();
 
 
         static List<Object> deletedTask = new List<Object>();
@@ -55,6 +57,7 @@ namespace TermProjectUI.Controllers
             ViewBag.req = task.requester;
             ViewBag.post = task.posterName;
             ViewBag.state = task.state;
+            ViewBag.comments = task.Comments;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -81,6 +84,10 @@ namespace TermProjectUI.Controllers
                 assignedForTask = false;
                 ViewBag.Message = assignedForTask;
 
+            }
+            if (task.Comments == null)
+            {
+                task.Comments = new List<PhotographyTaskModel.Comment>();
             }
             return View(task);
         }
@@ -325,6 +332,134 @@ namespace TermProjectUI.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult AddComment(string id)
+        {
+            var taskId = new ObjectId(id);
+
+            var task = productCollection.AsQueryable<PhotographyTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            //task.singleComm = null;
+            comments = new List<PhotographyTaskModel.Comment>();
+            if (task.Comments == null || task.Comments.Count() == 0)
+            {
+                comments = new List<PhotographyTaskModel.Comment>();
+
+            }
+            else
+            {
+                foreach (var coment in task.Comments)
+                {
+                    comments.Add(coment);
+
+                }
+            }
+
+
+            return View(task);
+        }
+        [HttpPost]
+        public ActionResult AddComment(string id, PhotographyTaskModel task)
+        {
+
+            scomm.volunteerId = Session["UserId"].ToString();
+            scomm.comm = task.singleComm;
+            scomm.volunteerName = Session["Username"].ToString();
+            scomm.volunteerPhoto = Session["Img"].ToString();
+            comments = new List<PhotographyTaskModel.Comment>();
+
+            var singletask = productCollection.AsQueryable<PhotographyTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            if (singletask.Comments == null || singletask.Comments.Count() == 0)
+            {
+                comments = new List<PhotographyTaskModel.Comment>();
+                scomm.commId = "1";
+            }
+            else
+            {
+                List<int> ids = new List<int>();
+                foreach (var coment in singletask.Comments)
+                {
+                    comments.Add(coment);
+                    ids.Add(Int32.Parse(coment.commId));
+                }
+                scomm.commId = (ids.Max() + 1).ToString();
+
+            }
+
+            comments.Add(scomm);
+            // task.singleComm = "";
+            var filter = Builders<PhotographyTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<PhotographyTaskModel>.Update
+               .Set("Comments", comments)
+
+                 .Set("singleComm", "");
+            var result = productCollection.UpdateOne(filter, update);
+            return RedirectToAction("AddComment", new { id = id });
+            //return RedirectToAction("Details", new { id = id });
+
+        }
+        public ActionResult DeleteComment(string id, PhotographyTaskModel task, string comment)
+        {
+            PhotographyTaskModel.Comment comment1 = new PhotographyTaskModel.Comment();
+            var singletask = productCollection.AsQueryable<PhotographyTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            foreach (var coment in singletask.Comments)
+            {
+
+                if (coment.commId == comment)
+                {
+                    comment1 = coment;
+                    // Debug.WriteLine(comment);
+                }
+            }
+
+            //Debug.WriteLine(comment);
+            comments.RemoveAll(l => l.commId == comment);
+            // Debug.WriteLine(comments.Count());
+            //Debug.WriteLine(comment1.comm);
+            var filter = Builders<PhotographyTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<PhotographyTaskModel>.Update
+               .Set("Comments", comments);
+            var result = productCollection.UpdateOne(filter, update);
+
+            return RedirectToAction("AddComment", new { id = id });
+        }
+        public ActionResult EditComment(string id, PhotographyTaskModel task, string commentId, string comment)
+        {
+
+            ViewBag.edit = false;
+            var filter = Builders<PhotographyTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<PhotographyTaskModel>.Update
+               .Set("singleComm", comment);
+
+            //.Set("singleComm", task.singleComm);
+            var result = productCollection.UpdateOne(filter, update);
+            PhotographyTaskModel.Comment comment1 = new PhotographyTaskModel.Comment();
+            var singletask = productCollection.AsQueryable<PhotographyTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            foreach (var coment in singletask.Comments)
+            {
+
+                if (coment.commId == commentId)
+                {
+                    comment1 = coment;
+                    // Debug.WriteLine(comment);
+                }
+            }
+
+            //Debug.WriteLine(comment);
+            comments.RemoveAll(l => l.commId == commentId);
+            // Debug.WriteLine(comments.Count());
+            //Debug.WriteLine(comment1.comm);
+            var filter2 = Builders<PhotographyTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update2 = Builders<PhotographyTaskModel>.Update
+               .Set("Comments", comments);
+            var result2 = productCollection.UpdateOne(filter2, update2);
+
+            ViewBag.edit = true;
+            return RedirectToAction("AddComment", new { id = id });
+
+        }
 
     }
 }

@@ -401,9 +401,9 @@ namespace TermProjectUI.Controllers
                
                  .Set("singleComm", "");
             var result = productCollection.UpdateOne(filter, update);
-           
-                return RedirectToAction("Details", new { id = id });
-           
+            return RedirectToAction("AddComment", new { id = id });
+            //return RedirectToAction("Details", new { id = id });
+
         }
         public ActionResult DeleteComment(string id, TransportationTaskModel task, string comment)
         {
@@ -429,7 +429,7 @@ namespace TermProjectUI.Controllers
                .Set("Comments", comments);
             var result = productCollection.UpdateOne(filter, update);
 
-            return RedirectToAction("Details", new { id = id });
+            return RedirectToAction("AddComment", new { id = id });
         }
         public ActionResult EditComment(string id, TransportationTaskModel task, string commentId,string comment)
         {

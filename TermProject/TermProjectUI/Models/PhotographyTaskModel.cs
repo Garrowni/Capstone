@@ -34,7 +34,25 @@ namespace TermProjectUI.Models
         public DateTime creationDate { get; set; }
         [BsonElement("state")]
         public string state { get; set; }
+        [DataType(DataType.MultilineText)]
+        [Required(ErrorMessage = "Enter a Comment")]
+        public string singleComm { get; set; }
+        public class Comment
+        {
 
+            public string commId { get; set; }
+            public string volunteerId { get; set; }
+            public string volunteerPhoto { get; set; }
+            public string volunteerName { get; set; }
+            public string comm { get; set; }
+        }
+
+        public List<Comment> Comments
+        {
+            get;
+            set;
+
+        }
 
         [BsonElement("requester")]
         public string requester { get; set; }

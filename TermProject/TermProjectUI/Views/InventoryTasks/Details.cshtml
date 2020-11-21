@@ -152,6 +152,30 @@
 
                         </div>
                         <div class="row">Additional Information: @Html.DisplayFor(model => model.AdditionalInfo)</div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:200px;margin-left:10px;margin-right:10px;">@Html.ActionLink("Comment Section", "AddComment", new { id = Model.Id, comment = Model.singleComm }, new { @style = "color:white" })</button>
+
+                                @if (Model.Comments != null || Model.Comments.Count() != 0)
+                                {
+                                    var count = 0;
+                                    foreach (var com in Model.Comments)
+                                    {
+                                        count++;
+
+
+                                    }<div style="text-align: left;padding-top:5px;color:darkgray">( @count Comments )</div>
+                                }
+                                else
+                                {
+                                    var count = 0;
+                                    <div sstyle="text-align: left;padding-top:5px;color:darkgray">( @count Comments )</div>
+                                }
+
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>

@@ -203,7 +203,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:200px;margin-left:10px;margin-right:10px;">@Html.ActionLink("Comment Section", "AddComment", new { id = Model.Id, comment = Model.singleComm }, null)</button>
+                        <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:200px;margin-left:10px;margin-right:10px;">@Html.ActionLink("Comment Section", "AddComment", new { id = Model.Id, comment = Model.singleComm }, new { @style = "color:white" })</button>
 
                         @if (Model.Comments != null || Model.Comments.Count() != 0)
                         {
