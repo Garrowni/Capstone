@@ -387,6 +387,7 @@
     <Content Include="Views\GroomingTasks\Index.cshtml" />
     <Content Include="Views\JoinedTasks\Index.cshtml" />
     <Content Include="Views\CompletedTasks\Index.cshtml" />
+    <Content Include="Views\TransportationTasks\AddComment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
