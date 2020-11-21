@@ -392,7 +392,7 @@ namespace TermProjectUI.Controllers
                 scomm.commId = (ids.Max()+1).ToString();
 
             }
-
+             
             comments.Add(scomm);
            // task.singleComm = "";
             var filter = Builders<TransportationTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
