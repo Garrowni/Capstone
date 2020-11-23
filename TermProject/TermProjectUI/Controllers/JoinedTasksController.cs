@@ -50,11 +50,15 @@ namespace TermProjectUI.Controllers
             {
                 if (trans.assignees != null)
                 {
-                    foreach (var assignee in trans.assignees)
+                    if (trans.state != "Completed")
                     {
-                        if (assignee == Session["UserId"].ToString())
+
+                        foreach (var assignee in trans.assignees)
                         {
-                            transTasks.Add(trans);
+                            if (assignee == Session["UserId"].ToString())
+                            {
+                                transTasks.Add(trans);
+                            }
                         }
                     }
                 }
@@ -65,11 +69,15 @@ namespace TermProjectUI.Controllers
             {
                 if (inv.assignees != null)
                 {
-                    foreach (var assignee in inv.assignees)
+                    if (inv.state != "Completed")
                     {
-                        if (assignee == Session["UserId"].ToString())
+
+                        foreach (var assignee in inv.assignees)
                         {
-                            inventoryTasks.Add(inv);
+                            if (assignee == Session["UserId"].ToString())
+                            {
+                                inventoryTasks.Add(inv);
+                            }
                         }
                     }
                 }
@@ -80,11 +88,15 @@ namespace TermProjectUI.Controllers
             {
                 if (photo.assignees != null)
                 {
-                    foreach (var assignee in photo.assignees)
+                    if (photo.state != "Completed")
                     {
-                        if (assignee == Session["UserId"].ToString())
+
+                        foreach (var assignee in photo.assignees)
                         {
-                            photographTasks.Add(photo);
+                            if (assignee == Session["UserId"].ToString())
+                            {
+                                photographTasks.Add(photo);
+                            }
                         }
                     }
                 }
@@ -94,11 +106,15 @@ namespace TermProjectUI.Controllers
             {
                 if (groom.assignees != null)
                 {
-                    foreach (var assignee in groom.assignees)
+                    if (groom.state != "Completed")
                     {
-                        if (assignee == Session["UserId"].ToString())
+
+                        foreach (var assignee in groom.assignees)
                         {
-                            groomingTasks.Add(groom);
+                            if (assignee == Session["UserId"].ToString())
+                            {
+                                groomingTasks.Add(groom);
+                            }
                         }
                     }
                 }
@@ -108,11 +124,15 @@ namespace TermProjectUI.Controllers
             {
                 if (vet.assignees != null)
                 {
-                    foreach (var assignee in vet.assignees)
+                    if (vet.state != "Completed")
                     {
-                        if (assignee == Session["UserId"].ToString())
+
+                        foreach (var assignee in vet.assignees)
                         {
-                            vetsTasks.Add(vet);
+                            if (assignee == Session["UserId"].ToString())
+                            {
+                                vetsTasks.Add(vet);
+                            }
                         }
                     }
                 }
@@ -122,11 +142,15 @@ namespace TermProjectUI.Controllers
             {
                 if (other.assignees != null)
                 {
-                    foreach (var assignee in other.assignees)
+                    if (other.state != "Completed")
                     {
-                        if (assignee == Session["UserId"].ToString())
+
+                        foreach (var assignee in other.assignees)
                         {
-                            othersTasks.Add(other);
+                            if (assignee == Session["UserId"].ToString())
+                            {
+                                othersTasks.Add(other);
+                            }
                         }
                     }
                 }
