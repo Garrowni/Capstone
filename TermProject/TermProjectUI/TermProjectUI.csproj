@@ -221,6 +221,7 @@
     <Compile Include="Models\CompletedTasksModel.cs" />
     <Compile Include="Models\DeletedTaskModel.cs" />
     <Compile Include="Models\GroomingTaskModel.cs" />
+    <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\InventoryTaskModel.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\JoinedTasksModel.cs" />
@@ -259,12 +260,18 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\2apple.jpg" />
+    <Content Include="Images\Bentley-5.jpg" />
     <Content Include="Images\cal.png" />
     <Content Include="Images\documentation_Nav.JPG" />
     <Content Include="Images\donations_Nav.JPG" />
+    <Content Include="Images\DSC08871.jpg" />
     <Content Include="Images\ellie.jpg" />
     <Content Include="Images\grooming_Nav.JPG" />
+    <Content Include="Images\image0.jpeg" />
+    <Content Include="Images\IMG_1097.jpg" />
     <Content Include="Images\inventory_Nav.JPG" />
+    <Content Include="Images\Leo-1.jpg" />
     <Content Include="Images\maintenance_Nav.JPG" />
     <Content Include="Images\map.png" />
     <Content Include="Images\nicole.jpg" />

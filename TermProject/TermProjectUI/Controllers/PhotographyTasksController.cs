@@ -124,6 +124,7 @@ namespace TermProjectUI.Controllers
                 deletedTask.Add(photographyTask);
 
                 dogsList = new List<PhotographyTaskModel.dog>();
+                Session["TaskCount"] = Int32.Parse(Session["TaskCount"].ToString()) + 1;
                 return RedirectToAction("Details", new { id = photographyTask.Id });
                 
             }
@@ -202,7 +203,8 @@ namespace TermProjectUI.Controllers
             {
                 var filter = Builders<PhotographyTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<PhotographyTaskModel>.Update
-                   
+                    .Set("ImportanceLevel", task.ImportanceLevel)
+                    .Set("requester", task.requester)
                     .Set("AdditionalInfo", task.AdditionalInfo)
                     .Set("taskID", task.taskID)
                     .Set("taskName", task.taskName)
@@ -278,6 +280,7 @@ namespace TermProjectUI.Controllers
             var result = productCollection.UpdateOne(filter, update);
 
             assignees = new List<string>();
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) + 1;
             return RedirectToAction("Details", new { id = id });
 
 
@@ -286,6 +289,7 @@ namespace TermProjectUI.Controllers
         public ActionResult DisjointTask(string id, PhotographyTaskModel task)
         {
             assignees.Remove(Session["UserId"].ToString());
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) - 1;
             if (assignees.Count == 0 || assignees == null)
             {
                 task.assignees = assignees;

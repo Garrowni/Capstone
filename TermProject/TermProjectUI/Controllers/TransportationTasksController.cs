@@ -126,7 +126,7 @@ namespace TermProjectUI.Controllers
                 deletedTask.Add(transportationTask);
 
                 itemList = new List<TransportationTaskModel.Item>();
-
+                Session["TaskCount"] = Int32.Parse(Session["TaskCount"].ToString()) + 1;
                 return RedirectToAction("Details", new { id = transportationTask.Id });
 
             }
@@ -282,7 +282,7 @@ namespace TermProjectUI.Controllers
                 .Set("assignees", assignees)
                 .Set("state", "Assigned");
             var result = productCollection.UpdateOne(filter, update);
-
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) + 1;
             assignees = new List<string>();
             return RedirectToAction("Details", new { id = id });
 
@@ -292,6 +292,7 @@ namespace TermProjectUI.Controllers
         public ActionResult DisjointTask(string id, TransportationTaskModel task)
         {
             assignees.Remove(Session["UserId"].ToString());
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) - 1;
             if (assignees.Count == 0 || assignees == null)
             {
                 task.assignees = assignees;

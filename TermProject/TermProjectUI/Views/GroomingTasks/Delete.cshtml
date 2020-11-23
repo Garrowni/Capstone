@@ -16,7 +16,21 @@
     <h4>Grooming Task</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            Importance Level:
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.ImportanceLevel)
+        </dd>
+
+        <dt>
+            Requester:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.requester)
+        </dd>
         <dt>
             Dog Information
         </dt>
@@ -51,7 +65,7 @@
             @Html.DisplayFor(model => model.dogBreed)
         </dd>
         <dt>
-           <br />
+            <br />
         </dt>
         <dd></dd>
         <dt>
@@ -160,7 +174,7 @@
                 Details
             </dt>
             <dd></dd>
-            
+
             <dt>
                 Prefered Store:
             </dt>
@@ -192,10 +206,10 @@
             </dt>
             <dd></dd>
             <dt>
-               Pay
+                Pay
             </dt>
             <dd></dd>
-         
+
             <dt>
                 Receipt:
             </dt>

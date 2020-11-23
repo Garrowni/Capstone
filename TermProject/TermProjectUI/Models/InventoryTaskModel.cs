@@ -16,6 +16,9 @@ namespace TermProjectUI.Models
 
         [BsonElement("posterPhoto")]
         public string posterPhoto { get; set; }
+
+        [BsonElement("ImportanceLevel")]
+        public int ImportanceLevel { get; set; }
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Enter a Comment")]
         public string singleComm { get; set; }
