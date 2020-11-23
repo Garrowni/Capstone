@@ -37,7 +37,17 @@
                                     <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Your Tasks</button>
                                 </a>
                                 <p style="margin-top: 4%;margin-left: 4%;float: left;"> @Session["JoinedTaskCount"].ToString()</p>
+                                @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+                                {
+                                    <br />
+                                    <br />
+                                    <a href="@Url.Action("Index", "CompletedTasks")" title="List View" class="links">
+                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Completed</button>
+                                    </a>
+                                    <p style="margin-top: 4%;margin-left: 4%;float: left;"> @Session["CompletedTaskCount"].ToString()</p>
 
+
+                                }
                             </div>
                             <br />
                             <br />
@@ -54,8 +64,7 @@
                                         <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Task</button>
                                     </a>
 
-                                    <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Report</button>
-
+                                   
                                 </div>
                             </div>}
                     </div>

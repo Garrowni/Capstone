@@ -22,6 +22,7 @@ namespace TermProjectUI.Controllers
 
         static List<string> currentTasks = new List<string>();
         static List<string> currentJoinedTasks = new List<string>();
+        static List<string> completedTasks = new List<string>();
         private IMongoCollection<TransportationTaskModel> transportationCollection;
         private IMongoCollection<InventoryTaskModel> inventoryCollection;
         private IMongoCollection<PhotographyTaskModel> photographyCollection;
@@ -45,7 +46,7 @@ namespace TermProjectUI.Controllers
         public ActionResult LogIn()
         {
             currentTasks = new List<string>();
-
+       
             List<TransportationTaskModel> products = transportationCollection.AsQueryable<TransportationTaskModel>().ToList();
             List<InventoryTaskModel> inventory = inventoryCollection.AsQueryable<InventoryTaskModel>().ToList();
             List<PhotographyTaskModel> photography = photographyCollection.AsQueryable<PhotographyTaskModel>().ToList();
@@ -134,7 +135,7 @@ namespace TermProjectUI.Controllers
             List<OtherTaskModel> others = otherCollection.AsQueryable<OtherTaskModel>().ToList();
 
             currentJoinedTasks = new List<string>();
-
+            completedTasks = new List<string>();
             if (vol==null)
             {
                 ViewBag.Message = "Click Register to register yourself and wait for Admin Approval !!!";
@@ -169,6 +170,8 @@ namespace TermProjectUI.Controllers
                         Session["Img"] = volunteerName.UserPhoto.ToString();
                         Session["Role"] = volunteerName.Role;
 
+
+                        // assigned
                         foreach (var trans in products)
                         {
                             if (trans.assignees != null)
@@ -257,6 +260,82 @@ namespace TermProjectUI.Controllers
                         }
 
                         Session["JoinedTaskCount"] = currentJoinedTasks.Count().ToString();
+
+
+
+
+                        //comleted
+                        foreach (var trans in products)
+                        {
+                            if (trans.state == "Completed")
+                            {
+                                
+                                    completedTasks.Add(trans.Id.ToString());
+                                
+                                
+                            }
+
+
+                        }
+                        foreach (var inv in inventory)
+                        {
+                            if (inv.state == "Completed")
+                            {
+
+                                completedTasks.Add(inv.Id.ToString());
+
+
+                            }
+
+
+                        }
+                        foreach (var photo in photography)
+                        {
+                            if (photo.state == "Completed")
+                            {
+
+                                completedTasks.Add(photo.Id.ToString());
+
+
+                            }
+
+                        }
+                        foreach (var groom in grooming)
+                        {
+                            if (groom.state == "Completed")
+                            {
+
+                                completedTasks.Add(groom.Id.ToString());
+
+
+                            }
+
+                        }
+                        foreach (var v in vet)
+                        {
+                            if (v.state == "Completed")
+                            {
+
+                                completedTasks.Add(v.Id.ToString());
+
+
+                            }
+
+                        }
+                        foreach (var other in others)
+                        {
+                            if (other.state == "Completed")
+                            {
+
+                                completedTasks.Add(other.Id.ToString());
+
+
+                            }
+
+                        }
+
+                        Session["CompletedTaskCount"] = completedTasks.Count().ToString();
+
 
 
 

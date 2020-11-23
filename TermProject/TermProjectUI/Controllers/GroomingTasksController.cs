@@ -340,7 +340,10 @@ namespace TermProjectUI.Controllers
             var result = productCollection.UpdateOne(filter, update);
             if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
             {
+                Session["TaskCount"] = Int32.Parse(Session["TaskCount"].ToString()) - 1;
+              //  Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) - 1;
 
+                Session["CompletedTaskCount"] = Int32.Parse(Session["CompletedTaskCount"].ToString()) + 1;
                 return RedirectToAction("../CompletedTasks/Index");
             }
             else
