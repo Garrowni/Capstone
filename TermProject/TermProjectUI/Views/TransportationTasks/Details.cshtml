@@ -115,6 +115,7 @@
 </script>
 <script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?branch=release&callback=geocode' async defer></script>
 
+
 <div>
     <div class="container">
         <div class="row">
@@ -200,6 +201,30 @@
                     </div>
 
                 </div>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:200px;margin-left:10px;margin-right:10px;">@Html.ActionLink("Comment Section", "AddComment", new { id = Model.Id, comment = Model.singleComm }, new { @style = "color:white" })</button>
+
+                        @if (Model.Comments != null || Model.Comments.Count() != 0)
+                        {
+                            var count = 0;
+                            foreach (var com in Model.Comments)
+                            {
+                                count++;
+
+
+                            }<div style="text-align: left;padding-top:5px;color:darkgray">( @count Comments )</div>
+                        }
+                        else
+                        {
+                            var count = 0;
+                            <div sstyle="text-align: left;padding-top:5px;color:darkgray">( @count Comments )</div>
+                        }
+
+
+                    </div>
+                   
+                </div>
             </div>
             <div class="col-md-4 col-xl-3">
                 <div class="row">
@@ -226,7 +251,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="@Html.DisplayFor(model=>model.posterPhoto)" /></div><small style="margin-left: 2px">   @Html.DisplayFor(model => model.posterName)</small>
+                        <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="@Html.DisplayFor(model => model.posterPhoto)" /></div><small style="margin-left: 2px">   @Html.DisplayFor(model => model.posterName)</small>
                     </div>
                 </div>
 
@@ -240,7 +265,7 @@
 
                 <div class="row">
 
-                    <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/ellie.jpg" /></div><small style="margin-left: 2px"> @Html.DisplayFor(model => model.Requester)</small>
+                    <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="@Html.DisplayFor(model=>model.reqPhoto)" /></div><small style="margin-left: 2px"> @Html.DisplayFor(model => model.Requester)</small>
                 </div><br />
                 <div class="row">
                     <div class="col">
@@ -277,30 +302,40 @@
                     </div>
                 </div>
 
-
-
-                @if (ViewBag.Message == false)
+                @if (ViewBag.state != "Completed")
                 {
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Join Task", "JoinTask", new { id = Model.Id })</button>
+                            @if (ViewBag.Message == false)
+                            {
+
+                                <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Join Task", "JoinTask", new { id = Model.Id }, new { onclick = "return confirm('Are you sure you want to join the task?');" })</button>
 
 
+                            }
+                            else
+                            {
+
+                                <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Leave Task", "DisjointTask", new { id = Model.Id }, new { onclick = "return confirm('Are you sure you want to leave the task?');" })</button>
+
+
+
+
+
+                            }
+
+                            @if (Session["Username"].ToString() == ViewBag.post || ViewBag.Message == true || Session["Username"].ToString() == ViewBag.req)
+                            {
+
+                                <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;margin-left:10px;">@Html.ActionLink("Complete Task", "CompleteTask", new { id = Model.Id }, new { onclick = "return confirm('Are you sure you have completed the task?');" })</button>
+
+
+
+                            }
                         </div>
-
                     </div>
                 }
-                else
-                {
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Leave Task", "DisjointTask", new { id = Model.Id })</button>
 
-
-                        </div>
-
-                    </div>
-                }
             </div>
         </div>
     </div>

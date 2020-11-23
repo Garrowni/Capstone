@@ -1,7 +1,6 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,7 +9,7 @@ using TermProjectUI.Models;
 
 namespace TermProjectUI.Controllers
 {
-    public class AllTasksController : Controller
+    public class CompletedTasksController : Controller
     {
         private MongoDBContext dbcontext;
         private IMongoCollection<TransportationTaskModel> transportationCollection;
@@ -19,7 +18,7 @@ namespace TermProjectUI.Controllers
         private IMongoCollection<GroomingTaskModel> groomingCollection;
         private IMongoCollection<VetTaskModel> vetCollection;
         private IMongoCollection<OtherTaskModel> otherCollection;
-        public AllTasksController()
+        public CompletedTasksController()
         {
             dbcontext = new MongoDBContext();
             transportationCollection = dbcontext.database.GetCollection<TransportationTaskModel>("transportation");
@@ -29,11 +28,11 @@ namespace TermProjectUI.Controllers
             vetCollection = dbcontext.database.GetCollection<VetTaskModel>("vet");
             otherCollection = dbcontext.database.GetCollection<OtherTaskModel>("other");
 
+
         }
-        // GET: AllTasks
+        // GET: CompletedTasks
         public ActionResult Index()
         {
-            
             List<TransportationTaskModel> transTasks = new List<TransportationTaskModel>();
             List<TransportationTaskModel> products = transportationCollection.AsQueryable<TransportationTaskModel>().ToList();
             List<InventoryTaskModel> inventoryTasks = new List<InventoryTaskModel>();
@@ -48,67 +47,67 @@ namespace TermProjectUI.Controllers
             List<OtherTaskModel> others = otherCollection.AsQueryable<OtherTaskModel>().ToList();
             foreach (var trans in products)
             {
-                if (trans.state != "Completed")
+                if (trans.state== "Completed")
                 {
-
-                    transTasks.Add(trans);
-
+                   
+                            transTasks.Add(trans);
+                      
                 }
 
 
             }
             foreach (var inv in inventory)
             {
-                if (inv.state != "Completed")
+                if (inv.state== "Completed")
                 {
-
-                    inventoryTasks.Add(inv);
-
+                  
+                            inventoryTasks.Add(inv);
+                       
                 }
 
 
             }
             foreach (var photo in photography)
             {
-                if (photo.state != "Completed")
+                if (photo.state== "Completed")
                 {
-
-                    photographTasks.Add(photo);
-
+                   
+                            photographTasks.Add(photo);
+                       
                 }
 
             }
             foreach (var groom in grooming)
             {
-                if (groom.state != "Completed")
+                if (groom.state== "Completed")
                 {
-
-                    groomingTasks.Add(groom);
-
+                   
+                            groomingTasks.Add(groom);
+                      
                 }
 
             }
             foreach (var vet in vets)
             {
-                if (vet.state != "Completed")
+                if (vet.state == "Completed")
                 {
-
-                    vetsTasks.Add(vet);
-
+                   
+                            vetsTasks.Add(vet);
+                       
                 }
 
             }
             foreach (var other in others)
             {
-                if (other.state != "Completed")
+                if (other.state=="Completed")
                 {
-
-                    othersTasks.Add(other);
-
+                    
+                            othersTasks.Add(other);
+                      
                 }
 
             }
-            AllTaskModel mymodel = new AllTaskModel();
+           CompletedTasksModel mymodel = new CompletedTasksModel();
             mymodel.TransportationTasks = transTasks;
             mymodel.VetTasks = vetsTasks;
             mymodel.PhotographyTasks = photographTasks;
@@ -119,23 +118,19 @@ namespace TermProjectUI.Controllers
             return View(mymodel);
         }
 
-
-
-      
-
-        // GET: AllTasks/Details/5
+        // GET: CompletedTasks/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: AllTasks/Create
+        // GET: CompletedTasks/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AllTasks/Create
+        // POST: CompletedTasks/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -151,13 +146,13 @@ namespace TermProjectUI.Controllers
             }
         }
 
-        // GET: AllTasks/Edit/5
+        // GET: CompletedTasks/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: AllTasks/Edit/5
+        // POST: CompletedTasks/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -173,13 +168,13 @@ namespace TermProjectUI.Controllers
             }
         }
 
-        // GET: AllTasks/Delete/5
+        // GET: CompletedTasks/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: AllTasks/Delete/5
+        // POST: CompletedTasks/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

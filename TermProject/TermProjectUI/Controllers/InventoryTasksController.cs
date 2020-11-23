@@ -25,6 +25,8 @@ namespace TermProjectUI.Controllers
         //private InventoryTaskRepoEF ttr = new InventoryTaskRepoEF();
         static List<string> documentsList = new List<string>();
         static List<string> existedList = new List<string>();
+        static List<InventoryTaskModel.Comment> comments = new List<InventoryTaskModel.Comment>();
+        static InventoryTaskModel.Comment scomm = new InventoryTaskModel.Comment();
 
         static List<string> assignees = new List<string>();
 
@@ -57,7 +59,10 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<InventoryTaskModel>().SingleOrDefault(x => x.Id == taskId);
-
+            ViewBag.req = task.requester;
+            ViewBag.post = task.posterName;
+            ViewBag.state = task.state;
+            ViewBag.comments = task.Comments;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -85,6 +90,10 @@ namespace TermProjectUI.Controllers
                 ViewBag.Message = assignedForTask;
 
             }
+            if (task.Comments == null)
+            {
+                task.Comments = new List<InventoryTaskModel.Comment>();
+            }
             return View(task);
         }
 
@@ -107,7 +116,8 @@ namespace TermProjectUI.Controllers
             inventoryTask.posterPhoto = Session["Img"].ToString();
             inventoryTask.taskType = "Inventory Task";
             inventoryTask.taskName = inventoryTask.taskType + " - " + inventoryTask.address;
-            inventoryTask.requester = "Ellie";
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Name == inventoryTask.requester);
+           inventoryTask.reqPhoto = vol.UserPhoto;
 
             inventoryTask.state = "Unassigned";
 
@@ -364,6 +374,151 @@ namespace TermProjectUI.Controllers
             }
 
 
+
+        }
+        public ActionResult CompleteTask(string id, InventoryTaskModel task)
+        {
+
+
+            var filter = Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<InventoryTaskModel>.Update
+                 .Set("state", "Completed");
+            var result = productCollection.UpdateOne(filter, update);
+            if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+            {
+                return RedirectToAction("../CompletedTasks/Index");
+            }
+            else
+            {
+                return RedirectToAction("../AllTasks/Index");
+            }
+        }
+        [HttpGet]
+        public ActionResult AddComment(string id)
+        {
+            var taskId = new ObjectId(id);
+
+            var task = productCollection.AsQueryable<InventoryTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            //task.singleComm = null;
+            comments = new List<InventoryTaskModel.Comment>();
+            if (task.Comments == null || task.Comments.Count() == 0)
+            {
+                comments = new List<InventoryTaskModel.Comment>();
+
+            }
+            else
+            {
+                foreach (var coment in task.Comments)
+                {
+                    comments.Add(coment);
+
+                }
+            }
+
+
+            return View(task);
+        }
+        [HttpPost]
+        public ActionResult AddComment(string id, InventoryTaskModel task)
+        {
+
+            scomm.volunteerId = Session["UserId"].ToString();
+            scomm.comm = task.singleComm;
+            scomm.volunteerName = Session["Username"].ToString();
+            scomm.volunteerPhoto = Session["Img"].ToString();
+            comments = new List<InventoryTaskModel.Comment>();
+
+            var singletask = productCollection.AsQueryable<InventoryTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            if (singletask.Comments == null || singletask.Comments.Count() == 0)
+            {
+                comments = new List<InventoryTaskModel.Comment>();
+                scomm.commId = "1";
+            }
+            else
+            {
+                List<int> ids = new List<int>();
+                foreach (var coment in singletask.Comments)
+                {
+                    comments.Add(coment);
+                    ids.Add(Int32.Parse(coment.commId));
+                }
+                scomm.commId = (ids.Max() + 1).ToString();
+
+            }
+
+            comments.Add(scomm);
+            // task.singleComm = "";
+            var filter = Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<InventoryTaskModel>.Update
+               .Set("Comments", comments)
+
+                 .Set("singleComm", "");
+            var result = productCollection.UpdateOne(filter, update);
+            return RedirectToAction("AddComment", new { id = id });
+            //return RedirectToAction("Details", new { id = id });
+
+        }
+        public ActionResult DeleteComment(string id, InventoryTaskModel task, string comment)
+        {
+            InventoryTaskModel.Comment comment1 = new InventoryTaskModel.Comment();
+            var singletask = productCollection.AsQueryable<InventoryTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            foreach (var coment in singletask.Comments)
+            {
+
+                if (coment.commId == comment)
+                {
+                    comment1 = coment;
+                    // Debug.WriteLine(comment);
+                }
+            }
+
+            //Debug.WriteLine(comment);
+            comments.RemoveAll(l => l.commId == comment);
+            // Debug.WriteLine(comments.Count());
+            //Debug.WriteLine(comment1.comm);
+            var filter = Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<InventoryTaskModel>.Update
+               .Set("Comments", comments);
+            var result = productCollection.UpdateOne(filter, update);
+
+            return RedirectToAction("AddComment", new { id = id });
+        }
+        public ActionResult EditComment(string id, InventoryTaskModel task, string commentId, string comment)
+        {
+
+            ViewBag.edit = false;
+            var filter = Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<InventoryTaskModel>.Update
+               .Set("singleComm", comment);
+
+            //.Set("singleComm", task.singleComm);
+            var result = productCollection.UpdateOne(filter, update);
+            InventoryTaskModel.Comment comment1 = new InventoryTaskModel.Comment();
+            var singletask = productCollection.AsQueryable<InventoryTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            foreach (var coment in singletask.Comments)
+            {
+
+                if (coment.commId == commentId)
+                {
+                    comment1 = coment;
+                    // Debug.WriteLine(comment);
+                }
+            }
+
+            //Debug.WriteLine(comment);
+            comments.RemoveAll(l => l.commId == commentId);
+            // Debug.WriteLine(comments.Count());
+            //Debug.WriteLine(comment1.comm);
+            var filter2 = Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update2 = Builders<InventoryTaskModel>.Update
+               .Set("Comments", comments);
+            var result2 = productCollection.UpdateOne(filter2, update2);
+
+            ViewBag.edit = true;
+            return RedirectToAction("AddComment", new { id = id });
 
         }
 

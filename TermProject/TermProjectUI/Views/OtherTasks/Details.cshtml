@@ -33,45 +33,68 @@
 
                         </div>
                     </div>}
-                    <div class="row">
-                        <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
-                            <div class="row">
+                <div class="row">
+                    <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
+                        <div class="row">
 
 
-                                Task Information:
-                                @foreach (var item in Model.TaskRequirements)
+                            Task Information:
+                            @foreach (var item in Model.TaskRequirements)
+                            {
+                                <ul>
+                                    <li> @Html.DisplayFor(model => item.Key) : @Html.DisplayFor(model => item.Value) </li>
+
+                                </ul>
+
+                            }
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
+                        <div class="row">
+
+
+                            Additionl Information:
+                            @Html.DisplayFor(model => model.AdditionalInfo)
+
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:200px;margin-left:10px;margin-right:10px;">@Html.ActionLink("Comment Section", "AddComment", new { id = Model.Id, comment = Model.singleComm }, new { @style = "color:white" })</button>
+
+                                @if (Model.Comments != null || Model.Comments.Count() != 0)
                                 {
-                                    <ul>
-                                        <li> @Html.DisplayFor(model => item.Key) : @Html.DisplayFor(model => item.Value) </li>
+                                    var count = 0;
+                                    foreach (var com in Model.Comments)
+                                    {
+                                        count++;
 
-                                    </ul>
 
+                                    }<div style="text-align: left;padding-top:5px;color:darkgray">( @count Comments )</div>
+                                }
+                                else
+                                {
+                                    var count = 0;
+                                    <div sstyle="text-align: left;padding-top:5px;color:darkgray">( @count Comments )</div>
                                 }
 
 
-
                             </div>
 
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-8" style="width: 95%; border-right: solid 1px lightgray">
-                            <div class="row">
-
-
-                                Additionl Information:
-                                @Html.DisplayFor(model => model.AdditionalInfo)
-
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
+                
+            </div>
             <div class="col-md-4 col-xl-3">
                 <div class="row">
                     <div class="col">
-                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;     />
+                        <img src="~/Images/map.png" style="margin-top: 10%;  margin-left: -20px; width: 270px; height: 225px;      />
                     </div>
                 </div>
 
@@ -105,7 +128,7 @@
 
                 <div class="row">
 
-                    <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="~/Images/ellie.jpg" /></div><small style="margin-left: 2px"> @Html.DisplayFor(model => model.requester)</small>
+                    <div><img class="mr-3" style=" float: left; width: 25px; height:25px;" src="@Html.DisplayFor(model=>model.reqPhoto)" /></div><small style="margin-left: 2px"> @Html.DisplayFor(model => model.requester)</small>
                 </div><br />
                 <div class="row">
                     <div class="col">
@@ -142,26 +165,37 @@
                 </div>
 
 
-                @if (ViewBag.Message == false)
+                @if (ViewBag.state != "Completed")
                 {
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Join Task", "JoinTask", new { id = Model.Id })</button>
+                            @if (ViewBag.Message == false)
+                            {
+
+                                <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Join Task", "JoinTask", new { id = Model.Id }, new { onclick = "return confirm('Are you sure you want to join the task?');" })</button>
 
 
+                            }
+                            else
+                            {
+
+                                <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Leave Task", "DisjointTask", new { id = Model.Id }, new { onclick = "return confirm('Are you sure you want to leave the task?');" })</button>
+
+
+
+
+
+                            }
+
+                            @if (Session["Username"].ToString() == ViewBag.post || ViewBag.Message == true || Session["Username"].ToString() == ViewBag.req)
+                            {
+
+                                <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;margin-left:10px;">@Html.ActionLink("Complete Task", "CompleteTask", new { id = Model.Id }, new { onclick = "return confirm('Are you sure you have completed the task?');" })</button>
+
+
+
+                            }
                         </div>
-
-                    </div>
-                }
-                else
-                {
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary" type="submit" value="Register" style="float:left; background-color: grey;border-color: black;width:120px;">@Html.ActionLink("Leave Task", "DisjointTask", new { id = Model.Id })</button>
-
-
-                        </div>
-
                     </div>
                 }
 

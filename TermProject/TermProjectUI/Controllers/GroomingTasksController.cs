@@ -25,6 +25,8 @@ namespace TermProjectUI.Controllers
          
 
         static List<string> assignees = new List<string>();
+        static List<GroomingTaskModel.Comment> comments = new List<GroomingTaskModel.Comment>();
+        static GroomingTaskModel.Comment scomm = new GroomingTaskModel.Comment();
 
 
         static List<Object> deletedTask = new List<Object>();
@@ -57,6 +59,10 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = productCollection.AsQueryable<GroomingTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            ViewBag.req = task.requester;
+            ViewBag.post = task.posterName;
+            ViewBag.state = task.state;
+            ViewBag.comments = task.Comments;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -84,6 +90,10 @@ namespace TermProjectUI.Controllers
                 ViewBag.Message = assignedForTask;
 
             }
+            if (task.Comments == null)
+            {
+                task.Comments = new List<GroomingTaskModel.Comment>();
+            }
             return View(task);
         }
 
@@ -105,12 +115,13 @@ namespace TermProjectUI.Controllers
             groomingTask.posterPhoto = Session["Img"].ToString();
             groomingTask.taskType = "Grooming Task";
             groomingTask.taskName = "GroomingTaskTest";
-
-            groomingTask.requester = "Me";
+           
+           
             groomingTask.state = "Unassigned";
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Name ==groomingTask.requester);
+            groomingTask.reqphoto = vol.UserPhoto;
+            //    groomingTask.Services = servicesList;
 
-        //    groomingTask.Services = servicesList;
-  
 
             try
             {
@@ -317,58 +328,153 @@ namespace TermProjectUI.Controllers
 
 
         }
-
-
-
-        public ActionResult JoinTask(string id, GroomingTaskModel task)
+        public ActionResult CompleteTask(string id, GroomingTaskModel task)
         {
-            assignees.Add(Session["UserId"].ToString());
-            task.assignees = assignees;
+
 
             var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
             var update = Builders<GroomingTaskModel>.Update
-                .Set("assignees", assignees)
-                .Set("state", "Assigned");
+                 .Set("state", "Completed");
             var result = productCollection.UpdateOne(filter, update);
-
-            assignees = new List<string>();
-            return RedirectToAction("Details", new { id = id });
-
-
-
-        }
-        public ActionResult DisjointTask(string id, GroomingTaskModel task)
-        {
-            assignees.Remove(Session["UserId"].ToString());
-            if (assignees.Count == 0 || assignees == null)
+            if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
             {
-                task.assignees = assignees;
-
-                var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
-                var update = Builders<GroomingTaskModel>.Update
-                    .Set("assignees", assignees)
-                     .Set("state", "Unassigned");
-                var result = productCollection.UpdateOne(filter, update);
-
-                assignees = new List<string>();
-                return RedirectToAction("Details", new { id = id });
+                return RedirectToAction("../CompletedTasks/Index");
             }
             else
             {
-                task.assignees = assignees;
+                return RedirectToAction("../AllTasks/Index");
+            }
+        }
 
-                var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
-                var update = Builders<GroomingTaskModel>.Update
-                    .Set("assignees", assignees);
-                var result = productCollection.UpdateOne(filter, update);
+        [HttpGet]
+        public ActionResult AddComment(string id)
+        {
+            var taskId = new ObjectId(id);
 
-                assignees = new List<string>();
-                return RedirectToAction("Details", new { id = id });
+            var task = productCollection.AsQueryable<GroomingTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            //task.singleComm = null;
+            comments = new List<GroomingTaskModel.Comment>();
+            if (task.Comments == null || task.Comments.Count() == 0)
+            {
+                comments = new List<GroomingTaskModel.Comment>();
+
+            }
+            else
+            {
+                foreach (var coment in task.Comments)
+                {
+                    comments.Add(coment);
+
+                }
             }
 
 
+            return View(task);
+        }
+        [HttpPost]
+        public ActionResult AddComment(string id, GroomingTaskModel task)
+        {
+
+            scomm.volunteerId = Session["UserId"].ToString();
+            scomm.comm = task.singleComm;
+            scomm.volunteerName = Session["Username"].ToString();
+            scomm.volunteerPhoto = Session["Img"].ToString();
+            comments = new List<GroomingTaskModel.Comment>();
+
+            var singletask = productCollection.AsQueryable<GroomingTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            if (singletask.Comments == null || singletask.Comments.Count() == 0)
+            {
+                comments = new List<GroomingTaskModel.Comment>();
+                scomm.commId = "1";
+            }
+            else
+            {
+                List<int> ids = new List<int>();
+                foreach (var coment in singletask.Comments)
+                {
+                    comments.Add(coment);
+                    ids.Add(Int32.Parse(coment.commId));
+                }
+                scomm.commId = (ids.Max() + 1).ToString();
+
+            }
+
+            comments.Add(scomm);
+            // task.singleComm = "";
+            var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<GroomingTaskModel>.Update
+               .Set("Comments", comments)
+
+                 .Set("singleComm", "");
+            var result = productCollection.UpdateOne(filter, update);
+            return RedirectToAction("AddComment", new { id = id });
+            //return RedirectToAction("Details", new { id = id });
 
         }
+        public ActionResult DeleteComment(string id, GroomingTaskModel task, string comment)
+        {
+            GroomingTaskModel.Comment comment1 = new GroomingTaskModel.Comment();
+            var singletask = productCollection.AsQueryable<GroomingTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            foreach (var coment in singletask.Comments)
+            {
+
+                if (coment.commId == comment)
+                {
+                    comment1 = coment;
+                    // Debug.WriteLine(comment);
+                }
+            }
+
+            //Debug.WriteLine(comment);
+            comments.RemoveAll(l => l.commId == comment);
+            // Debug.WriteLine(comments.Count());
+            //Debug.WriteLine(comment1.comm);
+            var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<GroomingTaskModel>.Update
+               .Set("Comments", comments);
+            var result = productCollection.UpdateOne(filter, update);
+
+            return RedirectToAction("AddComment", new { id = id });
+        }
+        public ActionResult EditComment(string id, GroomingTaskModel task, string commentId, string comment)
+        {
+
+            ViewBag.edit = false;
+            var filter = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<GroomingTaskModel>.Update
+               .Set("singleComm", comment);
+
+            //.Set("singleComm", task.singleComm);
+            var result = productCollection.UpdateOne(filter, update);
+            GroomingTaskModel.Comment comment1 = new GroomingTaskModel.Comment();
+            var singletask = productCollection.AsQueryable<GroomingTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            foreach (var coment in singletask.Comments)
+            {
+
+                if (coment.commId == commentId)
+                {
+                    comment1 = coment;
+                    // Debug.WriteLine(comment);
+                }
+            }
+
+            //Debug.WriteLine(comment);
+            comments.RemoveAll(l => l.commId == commentId);
+            // Debug.WriteLine(comments.Count());
+            //Debug.WriteLine(comment1.comm);
+            var filter2 = Builders<GroomingTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update2 = Builders<GroomingTaskModel>.Update
+               .Set("Comments", comments);
+            var result2 = productCollection.UpdateOne(filter2, update2);
+
+            ViewBag.edit = true;
+            return RedirectToAction("AddComment", new { id = id });
+
+        }
+
 
 
 

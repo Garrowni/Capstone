@@ -16,8 +16,9 @@ namespace TermProjectUI.Models
         [BsonElement("ImportanceLevel")]
         public int ImportanceLevel { get; set; }
         [BsonElement("Requester")]
-        
         public string Requester { get; set; }
+        [BsonElement("reqPhoto")]
+        public string reqPhoto { get; set; }
         [BsonElement("PUAddress")]
         public string PUAddress { get; set; }//startLocation
         [BsonElement("PUCity")]
@@ -59,10 +60,26 @@ namespace TermProjectUI.Models
             public string ItemNote { get; set; }
 
         }
+        [DataType(DataType.MultilineText)]
+        [Required(ErrorMessage = "Enter a Comment")]
+        public string singleComm { get; set; }
+        public class Comment 
+        {
+            
+            public string commId { get; set; }
+            public string volunteerId { get; set; }
+            public string volunteerPhoto { get; set; }
+            public string volunteerName { get; set; }
+            public string comm { get; set; }
+        }
+        
+        public List<Comment> Comments
+        {
+            get;
+            set;
 
+        }
 
-
-       
         public List<Item> Items
         {
             get;

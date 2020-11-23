@@ -90,6 +90,7 @@
                                     <li>@Html.ActionLink("Joined Tasks", "Index", "JoinedTasks", new { area = "" }, null) </li>
                                     @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
                                     {
+                                        <li>@Html.ActionLink("Completed Tasks", "Index", "CompletedTasks", new { area = "" }, null) </li>
                                         <li>@Html.ActionLink("Manage Users", "Index", "Volunteers", new { area = "" }, null) </li>
                                     }
 

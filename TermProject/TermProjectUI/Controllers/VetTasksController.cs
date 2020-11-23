@@ -24,6 +24,8 @@ namespace TermProjectUI.Controllers
 
         static List<string> documentsList = new List<string>();
         static List<string> existedList = new List<string>();
+        static List<VetTaskModel.Comment> comments = new List<VetTaskModel.Comment>();
+        static VetTaskModel.Comment scomm = new VetTaskModel.Comment();
 
         static List<Object> deletedTask = new List<Object>();
         static List<string> assignees = new List<string>();
@@ -54,6 +56,10 @@ namespace TermProjectUI.Controllers
         {
             var taskId = new ObjectId(id);
             var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            ViewBag.req = task.requester;
+            ViewBag.post = task.posterName;
+            ViewBag.state = task.state;
+            ViewBag.comments = task.Comments;
             assignees = new List<string>();
             bool assignedForTask = false;
             if (task.assignees != null)
@@ -81,6 +87,10 @@ namespace TermProjectUI.Controllers
                 ViewBag.Message = assignedForTask;
 
             }
+            if (task.Comments == null)
+            {
+                task.Comments = new List<VetTaskModel.Comment>();
+            }
             return View(task);
         }
 
@@ -102,8 +112,9 @@ namespace TermProjectUI.Controllers
             vetTask.posterPhoto = Session["Img"].ToString();
             vetTask.taskType = "Vet Task";
             vetTask.taskName = "VetTaskTest";
-            vetTask.requester = "Ellie";
-
+            
+            var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Name == vetTask.requester);
+            vetTask.reqPhoto = vol.UserPhoto;
             vetTask.state = "Unassigned";
 
             vetTask.FileList = documentsList;
@@ -370,6 +381,151 @@ namespace TermProjectUI.Controllers
 
 
         }
+        public ActionResult CompleteTask(string id, VetTaskModel task)
+        {
 
+
+            var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<VetTaskModel>.Update
+                 .Set("state", "Completed");
+            var result =vetCollection.UpdateOne(filter, update);
+            if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+            {
+                return RedirectToAction("../CompletedTasks/Index");
+            }
+            else
+            {
+                return RedirectToAction("../AllTasks/Index");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult AddComment(string id)
+        {
+            var taskId = new ObjectId(id);
+
+            var task = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == taskId);
+            //task.singleComm = null;
+            comments = new List<VetTaskModel.Comment>();
+            if (task.Comments == null || task.Comments.Count() == 0)
+            {
+                comments = new List<VetTaskModel.Comment>();
+
+            }
+            else
+            {
+                foreach (var coment in task.Comments)
+                {
+                    comments.Add(coment);
+
+                }
+            }
+
+
+            return View(task);
+        }
+        [HttpPost]
+        public ActionResult AddComment(string id, VetTaskModel task)
+        {
+
+            scomm.volunteerId = Session["UserId"].ToString();
+            scomm.comm = task.singleComm;
+            scomm.volunteerName = Session["Username"].ToString();
+            scomm.volunteerPhoto = Session["Img"].ToString();
+            comments = new List<VetTaskModel.Comment>();
+
+            var singletask = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            if (singletask.Comments == null || singletask.Comments.Count() == 0)
+            {
+                comments = new List<VetTaskModel.Comment>();
+                scomm.commId = "1";
+            }
+            else
+            {
+                List<int> ids = new List<int>();
+                foreach (var coment in singletask.Comments)
+                {
+                    comments.Add(coment);
+                    ids.Add(Int32.Parse(coment.commId));
+                }
+                scomm.commId = (ids.Max() + 1).ToString();
+
+            }
+
+            comments.Add(scomm);
+            // task.singleComm = "";
+            var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<VetTaskModel>.Update
+               .Set("Comments", comments)
+
+                 .Set("singleComm", "");
+            var result = vetCollection.UpdateOne(filter, update);
+            return RedirectToAction("AddComment", new { id = id });
+            //return RedirectToAction("Details", new { id = id });
+
+        }
+        public ActionResult DeleteComment(string id, VetTaskModel task, string comment)
+        {
+            VetTaskModel.Comment comment1 = new VetTaskModel.Comment();
+            var singletask = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            foreach (var coment in singletask.Comments)
+            {
+
+                if (coment.commId == comment)
+                {
+                    comment1 = coment;
+                    // Debug.WriteLine(comment);
+                }
+            }
+
+            //Debug.WriteLine(comment);
+            comments.RemoveAll(l => l.commId == comment);
+            // Debug.WriteLine(comments.Count());
+            //Debug.WriteLine(comment1.comm);
+            var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<VetTaskModel>.Update
+               .Set("Comments", comments);
+            var result = vetCollection.UpdateOne(filter, update);
+
+            return RedirectToAction("AddComment", new { id = id });
+        }
+        public ActionResult EditComment(string id, VetTaskModel task, string commentId, string comment)
+        {
+
+            ViewBag.edit = false;
+            var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<VetTaskModel>.Update
+               .Set("singleComm", comment);
+
+            //.Set("singleComm", task.singleComm);
+            var result = vetCollection.UpdateOne(filter, update);
+            VetTaskModel.Comment comment1 = new VetTaskModel.Comment();
+            var singletask = vetCollection.AsQueryable<VetTaskModel>().SingleOrDefault(x => x.Id == new ObjectId(id));
+
+            foreach (var coment in singletask.Comments)
+            {
+
+                if (coment.commId == commentId)
+                {
+                    comment1 = coment;
+                    // Debug.WriteLine(comment);
+                }
+            }
+
+            //Debug.WriteLine(comment);
+            comments.RemoveAll(l => l.commId == commentId);
+            // Debug.WriteLine(comments.Count());
+            //Debug.WriteLine(comment1.comm);
+            var filter2 = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update2 = Builders<VetTaskModel>.Update
+               .Set("Comments", comments);
+            var result2 = vetCollection.UpdateOne(filter2, update2);
+
+            ViewBag.edit = true;
+            return RedirectToAction("AddComment", new { id = id });
+
+        }
     }
 }

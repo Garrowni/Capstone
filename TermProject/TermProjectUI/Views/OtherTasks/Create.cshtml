@@ -51,9 +51,8 @@
             <font color="red" size="2px"> <p id="title"></p></font>
         </div>
         <div class="col-md-4">
-            <font color="red"><strong>*</strong></font>Requester:
-            @Html.EditorFor(model => model.requester, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.requester, "", new { @class = "text-danger" })
+            <font color="red"><strong>*</strong></font>Requester:<br />
+            @Html.DropDownListFor(model => model.requester, new SelectList((List<string>)Session["VolunteerList"]))
             <font color="red" size="2px"> <p id="req"></p></font>
         </div>
 

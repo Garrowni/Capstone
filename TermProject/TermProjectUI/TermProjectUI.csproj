@@ -202,6 +202,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AllTasksController.cs" />
+    <Compile Include="Controllers\CompletedTasksController.cs" />
     <Compile Include="Controllers\GroomingTasksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryTasksController.cs" />
@@ -217,6 +218,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AllTaskModel.cs" />
+    <Compile Include="Models\CompletedTasksModel.cs" />
     <Compile Include="Models\DeletedTaskModel.cs" />
     <Compile Include="Models\GroomingTaskModel.cs" />
     <Compile Include="Models\InventoryTaskModel.cs" />
@@ -384,6 +386,13 @@
     <Content Include="Views\GroomingTasks\Edit.cshtml" />
     <Content Include="Views\GroomingTasks\Index.cshtml" />
     <Content Include="Views\JoinedTasks\Index.cshtml" />
+    <Content Include="Views\CompletedTasks\Index.cshtml" />
+    <Content Include="Views\TransportationTasks\AddComment.cshtml" />
+    <Content Include="Views\GroomingTasks\AddComment.cshtml" />
+    <Content Include="Views\InventoryTasks\AddComment.cshtml" />
+    <Content Include="Views\OtherTasks\AddComment.cshtml" />
+    <Content Include="Views\PhotographyTasks\AddComment.cshtml" />
+    <Content Include="Views\VetTasks\AddComment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
