@@ -9,36 +9,62 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-
-
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    { 
+<div class="form-horizontal">
 
 
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="form-row">
+        <div class="col-md-12">
+            <h2>
+
+                Grooming Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </a>
+            </h2>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-12">
+            <hr />
+            <h2>
+                Task Specification
+            </h2>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-3">
+            Importance Level:
+            @Html.DropDownListFor(model => model.ImportanceLevel, Enumerable.Range(1, 3).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+        </div>
         <div class="form-row">
             <div class="col-md-12">
-                <h2>
-
-                    Grooming Task<a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </a>
-                </h2>
+                <br />
             </div>
         </div>
-
-
-
-
         <!--Task Specification-->
         <div class="form-row">
             <div class="col-md-3">
                 <font color="red"><strong>*</strong></font>Requester:<br />
                 @Html.DropDownListFor(model => model.requester, new SelectList((List<string>)Session["VolunteerList"]))
 
-                
+
             </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <br />
+            </div>
+        </div>
+        <!--Task Specification-->
+        <div class="form-row">
+
+
+
 
             <div class="col-md-3">
                 <font color="red"><strong>*</strong></font>Dogs Name:
@@ -72,7 +98,6 @@
             </div>
         </div>
 
-
         <!--services-->
         <div class="form-row">
             <div class="col-md-12">
@@ -81,8 +106,6 @@
 
             </div>
         </div>
-
-
 
         <div class="form-row">
             <div class="col-md-4">
@@ -113,8 +136,6 @@
             </div>
         </div>
 
-
-
         <!--Appointment-->
         <div class="form-row">
             <div class="col-md-12">
@@ -124,7 +145,6 @@
         </div>
 
         <!--booked-->
-
         <div class="form-row">
 
 
@@ -153,7 +173,7 @@
                             $('#prefAddress').val("");
                             $('#prefDate').val("");
                             preferedTitle.style.display = "none";
-                            preferedRow.style.display= "none";
+                            preferedRow.style.display = "none";
                             $('#payer').val("");
                             $('#receipt').val("");
                             bookedTitle.style.display = "block";
@@ -184,12 +204,10 @@
         <!--Appointment Details Prefered-->
         <!--
 
-        This section should only show if booked is not checked. if it is checked it should be blank/disabled
+    This section should only show if booked is not checked. if it is checked it should be blank/disabled
 
-            -->
+        -->
         <div class="form-row" id="preferedTitle">
-
-
             <div class="col-md-12">
                 Prefered
                 <br />
@@ -211,11 +229,10 @@
             </div>
             <div class="col-md-3">
                 <font color="red"><strong>*</strong></font>Prefered Date:<!--<input type="date" id="doDate" name="doDate" class="form-control" required>-->
-                <input type="date" id="prefDDate" name="prefDate" class="form-control" >
+                <input type="date" id="prefDDate" name="prefDate" class="form-control">
             </div>
 
         </div>
-
 
         <div class="form-row">
 
@@ -254,7 +271,7 @@
             <div class="col-md-3">
 
                 <font color="red"><strong>*</strong></font>Booked Time:<!--<input type="time" id="puTime" name="puTime" class="form-control" style="width: 112%;" required>-->
-                <input type="time" id="bookedTime" name="bookedTime" class="form-control" style="width: 112%;" >
+                <input type="time" id="bookedTime" name="bookedTime" class="form-control" style="width: 112%;">
             </div>
 
         </div>
@@ -390,7 +407,7 @@
             </div>
         </div>
     </div>
-
+    </div>
     <script>
         var today = new Date().toISOString().split('T')[0];
         document.getElementsByName("bookedDate")[0].setAttribute('min', today);
@@ -399,4 +416,5 @@
 
     </script>
 
-}
+    }
+    }

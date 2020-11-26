@@ -111,8 +111,8 @@ namespace TermProjectUI.Controllers
             vetTask.posterName = Session["Username"].ToString();
             vetTask.posterPhoto = Session["Img"].ToString();
             vetTask.taskType = "Vet Task";
-            vetTask.taskName = "VetTaskTest";
-            
+            vetTask.taskName = "Vet - " + vetTask.dogName;
+
             var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Name == vetTask.requester);
             vetTask.reqPhoto = vol.UserPhoto;
             vetTask.state = "Unassigned";
@@ -125,7 +125,7 @@ namespace TermProjectUI.Controllers
                 deletedTask = new List<object>();
                 deletedTask.Add(vetTask);
                 documentsList = new List<string>();
-
+                Session["TaskCount"] = Int32.Parse(Session["TaskCount"].ToString()) + 1;
                 return RedirectToAction("Details", new { id = vetTask.Id });
 
             }
@@ -159,7 +159,8 @@ namespace TermProjectUI.Controllers
                 var filter = Builders<VetTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<VetTaskModel>.Update
 
-
+                    .Set("ImportanceLevel", task.ImportanceLevel)
+                    .Set("requester", task.requester)
                     .Set("taskID", task.taskID)
                     .Set("taskName", task.taskName)
                     .Set("taskType", task.taskType)
@@ -172,7 +173,8 @@ namespace TermProjectUI.Controllers
 
                     .Set("appointmentAddress", task.appointmentAddress)
 
-               
+                    .Set("APDate", task.APDate)
+                    .Set("APTime", task.APTime)
                     .Set("appointmentReason", task.appointmentReason)
                     .Set("appointmentNotes", task.appointmentNotes)
                     .Set("dropoffLocation", task.dropoffLocation)
@@ -343,6 +345,7 @@ namespace TermProjectUI.Controllers
             var result = vetCollection.UpdateOne(filter, update);
 
             assignees = new List<string>();
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) + 1;
             return RedirectToAction("Details", new { id = id });
 
 
@@ -351,6 +354,7 @@ namespace TermProjectUI.Controllers
         public ActionResult DisjointTask(string id, VetTaskModel task)
         {
             assignees.Remove(Session["UserId"].ToString());
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) - 1;
             if (assignees.Count == 0 || assignees == null)
             {
                 task.assignees = assignees;
@@ -391,6 +395,10 @@ namespace TermProjectUI.Controllers
             var result =vetCollection.UpdateOne(filter, update);
             if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
             {
+                Session["TaskCount"] = Int32.Parse(Session["TaskCount"].ToString()) - 1;
+                //  Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) - 1;
+
+                Session["CompletedTaskCount"] = Int32.Parse(Session["CompletedTaskCount"].ToString()) + 1;
                 return RedirectToAction("../CompletedTasks/Index");
             }
             else

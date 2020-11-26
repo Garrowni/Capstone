@@ -109,7 +109,7 @@ namespace TermProjectUI.Controllers
                 taskSpecList = new List<OtherTaskModel.TaskRequirement>();
                 deletedTask = new List<object>();
                 deletedTask.Add(otherTask);
-                
+                Session["TaskCount"] = Int32.Parse(Session["TaskCount"].ToString()) + 1;
                 return RedirectToAction("Details", new { id = otherTask.Id });
             }
             catch
@@ -245,6 +245,7 @@ namespace TermProjectUI.Controllers
             var result = productCollection.UpdateOne(filter, update);
 
             assignees = new List<string>();
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) + 1;
             return RedirectToAction("Details", new { id = id });
 
 
@@ -253,6 +254,7 @@ namespace TermProjectUI.Controllers
         public ActionResult DisjointTask(string id, OtherTaskModel task)
         {
             assignees.Remove(Session["UserId"].ToString());
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) - 1;
             if (assignees.Count == 0 || assignees == null)
             {
                 task.assignees = assignees;
@@ -290,6 +292,10 @@ namespace TermProjectUI.Controllers
             var result = productCollection.UpdateOne(filter, update);
             if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
             {
+                Session["TaskCount"] = Int32.Parse(Session["TaskCount"].ToString()) - 1;
+               // Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) - 1;
+
+                Session["CompletedTaskCount"] = Int32.Parse(Session["CompletedTaskCount"].ToString()) + 1;
                 return RedirectToAction("../CompletedTasks/Index");
             }
             else

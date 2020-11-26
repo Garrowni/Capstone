@@ -131,7 +131,7 @@ namespace TermProjectUI.Controllers
                 deletedTask = new List<object>();
                 deletedTask.Add(inventoryTask);
                 documentsList = new List<string>();
-
+                Session["TaskCount"] = Int32.Parse(Session["TaskCount"].ToString()) + 1;
                 return RedirectToAction("Details", new { id = inventoryTask.Id });
 
             }
@@ -172,7 +172,8 @@ namespace TermProjectUI.Controllers
                 var filter = Builders<InventoryTaskModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<InventoryTaskModel>.Update
 
-
+                    .Set("ImportanceLevel", task.ImportanceLevel)
+                    .Set("requester", task.requester)
                     .Set("taskID", task.taskID)
                     .Set("taskName", task.taskName)
                     .Set("taskType", task.taskType)
@@ -337,7 +338,7 @@ namespace TermProjectUI.Controllers
                 .Set("assignees", assignees)
                 .Set("state", "Assigned");
             var result = productCollection.UpdateOne(filter, update);
-
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) + 1;
             assignees = new List<string>();
             return RedirectToAction("Details", new { id = id });
 
@@ -347,6 +348,7 @@ namespace TermProjectUI.Controllers
         public ActionResult DisjointTask(string id, InventoryTaskModel task)
         {
             assignees.Remove(Session["UserId"].ToString());
+            Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) - 1;
             if (assignees.Count == 0 || assignees == null)
             {
                 task.assignees = assignees;
@@ -386,6 +388,10 @@ namespace TermProjectUI.Controllers
             var result = productCollection.UpdateOne(filter, update);
             if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
             {
+                Session["TaskCount"] = Int32.Parse(Session["TaskCount"].ToString()) -1;
+              //  Session["JoinedTaskCount"] = Int32.Parse(Session["JoinedTaskCount"].ToString()) - 1;
+
+                Session["CompletedTaskCount"] = Int32.Parse(Session["CompletedTaskCount"].ToString()) + 1;
                 return RedirectToAction("../CompletedTasks/Index");
             }
             else

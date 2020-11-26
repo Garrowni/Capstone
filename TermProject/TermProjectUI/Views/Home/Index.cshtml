@@ -1,4 +1,11 @@
-﻿<link href="@Url.Content("https://fonts.googleapis.com/css?family=Lora")" rel="stylesheet" type="text/css" />
+﻿@model TermProjectUI.Models.HomeModel
+
+@{
+    ViewBag.Title = "Index";
+
+}
+
+<link href="@Url.Content("https://fonts.googleapis.com/css?family=Lora")" rel="stylesheet" type="text/css" />
 
 <link href="@Url.Content("~/assets/css/styles.css")" rel="stylesheet" type="text/css" />
 
@@ -8,64 +15,61 @@
     <div class="container">
         <div class="row">
             <div class="col-md-2 col-xl-3">
-                
-                    <img src="@Session["Img"]" style="margin-left: 2%;width: 100px;height:100px;">
-                    
-                
 
-                    <div class="card" style="border-right: solid grey 1px; width: 80%;">
-                        <div class="card-body">
-                            <h3 class="card-title">@Session["Username"].ToString()</h3>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4>Unassigned</h4>
-                                    <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
-                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Urgent</button>
-                                    </a>
-                                    <p style="margin-top: 4%;margin-left: 4%;float: left;">3</p>
+                <img src="@Session["Img"]" style="margin-left: 2%;width: 100px;height:100px;">
 
-                                    <br />
-                                    <br />
-                                    <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
-                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Normal</button>
-                                    </a>
-                                    <p style="margin-top: 4%; margin-left: 4%;float: left;">3</p>
-                                </div>
+
+
+                <div class="card" style="border-right: solid grey 1px; width: 80%;">
+                    <div class="card-body">
+                        <h3 class="card-title">@Session["Username"].ToString()</h3>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Tasks</h4>
+                                <a href="@Url.Action("Index", "AllTasks")" title="List View" class="links">
+                                    <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">All Tasks</button>
+                                </a>
+                                <p style="margin-top: 4%;margin-left: 4%;float: left;">@Session["TaskCount"].ToString()</p>
+
                                 <br />
                                 <br />
-                                <div class="card-body">
-                                    <h4>Assigned</h4>
-                                    <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
-                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Urgent</button>
+                                <a href="@Url.Action("Index", "JoinedTasks")" title="List View" class="links">
+                                    <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Your Tasks</button>
+                                </a>
+                                <p style="margin-top: 4%;margin-left: 4%;float: left;"> @Session["JoinedTaskCount"].ToString()</p>
+                                @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+                                {
+                                    <br />
+                                    <br />
+                                    <a href="@Url.Action("Index", "CompletedTasks")" title="List View" class="links">
+                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Completed</button>
                                     </a>
-                                    <p style="margin-top: 4%;margin-left: 4%;float: left;">3</p>
+                                    <p style="margin-top: 4%;margin-left: 4%;float: left;"> @Session["CompletedTaskCount"].ToString()</p>
 
-                                    <br />
-                                    <br />
-                                    <a href="@Url.Action("Index", "TransportationTasks")" title="List View" class="links">
-                                        <button class="btn btn-primary" type="button" style="margin-left: 2%;float: left;background-color: grey;border-color: black;">Normal</button>
-                                    </a>
-                                    <p style="margin-top: 4%; margin-left: 4%;float: left;">3</p>
-                                </div>
+
+                                }
                             </div>
                             <br />
-                            @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
-                            {
-                                <div class="card">
-                                    <div class="card-body">
-                                        <br />
-                                        <h4>Tools</h4>
-                                        <a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
-                                            <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Task</button>
-                                        </a>
-                                        
-                                        <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Report</button>
+                            <br />
 
-                                    </div>
-                                </div>}
-                            </div>
+                        </div>
+                        <br />
+                        @if (Session["Role"].ToString() == "Admin" || Session["Role"].ToString() == "Moderator")
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <br />
+                                    <h4>Tools</h4>
+                                    <a href="@Url.Action("CreateTaskSelection", "Home")" title="List View" class="links">
+                                        <button class="btn btn-primary" type="button" style="margin: 2%;background-color: grey;border-color: black;">Create Task</button>
+                                    </a>
+
+                                   
+                                </div>
+                            </div>}
                     </div>
                 </div>
+            </div>
 
 
 
@@ -73,107 +77,38 @@
             <div class="col-md-9 col-xl-9" style="float: left">
                 <div class="row">
                     <div class="col-md-12 col-xl-9">
-                        <div class="card" style="float: left;">
-                            <div class="card-header">
-                                <h5 class="mb-0">Your Tasks</h5>
+                        <div style="float: left;">
+                            <div>
+                                <h1 class="text-center">Today is a great day to help a dog.</h1>
                             </div>
                             <div class="card-body" style="float: left">
-                                <div class="card" style="width: 150%;float: left; ">
+                                <div class="ca0rd" style="width: 150%;float: left; ">
                                     <div class="card-body" style="width: 12%;float: left;border: solid black 1px">
-                                        saddasaddsad
-                                        <br />
-
-                                        <button class="btn btn-primary" type="button" style=" background-color: grey;border-color: black;">Task 1</button>
-
-                                        <br />
-                                        saddasaddsad
-                                        <br />
-                                        sasdasaasdas
-                                        <br />
-                                        sasdsssasa
-                                        <br />
-                                        sasdasaasdaa
-                                        <br />
-                                        sasdasaasdaa
+                                        <img src="~/Images/2apple.JPG" style="margin-left: 2%;width: 140px;height:130px;">
                                     </div>
                                     <div class="card-body" style="width: 12%;float: left;border: solid black 1px">
-                                        saddasaddsad
-                                        <br />
-
-                                        <button class="btn btn-primary" type="button" style=" background-color: grey;border-color: black;">Task 2</button>
-
-                                        <br />
-                                        saddasaddsad
-                                        <br />
-                                        sasdasaasdas
-                                        <br />
-                                        sasdsssasa
-                                        <br />
-                                        sasdasaasdaa
-                                        <br />
-                                        sasdasaasdaa
+                                        <img src="~/Images/Bentley-5.JPG" style="margin-left: 2%;width: 140px;height:130px;">
                                     </div>
                                     <div class="card-body" style="width: 12%;float: left;border: solid black 1px">
-                                        saddasaddsad
-                                        <br />
-
-                                        <button class="btn btn-primary" type="button" style=" background-color: grey;border-color: black;">Task 3</button>
-
-                                        <br />
-                                        saddasaddsad
-                                        <br />
-                                        sasdasaasdas
-                                        <br />
-                                        sasdsssasa
-                                        <br />
-                                        sasdasaasdaa
-                                        <br />
-                                        sasdasaasdaa
+                                        <img src="~/Images/DSC08871.JPG" style="margin-left: 2%;width: 140px;height:130px;">
                                     </div>
                                     <div class="card-body" style="width: 12%;float: left;border: solid black 1px">
-                                        saddasaddsad
-                                        <br />
-                                        <button class="btn btn-primary" type="button" style=" background-color: grey;border-color: black;">Task 4</button>
-
-                                        <br />
-                                        saddasaddsad
-                                        <br />
-                                        sasdasaasdas
-                                        <br />
-                                        sasdsssasa
-                                        <br />
-                                        sasdasaasdaa
-                                        <br />
-                                        sasdasaasdaa
+                                        <img src="~/Images/IMG_1097.jpg" style="margin-left: 2%;width: 140px;height:130px;">
                                     </div>
                                     <div class="card-body" style="width: 12%;float: left;border: solid black 1px">
-                                        saddasaddsad
-                                        <br />
-
-                                        <button class="btn btn-primary" type="button" style=" background-color: grey;border-color: black;">Task 5</button>
-
-                                        <br />
-                                        saddasaddsad
-                                        <br />
-                                        sasdasaasdas
-                                        <br />
-                                        sasdsssasa
-                                        <br />
-                                        sasdasaasdaa
-                                        <br />
-                                        sasdasaasdaa
+                                        <img src="~/Images/Leo-1.JPG" style="margin-left: 2%;width: 140px;height:130px;">
                                     </div>
 
                                     <div class="card-body" style="width: 25%;float: left;">
 
-                                        <img src="~/Images/cal.png" style="height: 80%; width: 80%; margin-top: -8%;">
+                                        <img src="~/Images/cal.png" style="height: 80%; width: 80%; margin-top: -8%; visibility: hidden;">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                   
+
                 </div>
                 <a href="@Url.Action("Index", "AllTasks")" title="List View" class="links">
                     <button class="btn btn-primary" type="button" style=" margin-right: 10%;  float: right; background-color: grey;border-color: black;">Join a Task</button>
@@ -183,20 +118,58 @@
                 <hr />
                 <div class="row">
                     <div class="col-xl-12">
-                        <h1 class="text-center">Your Wonderful Article Title</h1>
-                        <p>
-                            Sed lobortis mi. Suspendisse vel placerat ligula. <span style="text-decoration: underline;">Vivamus</span> ac sem lac. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel
-                            sem lac. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.<br><br>
+
+                        <p style="font-size: medium">
+
+                            Our vision is to ensure that dogs in our care have access to the five essential freedoms:
+                            <ul>
+                                <li> <b>Freedom</b> from hunger and thirst.</li>
+                                <li> <b>Freedom</b> from pain, injury and disease.</li>
+                                <li> <b>Freedom</b> from distress.</li>
+                                <li> <b>Freedom</b> from discomfort.</li>
+                                <li> <b>Freedom</b> to express natural behaviors that promote well-being.</li>
+                            </ul>
+
                         </p>
-                        <h2>Aliquam In Arcu </h2>
-                        <p>
-                            Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac lacus. <strong>Ut vehicula rhoncus</strong> elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit <em>pulvinar dict</em> vel in justo. Vestibulum
-                            ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.
-                        </p>
+                        <br />
+                        <hr />
+                        <b>Useful Links:</b>
+                        <br />
+                        <br />
+
+                        <a href="https://www.fetchandreleash.ca/">Fetch and Releash</a>
+                        <br /><hr />
+                        <a href="https://www.facebook.com/fetchandreleashrescue/">Fetch and Releash Facebook</a>
+                        <br /><hr />
+                        <a href="https://www.facebook.com/groups/FetchandReleashVolunteers">Volunteer Facebook</a>
+                        <br /><hr />
+                        <a href="https://www.instagram.com/fetch_and_releash/">Fetch and Releash Instagram</a>
+                        <hr />
+
+
+                        <br />
+
 
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-xl-12">
+
+                    </div>
+                </div>
+
+
+
             </div>
         </div>
+
+
+
+
+
     </div>
+
+
+    Photos for Fetch and Releash by: <a href="http://blueroosterstudio.com/">Blue Rooster Studio</a>
 </div>

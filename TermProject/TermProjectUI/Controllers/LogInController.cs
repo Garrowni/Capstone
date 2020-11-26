@@ -19,16 +19,74 @@ namespace TermProjectUI.Controllers
         private MongoDBContext dbcontext;
         private IMongoCollection<VolunteerModel> volunteerCollection;
         static List<string> volunteerList = new List<string>();
+
+        static List<string> currentTasks = new List<string>();
+        static List<string> currentJoinedTasks = new List<string>();
+        static List<string> completedTasks = new List<string>();
+        private IMongoCollection<TransportationTaskModel> transportationCollection;
+        private IMongoCollection<InventoryTaskModel> inventoryCollection;
+        private IMongoCollection<PhotographyTaskModel> photographyCollection;
+        private IMongoCollection<GroomingTaskModel> groomingCollection;
+        private IMongoCollection<VetTaskModel> vetCollection;
+        private IMongoCollection<OtherTaskModel> otherCollection;
         public LogInController()
         {
             dbcontext = new MongoDBContext();
             volunteerCollection = dbcontext.database.GetCollection<VolunteerModel>("volunteer");
 
+            transportationCollection = dbcontext.database.GetCollection<TransportationTaskModel>("transportation");
+            inventoryCollection = dbcontext.database.GetCollection<InventoryTaskModel>("inventory");
+            photographyCollection = dbcontext.database.GetCollection<PhotographyTaskModel>("photography");
+            groomingCollection = dbcontext.database.GetCollection<GroomingTaskModel>("grooming");
+            vetCollection = dbcontext.database.GetCollection<VetTaskModel>("vet");
+            otherCollection = dbcontext.database.GetCollection<OtherTaskModel>("other");
+
         }
         // GET: LogIn
         public ActionResult LogIn()
         {
-            
+            currentTasks = new List<string>();
+       
+            List<TransportationTaskModel> products = transportationCollection.AsQueryable<TransportationTaskModel>().ToList();
+            List<InventoryTaskModel> inventory = inventoryCollection.AsQueryable<InventoryTaskModel>().ToList();
+            List<PhotographyTaskModel> photography = photographyCollection.AsQueryable<PhotographyTaskModel>().ToList();
+            List<GroomingTaskModel> grooming = groomingCollection.AsQueryable<GroomingTaskModel>().ToList();
+            List<VetTaskModel> vet = vetCollection.AsQueryable<VetTaskModel>().ToList();
+            List<OtherTaskModel> others = otherCollection.AsQueryable<OtherTaskModel>().ToList();
+
+            foreach (var product in products)
+            {
+                currentTasks.Add(product.Id.ToString());
+
+            }
+            foreach (var groom in grooming)
+            {
+                currentTasks.Add(groom.Id.ToString());
+
+            }
+            foreach (var inv in inventory)
+            {
+                currentTasks.Add(inv.Id.ToString());
+
+            }
+            foreach (var photo in photography)
+            {
+                currentTasks.Add(photo.Id.ToString());
+
+            }
+            foreach (var v in vet)
+            {
+                currentTasks.Add(v.Id.ToString());
+
+            }
+            foreach (var ot in others)
+            {
+                currentTasks.Add(ot.Id.ToString());
+
+            }
+
+            Session["TaskCount"] = currentTasks.Count().ToString();
+
             List<VolunteerModel> volunteers = volunteerCollection.AsQueryable<VolunteerModel>().ToList();
             bool isEmpty = !volunteers.Any();
             if (isEmpty)
@@ -68,6 +126,16 @@ namespace TermProjectUI.Controllers
             var email =logIn.Email;
             var password = logIn.Password;
             var vol = volunteerCollection.AsQueryable<VolunteerModel>().SingleOrDefault(x => x.Email == email);
+
+            List<TransportationTaskModel> products = transportationCollection.AsQueryable<TransportationTaskModel>().ToList();
+            List<InventoryTaskModel> inventory = inventoryCollection.AsQueryable<InventoryTaskModel>().ToList();
+            List<PhotographyTaskModel> photography = photographyCollection.AsQueryable<PhotographyTaskModel>().ToList();
+            List<GroomingTaskModel> grooming = groomingCollection.AsQueryable<GroomingTaskModel>().ToList();
+            List<VetTaskModel> vet = vetCollection.AsQueryable<VetTaskModel>().ToList();
+            List<OtherTaskModel> others = otherCollection.AsQueryable<OtherTaskModel>().ToList();
+
+            currentJoinedTasks = new List<string>();
+            completedTasks = new List<string>();
             if (vol==null)
             {
                 ViewBag.Message = "Click Register to register yourself and wait for Admin Approval !!!";
@@ -101,6 +169,176 @@ namespace TermProjectUI.Controllers
                         Session["Email"] = volunteerName.Email;
                         Session["Img"] = volunteerName.UserPhoto.ToString();
                         Session["Role"] = volunteerName.Role;
+
+
+                        // assigned
+                        foreach (var trans in products)
+                        {
+                            if (trans.assignees != null)
+                            {
+                                foreach (var assignee in trans.assignees)
+                                {
+                                    if (assignee.ToString() == volunteerName.Id.ToString())
+                                    {
+                                        currentJoinedTasks.Add(trans.Id.ToString());
+                                    }
+                                }
+                            }
+
+
+                        }
+                        foreach (var inv in inventory)
+                        {
+                            if (inv.assignees != null)
+                            {
+                                foreach (var assignee in inv.assignees)
+                                {
+                                    if (assignee.ToString() == volunteerName.Id.ToString())
+                                    {
+                                        currentJoinedTasks.Add(inv.Id.ToString());
+                                    }
+                                }
+                            }
+
+
+                        }
+                        foreach (var photo in photography)
+                        {
+                            if (photo.assignees != null)
+                            {
+                                foreach (var assignee in photo.assignees)
+                                {
+                                    if (assignee.ToString() == volunteerName.Id.ToString())
+                                    {
+                                        currentJoinedTasks.Add(photo.Id.ToString());
+                                    }
+                                }
+                            }
+
+                        }
+                        foreach (var groom in grooming)
+                        {
+                            if (groom.assignees != null)
+                            {
+                                foreach (var assignee in groom.assignees)
+                                {
+                                    if (assignee.ToString() == volunteerName.Id.ToString())
+                                    {
+                                        currentJoinedTasks.Add(groom.Id.ToString());
+                                    }
+                                }
+                            }
+
+                        }
+                        foreach (var v in vet)
+                        {
+                            if (v.assignees != null)
+                            {
+                                foreach (var assignee in v.assignees)
+                                {
+                                    if (assignee.ToString() == volunteerName.Id.ToString())
+                                    {
+                                        currentJoinedTasks.Add(v.Id.ToString());
+                                    }
+                                }
+                            }
+
+                        }
+                        foreach (var other in others)
+                        {
+                            if (other.assignees != null)
+                            {
+                                foreach (var assignee in other.assignees)
+                                {
+                                    if (assignee.ToString() == volunteerName.Id.ToString())
+                                    {
+                                        currentJoinedTasks.Add(other.Id.ToString());
+                                    }
+                                }
+                            }
+
+                        }
+
+                        Session["JoinedTaskCount"] = currentJoinedTasks.Count().ToString();
+
+
+
+
+                        //comleted
+                        foreach (var trans in products)
+                        {
+                            if (trans.state == "Completed")
+                            {
+                                
+                                    completedTasks.Add(trans.Id.ToString());
+                                
+                                
+                            }
+
+
+                        }
+                        foreach (var inv in inventory)
+                        {
+                            if (inv.state == "Completed")
+                            {
+
+                                completedTasks.Add(inv.Id.ToString());
+
+
+                            }
+
+
+                        }
+                        foreach (var photo in photography)
+                        {
+                            if (photo.state == "Completed")
+                            {
+
+                                completedTasks.Add(photo.Id.ToString());
+
+
+                            }
+
+                        }
+                        foreach (var groom in grooming)
+                        {
+                            if (groom.state == "Completed")
+                            {
+
+                                completedTasks.Add(groom.Id.ToString());
+
+
+                            }
+
+                        }
+                        foreach (var v in vet)
+                        {
+                            if (v.state == "Completed")
+                            {
+
+                                completedTasks.Add(v.Id.ToString());
+
+
+                            }
+
+                        }
+                        foreach (var other in others)
+                        {
+                            if (other.state == "Completed")
+                            {
+
+                                completedTasks.Add(other.Id.ToString());
+
+
+                            }
+
+                        }
+
+                        Session["CompletedTaskCount"] = completedTasks.Count().ToString();
+
+
+
+
                         return View("../Home/Index");
                     }
                 }

@@ -13,6 +13,21 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            Task Title:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.taskName)
+        </dd>
+        <dt>
+            Importance Level:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImportanceLevel)
+        </dd>
+
+        <dt>
             Requester:
         </dt>
 
@@ -20,13 +35,7 @@
             @Html.DisplayFor(model => model.requester)
         </dd>
 
-        <dt>
-            Task Title:
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.taskName)
-        </dd>
 
         <dt>
             Poster Name:

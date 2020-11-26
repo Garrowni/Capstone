@@ -19,6 +19,9 @@ namespace TermProjectUI.Models
         [BsonElement("posterPhoto")]
         public string posterPhoto { get; set; }
 
+        [BsonElement("ImportanceLevel")]
+        public int ImportanceLevel { get; set; }
+
         [BsonElement("taskID")]
         //auto generate
         public int taskID { get; set; }

@@ -16,7 +16,7 @@
     <h4>Other Task</h4>
     <hr />
     <dl class="dl-horizontal">
-     
+
 
         <dt>
             Task Title:
@@ -24,6 +24,21 @@
 
         <dd>
             @Html.DisplayFor(model => model.taskName)
+        </dd>
+        <dt>
+            Importance Level:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImportanceLevel)
+        </dd>
+
+        <dt>
+            Requester:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.requester)
         </dd>
 
         <dt>
@@ -73,10 +88,10 @@
             @foreach (var item in Model.Dogs)
             {
 
-    <p> Name: @Html.DisplayFor(model => item.txtName)</p>
-                    <p> Breed:@Html.DisplayFor(model => item.txtBreed)</p>
-                                    <p> Size:@Html.DisplayFor(model => item.txtSize)</p>
-                                                    <p> Notes:@Html.DisplayFor(model => item.txtNotes)</p>}
+                <p> Name: @Html.DisplayFor(model => item.txtName)</p>
+                <p> Breed:@Html.DisplayFor(model => item.txtBreed)</p>
+                <p> Size:@Html.DisplayFor(model => item.txtSize)</p>
+                <p> Notes:@Html.DisplayFor(model => item.txtNotes)</p>}
         </dd>
     </dl>
 
